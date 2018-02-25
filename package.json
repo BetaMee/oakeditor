@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "a editor",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": "git@github.com:BetaMee/oakeditor.git",
   "author": "betamee <gongxq95@gmail.com>",
   "license": "MIT",
