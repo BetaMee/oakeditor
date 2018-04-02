@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Styled from 'styled-components'
+import styled from 'styled-components'
 
 const flow = ({ flow = 'row' }) => flow
 
@@ -20,7 +20,7 @@ const justifyContent = ({ justifyContent }) => justifyContent && `justify-conten
 
 const alignContent = ({ alignContent }) => alignContent && `align-content: ${alignContent}`
 
-const Grid = Styled.div`
+const Grid = styled.div`
   display: grid;
   grid-auto-flow: ${flow};
   grid-auto-rows: ${autoRows};

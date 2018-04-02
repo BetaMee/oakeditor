@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Styled from 'styled-components'
+import styled from 'styled-components'
 
 const gridColumnStart = ({ left }) => left && `grid-column-start: ${left}`
 
@@ -17,7 +17,7 @@ const middle = ({ middle }) => middle && `
   justify-self: stretch;
 `
 
-const Cell = Styled.section`
+const Cell = styled.section`
   height: 100%;
   min-width: 0;
   align-content: space-around;
