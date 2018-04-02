@@ -12,6 +12,8 @@ const columns = ({ columns = 12 }) => typeof columns === "number" ? `repeat(${co
 
 const gap = ({ gap = '8px' }) => `${gap} ${gap}`
 
+const formatAreas = areas => areas.map(area => `"${area}"`).join(" ")
+
 const gridTemplateAreas = ({ areas }) => areas && `grid-template-areas: ${formatAreas(areas)}`
 
 const justifyContent = ({ justifyContent }) => justifyContent && `justify-content: ${justifyContent}`

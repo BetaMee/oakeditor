@@ -17,7 +17,7 @@ const middle = ({ middle }) => middle && `
   justify-self: stretch;
 `
 
-const Cell = styled.section`
+const Cell = Styled.section`
   height: 100%;
   min-width: 0;
   align-content: space-around;
