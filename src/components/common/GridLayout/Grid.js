@@ -30,7 +30,7 @@ const Grid = Styled.div`
   ${gridTemplateAreas};
   ${justifyContent};
   ${alignContent};
-`;
+`
 
 Grid.propTypes = {
   className: PropTypes.string,
@@ -42,6 +42,6 @@ Grid.propTypes = {
   areas: PropTypes.arrayOf(PropTypes.string),
   justifyContent: PropTypes.string,
   alignContent: PropTypes.string
-};
+}
 
 export default Grid

@@ -28,7 +28,7 @@ const Cell = Styled.section`
   ${textAlign};
   ${gridArea};
   ${middle};
-`;
+`
 
 Cell.propTypes = {
   className: PropTypes.string,
@@ -39,6 +39,6 @@ Cell.propTypes = {
   middle: PropTypes.bool,
   center: PropTypes.bool,
   area: PropTypes.string
-};
+}
 
 export default Cell
