@@ -2,43 +2,43 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+const height = ({ height }) => height && `height: ${height}`
+
+const width = ({ width }) => width && `width: ${width}`
+
 const gridColumnStart = ({ left }) => left && `grid-column-start: ${left}`
 
 const gridRowStart = ({ top }) => top && `grid-row-start: ${top}`
 
-const textAlign = ({ center }) => center && `text-align: center`
-
 const gridArea = ({ area }) => area && `grid-area: ${area}`
 
-const middle = ({ middle }) => middle && `
-  display: inline-flex;
-  flex-flow: column wrap;
-  justify-content: center;
-  justify-self: stretch;
-`
+const justifySelf = ({ justifySelf }) => justifySelf && `justify-self: ${justifySelf}`
+
+const alignSelf = ({ alignSelf }) => alignSelf && `align-self: ${alignSelf}`
 
 const Cell = styled.section`
-  height: 100%;
-  min-width: 0;
-  align-content: space-around;
-  grid-column-end: ${({ width = 1 }) => `span ${width}`};
-  grid-row-end: ${({ height = 1 }) => `span ${height}`};
+  ${height};
+  ${width};
   ${gridColumnStart};
   ${gridRowStart};
-  ${textAlign};
+  grid-column-end: ${({ spanWidth = 1 }) => `span ${spanWidth}`};
+  grid-row-end: ${({ spanHeight = 1 }) => `span ${spanHeight}`};
   ${gridArea};
-  ${middle};
+  ${justifySelf};
+  ${alignSelf}
 `
 
 Cell.propTypes = {
   className: PropTypes.string,
-  width: PropTypes.number,
   height: PropTypes.number,
+  width: PropTypes.number,
   top: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   left: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  middle: PropTypes.bool,
-  center: PropTypes.bool,
-  area: PropTypes.string
+  spanHeight: PropTypes.number,
+  spanWidth: PropTypes.number,
+  area: PropTypes.string,
+  justifySelf: PropTypes.string,
+  alignSelf: PropTypes.string,  
 }
 
 export default Cell
