@@ -2,29 +2,29 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-const height = ({ height }) => height && `height: ${height}` 
+const height = ({ gHeight }) => gHeight && `height: ${gHeight}`
 
-const flow = ({ flow = 'row' }) => flow
+const width = ({ gWidth }) => gWidth && `width: ${gWidth}`
 
+const rows = ({ gRows = 1 }) => typeof gRows === "number" ? `repeat(${gRows}, 1fr)` : gRows
 
-
-const rows = ({ rows = 1 }) => typeof rows === "number" ? `repeat(${rows}, 1fr)` : rows
-
-const columns = ({ columns = 12 }) => typeof columns === "number" ? `repeat(${columns}, 1fr)` : columns
+const columns = ({ gColumns = 12 }) => typeof gColumns === "number" ? `repeat(${gColumns}, 1fr)` : gColumns
 
 const formatAreas = areas => areas.map(area => `"${area}"`).join(" ")
 
-const gridTemplateAreas = ({ areas }) => areas && `grid-template-areas: ${formatAreas(areas)}`
+const gridTemplateAreas = ({ gAreas }) => gAreas && `grid-template-areas: ${formatAreas(gAreas)}`
 
 const gap = ({ gap = '8px' }) => `${gap} ${gap}`
 
-const justifyItems = ({ justifyItem }) => justifyItem && `justify-items: ${justifyItem}`
+const justifyItems = ({ justifyItems }) => justifyItems && `justify-items: ${justifyItems}`
 
-const alignItems = ({ alignItem }) => alignItem && `align-items: ${alignItem}`
+const alignItems = ({ alignItems }) => alignItems && `align-items: ${alignItems}`
 
 const justifyContent = ({ justifyContent }) => justifyContent && `justify-content: ${justifyContent}`
 
 const alignContent = ({ alignContent }) => alignContent && `align-content: ${alignContent}`
+
+const flow = ({ gFlow = 'row' }) => gFlow
 
 const autoRows = ({ minRowHeight = '20px' }) => `minmax(${minRowHeight}, auto)`
 
@@ -32,6 +32,7 @@ const autoColums = ({ minColumsWidth = '20px' }) => `minmax(${minColumsWidth}, a
 
 const Grid = styled.div`
   ${height};
+  ${width};
   display: grid;
   grid-template-rows: ${rows};
   grid-template-columns: ${columns};
@@ -48,14 +49,19 @@ const Grid = styled.div`
 
 Grid.propTypes = {
   className: PropTypes.string,
-  columns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  gHeight: PropTypes.string,
+  gWidth: PropTypes.string,
+  gRows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  gColumns: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  gAreas: PropTypes.arrayOf(PropTypes.string),
   gap: PropTypes.string,
-  minRowHeight: PropTypes.string,
-  flow: PropTypes.string,
-  rows: PropTypes.string,
-  areas: PropTypes.arrayOf(PropTypes.string),
+  justifyItems: PropTypes.string,
+  alignItems: PropTypes.string,
   justifyContent: PropTypes.string,
-  alignContent: PropTypes.string
+  alignContent: PropTypes.string,
+  gFlow: PropTypes.string,
+  minRowHeight: PropTypes.string,
+  minColumsWidth: PropTypes.string,
 }
 
 export default Grid

@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-const height = ({ height = '100%' }) => `height: ${height}`
+const height = ({ wHeight = '100%' }) => `height: ${wHeight}`
 
-const width = ({ width = '100%' }) => `width: ${width}`
+const width = ({ wWidth = '100%' }) => `width: ${wWidth}`
 
 const backgroundColor = ({ backgroundColor }) => backgroundColor && `background-color: ${backgroundColor}`
 
-const color = ({ color }) => color && `color: ${color}`
+const color = ({ wColor }) => wColor && `color: ${wColor}`
 
-const padding = ({ padding }) => padding && `padding: ${padding}`
+const padding = ({wPadding }) => wPadding && `padding: ${wPadding}`
 
-const margin = ({ margin }) => margin && `margin: ${margin}`
+const margin = ({ wMargin }) => wMargin && `margin: ${wMargin}`
 
-const border = ({ border }) => border && `border: ${border}`
+const border = ({ wBorder }) => wBorder && `border: ${wBorder}`
 
 const center = ({ center }) => center && `
   display: flex;
@@ -33,4 +34,17 @@ const Wrapper = styled.div`
   ${border};
   ${center};
 `
+
+Grid.propTypes = {
+  className: PropTypes.string,
+  wHeight: PropTypes.string,
+  wWidth: PropTypes.string,
+  backgroundColor: PropTypes.string,
+  wColor: PropTypes.string,
+  wPadding: PropTypes.string,
+  wMargin: PropTypes.string,
+  wBorder: PropTypes.string,
+  center: PropTypes.bool
+}
+
 export default Wrapper
