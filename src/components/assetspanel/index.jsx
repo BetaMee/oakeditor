@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 
-class AssetsPortal extends Component {
+class AssetsPanel extends Component {
   render() {
     return (
       <div>
-        AssetsPortal
+        AssetsPanel
       </div>
     )
   }
 }
 
-export default AssetsPortal
+export default AssetsPanel

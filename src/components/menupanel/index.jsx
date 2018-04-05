@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 
-class FilePortal extends Component {
+class MenuPanel extends Component {
   render() {
     return (
       <div>
-        FilePortal
+        MenuPanel
       </div>
     )
   }
 }
 
-export default FilePortal
+export default MenuPanel
