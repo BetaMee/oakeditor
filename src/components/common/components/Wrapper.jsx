@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   ${center};
 `
 
-Grid.propTypes = {
+Wrapper.propTypes = {
   className: PropTypes.string,
   wHeight: PropTypes.string,
   wWidth: PropTypes.string,
