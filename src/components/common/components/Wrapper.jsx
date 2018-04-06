@@ -23,6 +23,8 @@ const center = ({ center }) => center && `
   align-items: center;
 `
 
+const userSelect = ({ isUserSelect = true }) => !isUserSelect && `user-select: none;` 
+
 const Wrapper = styled.div`
   box-sizing: border-box;
   ${height};
@@ -33,6 +35,7 @@ const Wrapper = styled.div`
   ${margin};
   ${border};
   ${center};
+  ${userSelect};
 `
 
 Wrapper.propTypes = {
@@ -44,7 +47,8 @@ Wrapper.propTypes = {
   wPadding: PropTypes.string,
   wMargin: PropTypes.string,
   wBorder: PropTypes.string,
-  center: PropTypes.bool
+  center: PropTypes.bool,
+  isUserSelect: PropTypes.bool
 }
 
 export default Wrapper
