@@ -11,11 +11,8 @@ class Setting extends Component {
 
   }
 
-  handleClick = (e) => {
-    console.log(e)
-  }
-
   render() {
+    const { openMenuPanel } = this.props
     return(
       <Wrapper
         layout='rowCenter'
@@ -23,7 +20,7 @@ class Setting extends Component {
         <IconWrapper
           wHeight={38}
           wWidth={38}
-          onClick={this.handleClick}
+          onClick={openMenuPanel}
         ><Icon mSize={36}>settings</Icon></IconWrapper>
       </Wrapper>
     )

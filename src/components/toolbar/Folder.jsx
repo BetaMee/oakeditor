@@ -10,11 +10,8 @@ class Folder extends Component {
 
   }
 
-  handleClick = (e) => {
-    console.log(e)
-  }
-
   render() {
+    const { openFilePanel } = this.props
     return(
       <Wrapper
         layout='rowCenter'
@@ -22,7 +19,7 @@ class Folder extends Component {
         <IconWrapper
           wHeight={38}
           wWidth={38}
-          onClick={this.handleClick}
+          onClick={openFilePanel}
         ><Icon mSize={36}>folder</Icon></IconWrapper>
       </Wrapper>
     )

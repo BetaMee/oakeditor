@@ -18,6 +18,42 @@ class Editor extends Component {
     isShowAssetsPanel: false
   }
 
+  openFilePanel = () => {
+    this.setState((preState) => ({
+      isShowFilePanel: true
+    }))
+  }
+
+  openMenuPanel = () => {
+    this.setState((preState) => ({
+      isShowMenuPanel: true
+    }))
+  }
+
+  openAssetsPanel = () => {
+    this.setState((preState) => ({
+      isShowAssetsPanel: true
+    }))
+  }
+
+  hideFilePanel = () => {
+    this.setState((preState) => ({
+      isShowFilePanel: false
+    }))
+  }
+
+  hideMenuPanel = () => {
+    this.setState((preState) => ({
+      isShowMenuPanel: false
+    }))
+  }
+
+  hideAssetsPanel = () => {
+    this.setState((preState) => ({
+      isShowMenuPanel: false
+    }))
+  }
+
   render() {
     return (
       <Wrapper
@@ -33,7 +69,11 @@ class Editor extends Component {
         >
           {/* 工具栏 */}
           <Cell>
-            <ToolBar />
+            <ToolBar
+              openFilePanel={this.openFilePanel}
+              openMenuPanel={this.openMenuPanel}
+              openAssetsPanel={this.openAssetsPanel}
+            />
           </Cell>
           {/* 编辑器主板 */}
           <Cell>
@@ -44,14 +84,23 @@ class Editor extends Component {
             <StatusBar />
           </Cell>
         </Grid>
+        {/* file panel */}
+        {
+          this.state.isShowFilePanel &&
+            <FilePanel
+              hideFilePanel={this.hideFilePanel}
+            />
+        }
+        {/* setting panel */}
+        {
+          this.state.isShowMenuPanel &&
+            <MenuPanel
+              hideMenuPanel={this.hideMenuPanel}
+            />
+        }
       </Wrapper>
     )
   }
 }
 
 export default Editor
-
-{/*
-<AssetsPortal />  
-<FilePortal />
-<MenuPortal /> */}

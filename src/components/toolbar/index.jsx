@@ -11,6 +11,11 @@ import Wrapper from '../common/components/Wrapper'
 
 class ToolBar extends Component {
   render() {
+    const {
+      openFilePanel,
+      openMenuPanel,
+      openAssetsPanel,
+    } = this.props
     return (
       <Wrapper
         backgroundColor={'rgb(44, 44, 44)'}
@@ -26,11 +31,15 @@ class ToolBar extends Component {
         >
           {/* folder icon */}
           <Cell>
-            <Folder />
+            <Folder
+              openFilePanel={openFilePanel}
+            />
           </Cell>
           {/* edit group */}
           <Cell>
-            <Formater />
+            <Formater
+              openAssetsPanel={openAssetsPanel}
+            />
           </Cell>
           {/* status group */}
           <Cell>
@@ -39,7 +48,9 @@ class ToolBar extends Component {
           {/* setting icon */}
           <Cell
           >
-            <Setting />
+            <Setting
+              openMenuPanel={openMenuPanel}
+            />
           </Cell>
         </Grid>
       </Wrapper>
