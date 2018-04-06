@@ -33,12 +33,12 @@ const Icon = styled.i`
 `
 
 Icon.defaultProps = {
-  mSize: 24,
+  mSize: 22,
 }
 
 Icon.propTypes = {
   children: PropTypes.string.isRequired,
-  mSize: PropTypes.oneOf([18, 24, 36, 48]).isRequired,
+  mSize: PropTypes.number.isRequired,
   mColor: PropTypes.string,
 }
 
