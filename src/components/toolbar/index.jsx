@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 
 // GridLayout
 import { Grid, Cell } from '../common/GridLayout'
@@ -19,7 +18,7 @@ class ToolBar extends Component {
         isUserSelect={false}
       >
         <Grid
-          gColumns={'46px 1fr 10px 44px'}
+          gColumns={'46px 1fr 1fr 46px'}
           gRows={1}
           gap='0px'
           gHeight='100%'
@@ -34,9 +33,11 @@ class ToolBar extends Component {
             <Formater />
           </Cell>
           {/* status group */}
+          <Cell>
+            <Status />
+          </Cell>
           {/* setting icon */}
           <Cell
-            gLeft={4}
           >
             <Setting />
           </Cell>

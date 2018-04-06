@@ -134,6 +134,8 @@ const margin = ({ wMargin }) => wMargin && `margin: ${wMargin}`
 
 const border = ({ wBorder }) => wBorder && `border: ${wBorder}`
 
+const overflow = ({ wOverFlow }) => wOverFlow && `overflow: ${wOverFlow}`
+
 const layout = ({ layout = 'rowCenter' }) => `
   display: flex;
   ${flexLayoutMap[layout]};
@@ -150,6 +152,7 @@ const Wrapper = styled.div`
   ${padding};
   ${margin};
   ${border};
+  ${overflow};
   ${layout};
   ${userSelect};
 `
@@ -163,6 +166,7 @@ Wrapper.propTypes = {
   wPadding: PropTypes.string,
   wMargin: PropTypes.string,
   wBorder: PropTypes.string,
+  wOverFlow: PropTypes.oneOf(['scroll', 'hidden', 'auto']),
   layout: PropTypes.oneOf(layoutArr),
   isUserSelect: PropTypes.bool
 }

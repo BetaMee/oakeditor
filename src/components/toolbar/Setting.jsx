@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-// 引入图标
-import SettingsIcon from '../../assets/icons/settings.svg'
 // 引入组件
 import Wrapper from '../common/components/Wrapper'
-
-const Image = styled.img`
-  object-fit: cover;
-  width: 36px;
-  height: 36px;
-`
+import Icon from '../common/components/Icon'
+import IconWrapper from '../common/components/IconWrapper'
 
 class Setting extends Component {
   state = {
@@ -26,10 +20,11 @@ class Setting extends Component {
       <Wrapper
         layout='rowCenter'
       >
-        <Image
-          src={SettingsIcon}
+        <IconWrapper
+          wHeight={38}
+          wWidth={38}
           onClick={this.handleClick}
-        />
+        ><Icon mSize={36}>settings</Icon></IconWrapper>
       </Wrapper>
     )
   }

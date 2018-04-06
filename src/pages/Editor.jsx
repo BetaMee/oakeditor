@@ -26,7 +26,7 @@ class Editor extends Component {
       >
         <Grid
           gColumns={1}
-          gRows={'44px 1fr 20px'}
+          gRows={'44px 1fr 22px'}
           gap='0px'
           gHeight='100%'
           gWidth='100%'
