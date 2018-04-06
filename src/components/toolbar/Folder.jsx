@@ -17,7 +17,7 @@ class Folder extends Component {
   render() {
     return(
       <Wrapper
-        center={true}
+        layout='rowCenter'
       >
         <IconWrapper
           wHeight={38}

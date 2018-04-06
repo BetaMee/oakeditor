@@ -24,7 +24,7 @@ class Setting extends Component {
   render() {
     return(
       <Wrapper
-        center={true}
+        layout='rowCenter'
       >
         <Image
           src={SettingsIcon}

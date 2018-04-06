@@ -17,7 +17,8 @@ class Formater extends Component {
   render() {
     return(
       <Wrapper
-        center={true}
+        layout='rowLeft'
+        wPadding='0 0 0 20px'
       >
         <IconWrapper
           isAllowed={false}
