@@ -58,7 +58,7 @@ const SVGIcon = ({ name, className}) => {
 }
 
 export default styled(SVGIcon)`
-  width: ${({ size = '24' }) => `${size}px`};
-  height: ${({ size = '24' }) => `${size}px`};
+  width: ${({ size = '22' }) => `${size}px`};
+  height: ${({ size = '22' }) => `${size}px`};
   ${({ color }) => color && `fill: ${color}`}
 ` 
