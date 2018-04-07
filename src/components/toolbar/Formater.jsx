@@ -2,16 +2,12 @@ import React, { Component } from 'react'
 
 // 引入组件
 import Wrapper from '../common/components/Wrapper'
-import Icon from '../common/components/Icon'
-import IconWrapper from '../common/components/IconWrapper'
+import SVGIconWrapper from '../common/components/SVGIconWrapper'
+import SVGIcon from '../common/components/SVGIcon'
 
 class Formater extends Component {
   state = {
 
-  }
-
-  handleClick = (e) => {
-    console.log(e)
   }
 
   render() {
@@ -20,43 +16,77 @@ class Formater extends Component {
         layout='rowLeft'
         wPadding='0 0 0 20px'
       >
-        <IconWrapper
+        <SVGIconWrapper
           isAllowed={false}
-          // onClick
-        ><Icon>undo</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>redo</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>format_bold</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>format_italic</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>strikethrough_s</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>text_fields</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>format_list_bulleted</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>format_list_numbered</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>format_quote</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>code</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>link</Icon></IconWrapper>
-        <IconWrapper
-        
-        ><Icon>image</Icon></IconWrapper>
+          title='Undo'
+        >
+          <SVGIcon name='Undo' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Redo'
+        >
+          <SVGIcon name='Redo' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Bold'
+        >
+          <SVGIcon name='Bold' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Italic'
+        >
+          <SVGIcon name='Italic' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Strikethrough'
+        >
+          <SVGIcon name='Strikethrough' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Heading'
+        >
+          <SVGIcon name='TextFields' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Unordered list'
+        >
+          <SVGIcon name='ListBulleted' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Ordered list'
+        >
+          <SVGIcon name='ListNumbered' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Table'
+        >
+          <SVGIcon name='Table' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Blockquote'
+        >
+          <SVGIcon name='Quote' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Code'
+        >
+          <SVGIcon name='Code' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Link'
+        >
+          <SVGIcon name='Link' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Image'
+        >
+          <SVGIcon name='Image' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Horizontal rule'
+        >
+          <SVGIcon name='HorizontalRule' />
+        </SVGIconWrapper>
       </Wrapper>
     )
   }

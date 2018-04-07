@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 
 // 引入组件
 import Wrapper from '../common/components/Wrapper'
-import Icon from '../common/components/Icon'
-import IconWrapper from '../common/components/IconWrapper'
+import SVGIconWrapper from '../common/components/SVGIconWrapper'
+import SVGIcon from '../common/components/SVGIcon'
 
 class Folder extends Component {
   state = {
@@ -16,11 +16,13 @@ class Folder extends Component {
       <Wrapper
         layout='rowCenter'
       >
-        <IconWrapper
-          wHeight={38}
-          wWidth={38}
+        <SVGIconWrapper
+          wSize={38}
+          title='Toggle explorer'
           onClick={openFilePanel}
-        ><Icon mSize={36}>folder</Icon></IconWrapper>
+        >
+          <SVGIcon name='Folder' size='36' />
+        </SVGIconWrapper>
       </Wrapper>
     )
   }

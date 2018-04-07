@@ -3,8 +3,8 @@ import styled from 'styled-components'
 
 // 引入组件
 import Wrapper from '../common/components/Wrapper'
-import Icon from '../common/components/Icon'
-import IconWrapper from '../common/components/IconWrapper'
+import SVGIconWrapper from '../common/components/SVGIconWrapper'
+import SVGIcon from '../common/components/SVGIcon'
 
 class Setting extends Component {
   state = {
@@ -17,11 +17,13 @@ class Setting extends Component {
       <Wrapper
         layout='rowCenter'
       >
-        <IconWrapper
-          wHeight={38}
-          wWidth={38}
+        <SVGIconWrapper
+          wSize={38}
+          title='Menu'
           onClick={openMenuPanel}
-        ><Icon mSize={36}>settings</Icon></IconWrapper>
+        >
+          <SVGIcon name='Settings' size='36' />
+        </SVGIconWrapper>
       </Wrapper>
     )
   }
