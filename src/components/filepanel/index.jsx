@@ -20,8 +20,8 @@ class FilePanel extends Component {
     return (
       <Modal>
         <FileWrapper
-          layout='rowLeft'
           onClick={hideFilePanel}
+          isUserSelect={false}
         >
           {/* file panel */}
           <Panel />

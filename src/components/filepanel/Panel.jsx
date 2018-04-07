@@ -29,6 +29,7 @@ class Panel extends Component {
       <PanelWrapper
         layout='columnTop'
         onClick={this.handlePanelClick}
+        wOverFlow='auto'
       >
         {/* title */}
         <PanelTitle />
