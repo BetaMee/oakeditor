@@ -26,8 +26,8 @@ class StatusBar extends Component {
           wPadding='0 0 0 8px'
         >
           {
-            this.state.writeCount.map((item) => (
-                <Word>{item}</Word>
+            this.state.writeCount.map((item, index) => (
+                <Word key={index}>{item}</Word>
             ))
           }
         </Wrapper>
@@ -37,8 +37,8 @@ class StatusBar extends Component {
           wPadding='0 8px 0 0'                  
         >
           {
-            this.state.readCount.map((item) => (
-                <Word>{item}</Word>
+            this.state.readCount.map((item, index) => (
+                <Word key={index}>{item}</Word>
             ))
           }
         </Wrapper>     
