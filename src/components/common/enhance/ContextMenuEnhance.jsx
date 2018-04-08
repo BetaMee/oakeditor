@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 import getDisplayName from './getDisplayName'
 
 import SelfDefinedMenuList from '../components/SelfDefinedMenuList'
 
-const ContextMenuEnhance = (WrappedComponent, menuConfig) => {
+const ContextMenuEnhance = (WrappedComponent) => {
   class ContextMenu extends Component {
     state = {
       isShowSelfDefinedContextMenu: false,
@@ -18,19 +19,38 @@ const ContextMenuEnhance = (WrappedComponent, menuConfig) => {
       // 停止冒泡&终止默认事件
       e.preventDefault()
       e.stopPropagation()
-      // 计算出鼠标位置
-      const clientX = e.clientX
-      const clientY = e.clientY
-      console.log(this.menuRef.current.clientWidth)
+      // 获取鼠标位置
+      const mouseX = e.clientX
+      const mouseY = e.clientY
+      // 获取菜单的宽高
+      const $currentMenu = ReactDOM.findDOMNode(this.menuRef.current)
+      const menuWidth = $currentMenu.clientWidth
+      const menuHeight = $currentMenu.clientHeight
+      // 浏览器视区宽高
+      const browserClientHeight = document.documentElement.clientHeight
+      const browserClientWidth = document.documentElement.clientWidth
+      // 最终位置
+      let positionX
+      let positionY
+      if ((mouseX + menuWidth) < browserClientWidth) {
+        positionX = mouseX
+      } else {
+        positionX = mouseX - menuWidth
+      }
+      
+      if ((mouseY + menuHeight) < browserClientHeight) {
+        positionY = mouseY
+      } else {
+        positionY = mouseY - menuHeight
+      } 
       // 更新状态
       this.setState((preState) => ({
         isShowSelfDefinedContextMenu: true,
-        positionX: 0,
-        positionY: 0
+        positionX: positionX,
+        positionY: positionY
       }))
     }
     cancelContextMenuEvt = (e) => {
-      console.log(e)
       this.setState((preState) => ({
         isShowSelfDefinedContextMenu: false,
         positionX: 0,
@@ -43,14 +63,18 @@ const ContextMenuEnhance = (WrappedComponent, menuConfig) => {
         positionX,
         positionY
       } = this.state
+      const {
+        menuConfig,
+        ...rest
+      } = this.props
       return (
         <React.Fragment>
           <WrappedComponent
             onContextMenu={this.changeDefaultContextMenuEvt}
-            onClick={this.cancelContextMenuEvt}
-            {...this.props}
+            {...rest}
           />
           <SelfDefinedMenuList
+            cancelContextMenuEvt={this.cancelContextMenuEvt}
             isVisible={isShowSelfDefinedContextMenu}
             menuRef={this.menuRef}
             positionX={positionX}
