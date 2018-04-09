@@ -19,22 +19,54 @@ class Panel extends Component {
 
   }
 
-  handlePanelClick = (e) => {
+  stopHideFilePanelEvt = (e) => {
+    // 禁止传播点击事件至父元素，避免关闭Modal
     e.preventDefault();
     e.stopPropagation();
+  }
+
+  AddNewFileHandler = () => {
+
+  }
+
+  AddNewFolderHandler = () => {
+    console.log('something')
+  }
+
+  DeleteFileHandler = () => {
+
+  }
+
+  DeleteFolderHandler = () => {
+
+  }
+
+  RenameFileHandler = () => {
+
+  }
+
+  RenameFolderHandler = () => {
+
   }
 
   render() {
     return (
       <PanelWrapper
         layout='columnTop'
-        onClick={this.handlePanelClick}
+        onClick={this.stopHideFilePanelEvt}
         wOverFlow='auto'
       >
         {/* title */}
         <PanelTitle />
         {/* explorer */}
-        <Explorer />
+        <Explorer
+          AddNewFileHandler={this.AddNewFileHandler}
+          AddNewFolderHandler={this.AddNewFolderHandler}
+          DeleteFileHandler={this.DeleteFileHandler}
+          DeleteFolderHandler={this.DeleteFolderHandler}
+          RenameFileHandler={this.RenameFileHandler}
+          RenameFolderHandler={this.RenameFolderHandler}
+        />
       </PanelWrapper>
     )
   }

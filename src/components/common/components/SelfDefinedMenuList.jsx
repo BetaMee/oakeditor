@@ -4,6 +4,25 @@ import PropTypes from 'prop-types'
 
 import Wrapper from './Wrapper'
 
+const menuLists = [
+  {
+    name: 'New folder',
+    tag: 0,
+  },
+  {
+    name: 'New file',
+    tag: 1,
+  },
+  {
+    name: 'Rename',
+    tag: 2,
+  },
+  {
+    name: 'Delete',
+    tag: 3,
+  }
+]
+
 const MenuWrapper = Wrapper.extend`
   visibility: ${({ isVisible }) => isVisible ? 'visible' : 'hidden'};
   position: fixed;
@@ -13,11 +32,11 @@ const MenuWrapper = Wrapper.extend`
 `
 
 const ContextMenu = styled.div`
-  background-color: #fff;
+  background-color: #ebebeb;
   position: fixed;
   top: ${({ positionY }) => `${positionY}px`};
   left: ${({ positionX }) => `${positionX}px`};
-  width: 100px;
+  width: 130px;
   min-height: 50px;
   border-radius: 4px;
   display: flex;
@@ -36,10 +55,18 @@ const ListContainer = styled.ul`
   justify-content: center;
   align-items: center;
   list-style: none;
+  font-size: 14px;
 `
 
 const List = styled.li`
-  padding: 0;
+  width: 100%;
+  padding: 1px 0;
+  color: ${({ active }) => active ? '#333' : '#aaa'};
+  text-align: center;
+  &:hover {
+    background-color: ${({ active }) => active ? '#007acc' : '#ebebeb'};
+    color: ${({ active }) => active ? '#fff' : '#aaa'};
+  }
 `
 
 const SelfDefinedMenuList = ({ positionX, positionY, menuConfig, menuRef, isVisible, cancelContextMenuEvt }) =>
@@ -53,26 +80,33 @@ const SelfDefinedMenuList = ({ positionX, positionY, menuConfig, menuRef, isVisi
       positionY={positionY}
     >
       <ListContainer>
-        {menuConfig.map((item, index) => (
-          <List
-            key={index}
-            active={item.isActive}
-            onClick={item.isActive ? item.handler : null}
-          >{item.name}</List>
-        ))}
+        {menuLists.map((item, index) => {
+          if (menuConfig.displayTags.indexOf(item.tag) !== -1) {
+            const isActive = menuConfig.activeTag === item.tag 
+            return (
+              <List
+                key={item.tag}
+                active={isActive}
+                onClick={isActive ? menuConfig.activeHandler : null}
+              >{item.name}</List>
+            )
+          } else {
+            return null
+          }
+        })}
       </ListContainer>
     </ContextMenu>
   </MenuWrapper>
 
 SelfDefinedMenuList.defaultProps = {
-  menuConfig: [],
+  menuConfig: {},
   positionX: 0,
   positionY: 0,
   isVisible: false
 }
 
 SelfDefinedMenuList.propTypes = {
-  menuConfig: PropTypes.array.isRequired,
+  menuConfig: PropTypes.object.isRequired,
   positionX: PropTypes.number.isRequired,
   positionY: PropTypes.number.isRequired,
   isVisible: PropTypes.bool.isRequired,
