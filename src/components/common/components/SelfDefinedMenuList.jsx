@@ -53,16 +53,17 @@ const ListContainer = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   list-style: none;
   font-size: 14px;
 `
 
 const List = styled.li`
+  box-sizing: border-box;
   width: 100%;
-  padding: 1px 0;
+  padding: 1px 25px 1px 25px;
   color: ${({ active }) => active ? '#333' : '#aaa'};
-  text-align: center;
+  cursor:${({ active }) => active ? 'pointer' : 'auto'};  
   &:hover {
     background-color: ${({ active }) => active ? '#007acc' : '#ebebeb'};
     color: ${({ active }) => active ? '#fff' : '#aaa'};
