@@ -8,6 +8,9 @@ import SVGIcon from '../common/components/SVGIcon'
 const ExtendWrapper = Wrapper.extend`
   cursor: pointer;
   height: 24px;
+  &:hover {
+    background-color: rgba(0, 0, 0, .2);
+  }
 `
 
 const ContextWrapper = ContextMenuEnhance(ExtendWrapper)

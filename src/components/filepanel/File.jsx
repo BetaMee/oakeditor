@@ -11,6 +11,9 @@ const ExtendWrapper = Wrapper.extend`
   padding-right: 15px;
   height: 24px;
   ${({ active }) => active && `background-color: rgba(0,0,0,.3);`};
+  &:hover {
+    background-color: rgba(0,0,0,.3);
+  }
 `
 
 const ContextWrapper = ContextMenuEnhance(ExtendWrapper)
