@@ -15,7 +15,8 @@ const ContextMenuEnhance = (WrappedComponent) => {
 
     menuRef = React.createRef()
 
-    changeDefaultContextMenuEvt = (e) => {
+    changeDefaultContextMenuEvt = (e, evtCallback) => {
+      console.log(evtCallback)
       // 停止冒泡&终止默认事件
       e.preventDefault()
       e.stopPropagation()
@@ -49,6 +50,8 @@ const ContextMenuEnhance = (WrappedComponent) => {
         positionX: positionX,
         positionY: positionY
       }))
+      // 回调函数
+      evtCallback && evtCallback()
     }
     cancelContextMenuEvt = (e) => {
       this.setState((preState) => ({
@@ -64,13 +67,14 @@ const ContextMenuEnhance = (WrappedComponent) => {
         positionY
       } = this.state
       const {
+        onContextMenuEvtCb, // 菜单事件后的回调函数
         menuConfig,
         ...rest
       } = this.props
       return (
         <React.Fragment>
           <WrappedComponent
-            onContextMenu={this.changeDefaultContextMenuEvt}
+            onContextMenu={e => this.changeDefaultContextMenuEvt(e, onContextMenuEvtCb)}
             {...rest}
           />
           <SelfDefinedMenuList

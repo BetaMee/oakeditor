@@ -73,6 +73,10 @@ const List = styled.li`
 const SelfDefinedMenuList = ({ positionX, positionY, menuConfig, menuRef, isVisible, cancelContextMenuEvt }) =>
   <MenuWrapper
     onClick={cancelContextMenuEvt}
+    onContextMenu={(e) => {
+      e.preventDefault()
+      e.stopPropagation()
+    }}
     isVisible={isVisible}
   >
     <ContextMenu
