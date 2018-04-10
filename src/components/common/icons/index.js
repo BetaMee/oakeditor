@@ -20,6 +20,8 @@ import Sync from './Sync'
 import Table from './Table'
 import TextFields from './TextFields'
 import Undo from './Undo'
+import Markdown from './Markdown'
+import FolderOpen from './FolderOpen'
 
 export {
   Bold,
@@ -43,5 +45,7 @@ export {
   Sync,
   Table,
   TextFields,
-  Undo
+  Undo,
+  Markdown,
+  FolderOpen
 }

@@ -24,7 +24,9 @@ import {
   Sync,
   Table,
   TextFields,
-  Undo
+  Undo,
+  Markdown,
+  FolderOpen
 } from '../icons'
 
 const SVGIconGroupMap = {
@@ -49,7 +51,9 @@ const SVGIconGroupMap = {
   Sync,
   Table,
   TextFields,
-  Undo
+  Undo,
+  Markdown,
+  FolderOpen
 }
 
 const SVGIcon = ({ name, className}) => {
