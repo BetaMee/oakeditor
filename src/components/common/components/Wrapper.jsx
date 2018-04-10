@@ -101,7 +101,7 @@ const flexLayoutMap = {
   columnTopRight: `
     flex-direction: column;    
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: flex-end;
   `,
   columnButtomRight: `
     flex-direction: column;  
@@ -111,7 +111,7 @@ const flexLayoutMap = {
   columnTopLeft: `
     flex-direction: column;    
     justify-content: flex-start;
-    align-items: flex-end;
+    align-items: flex-start;
   `,
   columnButtomLeft: `
     flex-direction: column;    
