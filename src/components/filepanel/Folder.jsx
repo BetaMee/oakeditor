@@ -8,7 +8,6 @@ import SVGIcon from '../common/components/SVGIcon'
 const ExtendWrapper = Wrapper.extend`
   cursor: pointer;
   height: 24px;
-  ${({ active }) => active && `background-color: rgba(0,0,0,.2);`};
 `
 
 const ContextWrapper = ContextMenuEnhance(ExtendWrapper)
@@ -18,11 +17,10 @@ const FolderName = styled.span`
    padding-left: 3px;
 `
 
-const Folder = ({ name, menuConfig, isSelected, isExpand, folderClickHandler, folderKey }) =>
+const Folder = ({ name, menuConfig, isExpand, folderClickHandler, folderKey }) =>
   <ContextWrapper
     menuConfig={menuConfig}
     layout='rowLeft'
-    active={isSelected}
     onClick={() => folderClickHandler(folderKey)}
     onContextMenuEvtCb={() => folderClickHandler(folderKey)}
   >

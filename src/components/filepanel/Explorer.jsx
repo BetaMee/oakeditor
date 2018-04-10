@@ -21,7 +21,6 @@ const ExplorerLists = fromJS([
     folderName: 'LifeLogs',
     folderIndex: 0,
     isExpand: true,
-    isSelected: true,
     fileLists: [
       {
         fileName: 'Issuse: 论如何实现一个模态框',
@@ -47,7 +46,6 @@ const ExplorerLists = fromJS([
     folderName: 'LinuxLogs',
     folderIndex: 1,
     isExpand: false,
-    isSelected: false,
     fileLists: [
       {
         fileName: 'Issuse: 论如何学好前端',
@@ -73,7 +71,6 @@ const ExplorerLists = fromJS([
     folderName: 'LifeLogs',
     folderIndex: 2,
     isExpand: false,
-    isSelected: false,    
     fileLists: [
       {
         fileName: 'Issuse: 做人呢，最重要的是开心',
@@ -143,14 +140,12 @@ class Explorer extends Component {
       explorerLists
     } = this.state
     const newExplorerLists = explorerLists.map(explorer => {
-      // 设置isExpand和isSelected
+      // 设置isExpand
       if (explorer.get('folderIndex') === folderKey) {
         return explorer
-          .update('isSelected', val => true)
           .update('isExpand', val => !val)
       } else {
-        // 改变isSelected
-        return explorer.update('isSelected', val => false)
+        return explorer
       }
     })
     this.setState({
@@ -173,11 +168,9 @@ class Explorer extends Component {
                 return file.update('isSelected', val => false)
               }     
             }))
-            .update('isSelected', val => true)
         } else {
           return explorer
             .update('fileLists', fileLists => fileLists.map(file => file.update('isSelected', val => false)))
-            .update('isSelected', val => false)
         }
       })
     this.setState({
@@ -205,7 +198,6 @@ class Explorer extends Component {
                 menuConfig={this.getFolderContextMenuDefine()}
                 name={folder.get('folderName')}
                 isExpand={folder.get('isExpand')}
-                isSelected={folder.get('isSelected')}
                 folderKey={folder.get('folderIndex')}
                 folderClickHandler={this.folderClickHandler}
               />
