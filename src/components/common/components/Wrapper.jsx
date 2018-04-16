@@ -128,7 +128,7 @@ const backgroundColor = ({ backgroundColor }) => backgroundColor && `background-
 
 const color = ({ wColor }) => wColor && `color: ${wColor}`
 
-const padding = ({wPadding }) => wPadding && `padding: ${wPadding}`
+const padding = ({ wPadding }) => wPadding && `padding: ${wPadding}`
 
 const margin = ({ wMargin }) => wMargin && `margin: ${wMargin}`
 
