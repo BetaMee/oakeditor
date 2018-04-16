@@ -11,6 +11,9 @@ class Formater extends Component {
   }
 
   render() {
+    const {
+      openAssetsPanel
+    } = this.props
     return(
       <Wrapper
         layout='rowLeft'
@@ -78,14 +81,15 @@ class Formater extends Component {
           <SVGIcon name='Link' />
         </SVGIconWrapper>
         <SVGIconWrapper
-          title='Image'
-        >
-          <SVGIcon name='Image' />
-        </SVGIconWrapper>
-        <SVGIconWrapper
           title='Horizontal rule'
         >
           <SVGIcon name='HorizontalRule' />
+        </SVGIconWrapper>
+        <SVGIconWrapper
+          title='Image'
+          onClick={openAssetsPanel}
+        >
+          <SVGIcon name='Image' />
         </SVGIconWrapper>
       </Wrapper>
     )

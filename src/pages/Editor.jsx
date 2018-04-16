@@ -50,7 +50,7 @@ class Editor extends Component {
 
   hideAssetsPanel = () => {
     this.setState((preState) => ({
-      isShowMenuPanel: false
+      isShowAssetsPanel: false
     }))
   }
 
@@ -96,6 +96,13 @@ class Editor extends Component {
           this.state.isShowMenuPanel &&
             <MenuPanel
               hideMenuPanel={this.hideMenuPanel}
+            />
+        }
+        {/* assets panel */}
+        {
+          this.state.isShowAssetsPanel &&
+            <AssetsPanel
+              hideAssetsPanel={this.hideAssetsPanel}
             />
         }
       </Wrapper>
