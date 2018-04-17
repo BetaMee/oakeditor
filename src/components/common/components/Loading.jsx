@@ -53,8 +53,10 @@ const Loading = () =>
   <LoadingWrapper
     layout='columnTop'
   >
-  {Array(7).fill(0).map(() => (
-    <SkeletonItem />
+  {Array(7).fill(0).map((item, index) => (
+    <SkeletonItem
+      key={index}
+    />
   ))}
   </LoadingWrapper>
 
