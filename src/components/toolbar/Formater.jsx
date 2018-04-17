@@ -86,10 +86,10 @@ class Formater extends Component {
           <SVGIcon name='HorizontalRule' />
         </SVGIconWrapper>
         <SVGIconWrapper
-          title='Image'
+          title='Assets'
           onClick={openAssetsPanel}
         >
-          <SVGIcon name='Image' />
+          <SVGIcon name='CloudAssets' />
         </SVGIconWrapper>
       </Wrapper>
     )

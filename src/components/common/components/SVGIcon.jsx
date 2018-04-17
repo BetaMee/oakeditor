@@ -26,7 +26,8 @@ import {
   TextFields,
   Undo,
   Markdown,
-  FolderOpen
+  FolderOpen,
+  CloudAssets
 } from '../icons'
 
 const SVGIconGroupMap = {
@@ -53,7 +54,8 @@ const SVGIconGroupMap = {
   TextFields,
   Undo,
   Markdown,
-  FolderOpen
+  FolderOpen,
+  CloudAssets
 }
 
 const SVGIcon = ({ name, className}) => {

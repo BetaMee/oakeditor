@@ -22,6 +22,7 @@ import TextFields from './TextFields'
 import Undo from './Undo'
 import Markdown from './Markdown'
 import FolderOpen from './FolderOpen'
+import CloudAssets from './CloudAssets'
 
 export {
   Bold,
@@ -47,5 +48,6 @@ export {
   TextFields,
   Undo,
   Markdown,
-  FolderOpen
+  FolderOpen,
+  CloudAssets
 }
