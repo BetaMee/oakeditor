@@ -23,6 +23,9 @@ import Undo from './Undo'
 import Markdown from './Markdown'
 import FolderOpen from './FolderOpen'
 import CloudAssets from './CloudAssets'
+import Attachment from './Attachment'
+import Music from './Music'
+import Video from './Video'
 
 export {
   Bold,
@@ -49,5 +52,8 @@ export {
   Undo,
   Markdown,
   FolderOpen,
-  CloudAssets
+  CloudAssets,
+  Attachment,
+  Music,
+  Video
 }
