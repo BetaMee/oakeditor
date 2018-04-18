@@ -15,7 +15,7 @@ import PanelTab from './PanelTab'
 import Explorer from './Explorer'
 
 const PanelWrapper = Wrapper.extend`
-  width: 30%;
+  width: 450px;
   height: 90%;
   background-color: #FAFAFA;
   animation: ${slideInRight} 0.3s linear;
