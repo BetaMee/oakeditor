@@ -1,9 +1,9 @@
-const throttle = (func, threshhold = 500) => {
+const throttle = (func, scope, threshhold = 500) => {
   let last
   let deferTimer
 
   return function() {
-    const context = this
+    const context = scope || this
 
     const now = +new Date
     const args = arguments
