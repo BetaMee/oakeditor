@@ -12,7 +12,7 @@ const LoadingWrapper = Wrapper.extend`
 
 const Skeleton = styled.div`
   width: 100%;
-  height: 84px;
+  height: 14%;
 `
 const SkeletonMudule = styled.div`
   width: 100%;
@@ -30,7 +30,7 @@ const SkeletonItem = () =>
   <Skeleton>
     <Grid
       gColumns={'80px 1fr'}
-      gRows={'44px 25px'}
+      gRows={'60% 30%'}
       gap='0px'
       gHeight='100%'
       gWidth='100%'
