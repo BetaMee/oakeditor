@@ -29,29 +29,20 @@ const LoadableVideoExplorer = Loadable({
   delay: 1000,  
 });
 
-class Explorer extends Component {
-  render() {
-    const {
-      currentTabId
-    } = this.props
-
-    return (
-      <Wrapper>
-        {
-          currentTabId === 0 && <LoadableImageExplorer />
-        }
-        {
-          currentTabId === 1 && <LoadableFileExplorer />
-        }
-        {
-          currentTabId === 2 && <LoadableAudioExplorer />
-        }
-        {
-          currentTabId === 3 && <LoadableVideoExplorer />
-        }
-      </Wrapper>
-    )
-  }
-}
+const Explorer = ({ currentTabId }) =>
+  <Wrapper>
+    {
+      currentTabId === 0 && <LoadableImageExplorer />
+    }
+    {
+      currentTabId === 1 && <LoadableFileExplorer />
+    }
+    {
+      currentTabId === 2 && <LoadableAudioExplorer />
+    }
+    {
+      currentTabId === 3 && <LoadableVideoExplorer />
+    }
+  </Wrapper>
 
 export default Explorer
