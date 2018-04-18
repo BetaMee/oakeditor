@@ -26,6 +26,7 @@ import CloudAssets from './CloudAssets'
 import Attachment from './Attachment'
 import Music from './Music'
 import Video from './Video'
+import File from './File'
 
 export {
   Bold,
@@ -55,5 +56,6 @@ export {
   CloudAssets,
   Attachment,
   Music,
-  Video
+  Video,
+  File
 }
