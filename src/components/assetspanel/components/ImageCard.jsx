@@ -21,6 +21,9 @@ class ImageCard extends Component {
       src: alt
     })
   }
+  imageOnLoadHandler = (e) => {
+    // 这里添加图片加载效果
+  }
   render() {
     const {
       showCardDetail
@@ -35,6 +38,7 @@ class ImageCard extends Component {
       >
         <Card
           src={src}
+          onLoad={this.imageOnLoadHandler}
           onError={this.imageLoadErrorHandler}
         />
       </Wrapper>

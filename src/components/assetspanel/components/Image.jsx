@@ -8,13 +8,7 @@ import Wrapper from '../../common/components/Wrapper'
 import SVGIcon from '../../common/components/SVGIcon'
 import SVGIconWrapper from '../../common/components/SVGIconWrapper'
 import ItemTypes from './ItemTypes'
-
-const Card = styled.img`
-	border-radius: 4px 4px 0 0;
-  object-fit: cover;
-  width: 100%;
-  height: 100px;
-`
+import ImageCard from './ImageCard'
 
 const LinkWrapper = Wrapper.extend`
 	margin: 4px 0;
@@ -52,7 +46,7 @@ const ImageWrapper = Wrapper.extend`
 	margin-bottom: 2px;
 	border-radius: 4px;
 	background-color: #FFFFFF;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 2px 6px 1px rgba(0,0,0,0.09);	
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 2px 6px 1px rgba(0,0,0,0.09);
 	cursor: move;
 `
 
@@ -74,6 +68,10 @@ const imageTarget = {
 		if (dragIndex === hoverIndex) {
 			return
 		}
+		// component不存在
+		if (!component) {
+			return
+		}
 		// 确定hoverDOM ClientRect
 		const hoverBoundingRect = findDOMNode(component).getBoundingClientRect()
 		// 获取中间值
@@ -81,13 +79,13 @@ const imageTarget = {
 		// 确定鼠标位置
 		const clientOffset = monitor.getClientOffset()
 		// Get pixels to the top
-		const hoverClientX = clientOffset.X - hoverBoundingRect.left		
+		const hoverClientX = clientOffset.X - hoverBoundingRect.left
 		// Dragging downwards
-		if (dragIndex < hoverIndex && hoverMiddleX < hoverMiddleX) {
+		if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
 			return
 		}
 		// Dragging upwards
-		if (dragIndex > hoverIndex && hoverMiddleX > hoverMiddleX) {
+		if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
 			return
 		}
 		// 如果满足可以移动的条件，则进行移动
@@ -95,32 +93,46 @@ const imageTarget = {
 	},
 }
 
-const Image = ({ isDragging, connectDragSource, connectDropTarget, src, config }) => connectDragSource(connectDropTarget(
-	<div style={imageStyle}>
-		<ImageWrapper
-			layout='columnTop'
-		>
-			{/* 图片 */}
-			<Card
-				src={src}
-			/>
-			{/* 说明 */}
-			<LinkWrapper
-				wHeight='24px'
-			>
-				<Link>http://xxx.jpg</Link>
-				<SVGIconWrapper
-					wSize={22}
-					hoverColor='#424242'
-					// onClick={config.getLinkHandler}
+class Image extends Component {
+	render() {
+		const {
+			src,
+			showCard,
+			isDragging,
+			connectDragSource,
+			connectDropTarget,
+			config
+		} = this.props
+		const opacity = isDragging ? 0 : 1
+		return connectDragSource(connectDropTarget(
+			<div style={{...imageStyle, opacity}}>
+				<ImageWrapper
+					layout='columnTop'
 				>
-					<SVGIcon name='Link' wSize={18}/>
-				</SVGIconWrapper>
-			</LinkWrapper>
-			<Size>1.5M</Size>
-		</ImageWrapper>
-	</div>
-))
+					{/* 图片 */}
+					<ImageCard
+						showCardDetail={showCard}
+						src={src}
+					/>
+					{/* 说明 */}
+					<LinkWrapper
+						wHeight='24px'
+					>
+						<Link>http://xxx.jpg</Link>
+						<SVGIconWrapper
+							wSize={22}
+							hoverColor='#424242'
+							// onClick={config.getLinkHandler}
+						>
+							<SVGIcon name='Link' size={18}/>
+						</SVGIconWrapper>
+					</LinkWrapper>
+					<Size>1.5M</Size>
+				</ImageWrapper>
+			</div>
+		))
+	}
+}
 
 export default flow(
 	DropTarget(ItemTypes.IMAGE, imageTarget, connect => ({
