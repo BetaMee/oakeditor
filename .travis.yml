@@ -30,3 +30,4 @@ deploy:
 # 部署之后
 after_deploy:
   - echo "done deploying"
+  
