@@ -29,6 +29,7 @@ const Link = styled.a`
 `
 
 const Size = styled.div`
+	height: 16px;
 	width: 100%;
 	font-size: 12px;
 	padding-left: 4px;
@@ -128,6 +129,19 @@ class Image extends Component {
 						</SVGIconWrapper>
 					</LinkWrapper>
 					<Size>1.5M</Size>
+					<Wrapper
+						layout='rowRight'
+						wHeight='28px'
+						padding='0 5px'
+					>
+						<SVGIconWrapper
+							wSize={22}
+							hoverColor='#424242'
+							// onClick={config.deleteFile}
+						>
+							<SVGIcon name='Delete' size={18} />
+						</SVGIconWrapper>
+					</Wrapper>
 				</ImageWrapper>
 			</div>
 		))
