@@ -23,19 +23,19 @@ const ExplorerLists = fromJS([
     isExpand: true,
     fileLists: [
       {
-        fileName: 'Issuse: 论如何实现一个模态框',
+        fileName: 'Issuse: 毕设怎么搞啊',
         fileLink: '',
         fileIndex: 0,
         isSelected: true,        
       },
       {
-        fileName: 'Issuse: 论如何实现一个模态框',
+        fileName: 'Issuse: 毕设怎么搞啊',
         fileLink: '',
         fileIndex: 1,
         isSelected: false,        
       },
       {
-        fileName: 'Issuse: 论如何实现一个模态框',
+        fileName: 'Issuse: 毕设怎么搞啊',
         fileLink: '',
         fileIndex: 2,
         isSelected: false,        
