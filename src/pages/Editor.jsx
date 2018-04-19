@@ -55,6 +55,25 @@ class Editor extends Component {
   }
 
   render() {
+    const { isShowFilePanel, isShowMenuPanel, isShowAssetsPanel } = this.state
+    const panels = ['filePanel', 'menuPanel', 'assetsPanel']
+    const strategies = {
+      filePanel: {
+        isShow: isShowFilePanel,
+        component: FilePanel,
+        hideFunc: 'hideAssertPanel'
+      },
+      menuPanel: {
+        isShow: isShowMenuPanel,
+        component: MenuPanel,
+        hideFunc: 'hideMenuPanel'
+      },
+      menuPanel: {
+        isShow: isShowAssetsPanel,
+        component: AssetsPanel,
+        hideFunc: 'hideAssertPanel'
+      }
+    }    
     return (
       <Wrapper
         wWidth='100vw'
@@ -85,26 +104,10 @@ class Editor extends Component {
           </Cell>
         </Grid>
         {/* file panel */}
-        {
-          this.state.isShowFilePanel &&
-            <FilePanel
-              hideFilePanel={this.hideFilePanel}
-            />
-        }
-        {/* setting panel */}
-        {
-          this.state.isShowMenuPanel &&
-            <MenuPanel
-              hideMenuPanel={this.hideMenuPanel}
-            />
-        }
-        {/* assets panel */}
-        {
-          this.state.isShowAssetsPanel &&
-            <AssetsPanel
-              hideAssetsPanel={this.hideAssetsPanel}
-            />
-        }
+        {panels.map(item => {
+          const panel = strategies[item]
+          return panel['isShow'] && <[panel['component']] panel['hideFunc'] = {this[panel['hideFunc']]}/>
+        })}
       </Wrapper>
     )
   }
