@@ -45,6 +45,5 @@ class ImageCard extends Component {
     )
   }
 }
-  
 
 export default ImageCard
