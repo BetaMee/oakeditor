@@ -27,6 +27,9 @@ import Attachment from './Attachment'
 import Music from './Music'
 import Video from './Video'
 import File from './File'
+import CloudDone from './CloudDone'
+import CloudUpload from './CloudUpload'
+import Rolling from './Rolling'
 
 export {
   Bold,
@@ -57,5 +60,8 @@ export {
   Attachment,
   Music,
   Video,
-  File
+  File,
+  CloudDone,
+  CloudUpload,
+  Rolling
 }

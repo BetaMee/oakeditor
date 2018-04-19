@@ -31,7 +31,10 @@ import {
   Attachment,
   Music,
   Video,
-  File
+  File,
+  CloudDone,
+  CloudUpload,
+  Rolling
 } from '../icons'
 
 const SVGIconGroupMap = {
@@ -63,7 +66,10 @@ const SVGIconGroupMap = {
   Attachment,
   Music,
   Video,
-  File
+  File,
+  CloudDone,
+  CloudUpload,
+  Rolling
 }
 
 const SVGIcon = ({ name, className}) => {
@@ -74,5 +80,6 @@ const SVGIcon = ({ name, className}) => {
 export default styled(SVGIcon)`
   width: ${({ size = '22' }) => `${size}px`};
   height: ${({ size = '22' }) => `${size}px`};
-  ${({ color }) => color && `fill: ${color}`}
-` 
+  ${({ color }) => color && `fill: ${color}`};
+  ${({ stroke }) => stroke && `stroke: ${stroke}`};
+`
