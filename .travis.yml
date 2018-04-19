@@ -8,9 +8,13 @@ node_js:
 # 缓存
 # cache: yarn
 
-# 执行测试脚本，未开启
+# 安装
+install:
+  - yarn
+
+# 执行脚本
 script:
-  - npm run build
+  - yarn run build
 
 deploy:
   provider: s3
@@ -22,7 +26,6 @@ deploy:
   on:
     branch: master # 值部署主分支
   local_dir: build #只部署有关文件夹
-  upload-dir: travis-builds #只部署到S3上对应的文件夹
 
 # 部署之后
 after_deploy:
