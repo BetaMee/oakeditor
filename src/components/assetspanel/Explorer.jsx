@@ -29,20 +29,18 @@ const LoadableVideoExplorer = Loadable({
   delay: 1000,  
 });
 
-const Explorer = ({ currentTabId }) =>
+const Explorer = ({ currentTabId }) => {
+  const strategies = {
+    '0': <LoadableImageExplorer />,
+    '1': <LoadableFileExplorer />,
+    '2': <LoadableAudioExplorer />,
+    '3': <LoadableVideoExplorer />
+  }
+  return (
   <Wrapper>
-    {
-      currentTabId === 0 && <LoadableImageExplorer />
-    }
-    {
-      currentTabId === 1 && <LoadableFileExplorer />
-    }
-    {
-      currentTabId === 2 && <LoadableAudioExplorer />
-    }
-    {
-      currentTabId === 3 && <LoadableVideoExplorer />
-    }
-  </Wrapper>
+      {strategies[currentTabId]}
+  </Wrapper>)
+}
+  
 
 export default Explorer
