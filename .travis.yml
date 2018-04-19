@@ -17,6 +17,7 @@ script:
   - yarn run build
 
 # TravisCI提供现有的s3 provider不支持部署时s3文件，未来会加上，见https://github.com/travis-ci/dpl/pull/472
+# $AWS_ACCESS_KEY和$AWS_SECRET_KEY在C盘.aws文件中，或者在console后台
 # deploy:
 #   provider: s3 --detetion
   # access_key_id: $AWS_ACCESS_KEY
@@ -27,10 +28,6 @@ script:
 #   on:
 #     branch: master # 值部署主分支
 #   local_dir: build #只部署有关文件夹
-
-# 添加环境变量
-travis encrypt AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY --add
-travis encrypt AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY --add
 
 # 临时解决方案，使用自定义脚本部署：Deploy using awscli to enable pruning of removed files
 # 见：https://stackoverflow.com/questions/30808227/how-can-i-clear-s3-bucket-before-travis-deploy?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
