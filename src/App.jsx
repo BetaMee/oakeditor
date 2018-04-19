@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import User from './pages/User'
+// import User from './pages/User'
 import Editor from './pages/Editor'
 
 import './App.css'

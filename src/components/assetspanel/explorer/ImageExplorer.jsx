@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { DragDropContext, DragDropContextProvider } from 'react-dnd'
+import { DragDropContext } from 'react-dnd'
 import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend'
 // 布局组件
 import Wrapper from '../../common/components/Wrapper'

@@ -1,8 +1,6 @@
 import React from 'react'
 
 import Wrapper from '../common/components/Wrapper'
-import SVGIcon from '../common/components/SVGIcon'
-
 
 const PanelTitle = () =>
   <Wrapper

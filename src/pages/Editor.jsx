@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 // 引入组件
 import AssetsPanel from '../components/assetspanel'
 import Borad from '../components/board'

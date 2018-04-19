@@ -3,7 +3,6 @@ import styled from 'styled-components'
 // 布局组件
 import Wrapper from '../../common/components/Wrapper'
 import Input from '../../common/components/Input'
-import IconWrapper from '../../common/components/IconWrapper'
 import SVGIcon from '../../common/components/SVGIcon'
 
 const CardWrapper = Wrapper.extend `

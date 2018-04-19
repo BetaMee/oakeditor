@@ -1,5 +1,4 @@
-import styled  from 'styled-components'
-import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 const Input = styled.input`
   cursor: pointer;

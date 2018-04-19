@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
-
 // 引入组件
 import Wrapper from '../common/components/Wrapper'
 import SVGIconWrapper from '../common/components/SVGIconWrapper'

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 // 布局组件
 import Wrapper from '../common/components/Wrapper'

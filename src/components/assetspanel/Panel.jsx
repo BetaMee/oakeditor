@@ -2,12 +2,9 @@ import React, { Component } from 'react'
 // 布局组件
 import Wrapper from '../common/components/Wrapper'
 import { Grid, Cell } from '../common/GridLayout'
-// 上传组件
-import { uppy } from '../../core'
 // styled animation
 import {
-  slideInRight,
-  slideOutRight
+  slideInRight
 } from '../common/animations'
 // 其他组件
 import PanelTitle from './PanelTitle'

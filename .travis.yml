@@ -5,8 +5,8 @@ language: node_js
 node_js:
   - "8"
 
-# 缓存
-# cache: yarn
+缓存
+cache: yarn
 
 # 安装
 install:

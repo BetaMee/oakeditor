@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 import ContextMenuEnhance from '../common/enhance/ContextMenuEnhance'
 import Wrapper from '../common/components/Wrapper'
