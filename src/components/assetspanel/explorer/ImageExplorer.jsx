@@ -8,10 +8,19 @@ import DragDropZone from '../components/DragDropZone'
 import Image from '../components/Image'
 import DetailCard from '../components/DetailCard'
 import ItemTypes from '../components/ItemTypes'
+import ProcessBar from '../../common/components/ProcessBar'
+
+const ProcessWrapper = Wrapper.extend`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 40px;
+`
 
 class ImageExplorer extends Component {
   state = {
-    isShowCardDetail: false
+    isShowCardDetail: false,
+    isShowProcessBar: false,
   }
   // 拖拽上传
   DropEvtHandler = (props, monitor) => {
@@ -94,6 +103,18 @@ class ImageExplorer extends Component {
               hideCard={this.hideCardDetailHandler}
             />
         }
+        {
+          this.state.isShowProcessBar &&
+            <ProcessWrapper>
+              <ProcessBar
+                ratio={50}
+              />
+            </ProcessWrapper>
+        }
+        {/* {
+          this.state.isShowToast &&
+            <Toast/>
+        } */}
       </Wrapper>
     )
   }
