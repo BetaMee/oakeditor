@@ -10,6 +10,8 @@ import {
 import PanelTitle from './PanelTitle'
 import PanelTab from './PanelTab'
 import Explorer from './Explorer'
+import ProcessBar from '../common/components/ProcessBar'
+import { request } from '../../core'
 
 const PanelWrapper = Wrapper.extend`
   width: 450px;
@@ -23,60 +25,111 @@ const PanelWrapper = Wrapper.extend`
   z-index: 9999;
   border-radius: 4px;
 `
+
+const ProcessWrapper = Wrapper.extend`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 40px;
+`
 class Panel extends Component {
+  panelRef = React.createRef()
   state = {
     currentTabId: 0,
+    fileData: null,
+    isShowProcessBar: false,
+    completed: 0
   }
-
   handleTabSwitch = (e, tabId) => {
     this.setState({
       currentTabId: tabId
     })
   }
-
   stopHideAssetsPanelEvt = (e) => {
     // 禁止传播点击事件至父元素，避免关闭Modal
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
   }
+  uploadFile = async (type, file) => {
+    const data = await request.upload(type, file, (completed) => {
+      console.log(completed)
+      if (completed === 100) {
+        this.setState({
+          isShowProcessBar: false,
+          completed: completed
+        })
+      } else {
+        this.setState({
+          isShowProcessBar: true,
+          completed: completed
+        })
+      }
+    })
+    console.log(data)
+  }
+  loadFile = async (type) => {
 
+  }
+  updateFile = async (type, fileId) => {
+
+  }
+  deleteFile = async (type, fileId) => {
+
+  }
   render() {
     const {
-      currentTabId
+      currentTabId,
+      fileData,
+      completed,
     } = this.state
     return (
-    <PanelWrapper
-      layout='columnTop'
-      onClick={this.stopHideAssetsPanelEvt}
-    >
-      <Grid
-        gColumns={'55px 1fr'}
-        gRows={'44px 1fr'}
-        gap='0px'
-        gHeight='100%'
-        gWidth='100%'
+      <PanelWrapper
+        layout='columnTop'
+        onClick={this.stopHideAssetsPanelEvt}
+        innerRef={this.panelRef}
       >
-        {/* Panel title */}
-        <Cell
-          spanWidth={2}
+        <Grid
+          gColumns={'55px 1fr'}
+          gRows={'44px 1fr'}
+          gap='0px'
+          gHeight='100%'
+          gWidth='100%'
         >
-          <PanelTitle />
-        </Cell>
-        {/* Panel side */}
-        <Cell>
-          <PanelTab
-            currentTabId={currentTabId}
-            handleTabSwitch={this.handleTabSwitch}
-          />
-        </Cell>
-        {/* Explorer */}
-        <Cell>
-          <Explorer
-            currentTabId={currentTabId}
-          />
-        </Cell>
-      </Grid>
-    </PanelWrapper>
+          {/* Panel title */}
+          <Cell
+            spanWidth={2}
+          >
+            <PanelTitle />
+          </Cell>
+          {/* Panel side */}
+          <Cell>
+            <PanelTab
+              currentTabId={currentTabId}
+              handleTabSwitch={this.handleTabSwitch}
+            />
+          </Cell>
+          {/* Explorer */}
+          <Cell>
+            <Explorer
+              currentTabId={currentTabId}
+              panelRef={this.panelRef}
+              fileData={fileData}
+              uploadFile={this.uploadFile}
+              loadFile={this.loadFile}
+              updateFile={this.updateFile}
+              deleteFile={this.deleteFile}
+            />
+          </Cell>
+        </Grid>
+        {
+          this.state.isShowProcessBar &&
+            <ProcessWrapper>
+              <ProcessBar
+                ratio={completed}
+              />
+            </ProcessWrapper>
+        }
+      </PanelWrapper>
     )
   }
 }

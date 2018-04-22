@@ -8,39 +8,81 @@ import Loading from '../common/components/Loading'
 const LoadableImageExplorer = Loadable({
   loader: () => import('./explorer/ImageExplorer'),
   loading: Loading,
-  delay: 1000,
-});
+  delay: 1000
+})
 
 const LoadableFileExplorer = Loadable({
   loader: () => import('./explorer/FileExplorer'),
   loading: Loading,
-  delay: 1000,  
-});
+  delay: 1000
+})
 
 const LoadableAudioExplorer = Loadable({
   loader: () => import('./explorer/AudioExplorer'),
   loading: Loading,
-  delay: 1000,  
-});
+  delay: 1000
+})
 
 const LoadableVideoExplorer = Loadable({
   loader: () => import('./explorer/VideoExplorer'),
   loading: Loading,
-  delay: 1000,  
-});
+  delay: 1000
+})
 
-const Explorer = ({ currentTabId }) => {
-  const strategies = {
-    '0': <LoadableImageExplorer />,
-    '1': <LoadableFileExplorer />,
-    '2': <LoadableAudioExplorer />,
-    '3': <LoadableVideoExplorer />
-  }
+const Explorer = (props) => {
+  const {
+    currentTabId,
+    panelRef,
+    fileData,
+    uploadFile,
+    loadFile,
+    updateFile,
+    deleteFile
+  } = props
   return (
-  <Wrapper>
-      {strategies[currentTabId]}
-  </Wrapper>)
+    <Wrapper>
+      {
+        currentTabId === 0 &&
+          <LoadableImageExplorer
+            panelRef={panelRef}
+            uploadFile={uploadFile}
+            loadFile={loadFile}
+            updateFile={updateFile}
+            deleteFile={deleteFile}
+          />
+      }
+      {
+        currentTabId === 1 &&
+          <LoadableFileExplorer
+            panelRef={panelRef}          
+            uploadFile={uploadFile}
+            loadFile={loadFile}
+            updateFile={updateFile}
+            deleteFile={deleteFile}
+          />
+      }
+      {
+        currentTabId === 2 &&
+          <LoadableAudioExplorer
+            panelRef={panelRef}          
+            uploadFile={uploadFile}
+            loadFile={loadFile}
+            updateFile={updateFile}
+            deleteFile={deleteFile}
+          />
+      }
+      {
+        currentTabId === 3 &&
+          <LoadableVideoExplorer
+            panelRef={panelRef}          
+            uploadFile={uploadFile}
+            loadFile={loadFile}
+            updateFile={updateFile}
+            deleteFile={deleteFile}
+          />
+      }
+    </Wrapper>
+  )
 }
   
-
 export default Explorer

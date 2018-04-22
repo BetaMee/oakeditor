@@ -24,19 +24,23 @@ const ProcessStatus = styled.div`
   border-radius: 0 0 2px 2px;
 `
 
-const ProcessBar = ({ ratio, bgColor, processColor, textColor }) =>
-  <BarWrapper
-    layout='rowLeft'
-    bgColor={bgColor}
-  >
-    <ProcessCount
-      textColor={textColor}
-    >{ratio}%</ProcessCount>
-    <ProcessStatus
-      ratio={ratio}
-      processColor={processColor}
-    />
-  </BarWrapper>
+const ProcessBar = ({ ratio, bgColor, processColor, textColor }) => {
+  console.log(ratio)
+  return (
+    <BarWrapper
+      layout='rowLeft'
+      bgColor={bgColor}
+    >
+      <ProcessCount
+        textColor={textColor}
+      >{ratio}%</ProcessCount>
+      <ProcessStatus
+        ratio={ratio}
+        processColor={processColor}
+      />
+    </BarWrapper>
+  )
+}
 
 ProcessBar.defaultProps = {
   ratio: 0,
@@ -46,10 +50,10 @@ ProcessBar.defaultProps = {
 }
 
 ProcessBar.propTypes = {
-  ratio: PropTypes.number.isRequierd,
-  bgColor: PropTypes.string.isRequierd,
-  processColor: PropTypes.string.isRequierd,
-  textColor: PropTypes.string.isRequierd,
+  ratio: PropTypes.number,
+  bgColor: PropTypes.string,
+  processColor: PropTypes.string,
+  textColor: PropTypes.string,
 }
 
 export default ProcessBar

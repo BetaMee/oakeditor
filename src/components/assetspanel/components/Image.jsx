@@ -10,6 +10,8 @@ import SVGIconWrapper from '../../common/components/SVGIconWrapper'
 import ItemTypes from './ItemTypes'
 import ImageCard from './ImageCard'
 
+import { CircleToast } from '../../common/components/Toast/'
+
 const LinkWrapper = Wrapper.extend`
 	margin: 4px 0;
 	padding: 0 4px;
@@ -99,6 +101,7 @@ class Image extends Component {
 		const {
 			src,
 			showCard,
+			getLink,
 			isDragging,
 			connectDragSource,
 			connectDropTarget,
@@ -123,7 +126,7 @@ class Image extends Component {
 						<SVGIconWrapper
 							wSize={22}
 							hoverColor='#424242'
-							// onClick={config.getLinkHandler}
+							onClick={getLink}
 						>
 							<SVGIcon name='Link' size={18}/>
 						</SVGIconWrapper>

@@ -10,24 +10,17 @@ import DetailCard from '../components/DetailCard'
 import ItemTypes from '../components/ItemTypes'
 import ProcessBar from '../../common/components/ProcessBar'
 
-const ProcessWrapper = Wrapper.extend`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 40px;
-`
-
 class ImageExplorer extends Component {
   state = {
     isShowCardDetail: false,
-    isShowProcessBar: false,
   }
   // 拖拽上传
   DropEvtHandler = (props, monitor) => {
+    const { uploadFile } = this.props
     if (monitor) {
 			const droppedFiles = monitor.getItem().files
       // 上传文件数据
-      console.log(droppedFiles)
+      uploadFile('image', droppedFiles[0])
 		}
   }
   // 拖拽卡片
@@ -38,7 +31,6 @@ class ImageExplorer extends Component {
   getLinkHandler = () => {
 
   }
-
   // 显示卡片详情
   showCardDetailHandler = () => {
     this.setState({
@@ -51,7 +43,6 @@ class ImageExplorer extends Component {
       isShowCardDetail: false
     })
   }
-
   render() {
     const { FILE } = NativeTypes
     return (
@@ -64,34 +55,39 @@ class ImageExplorer extends Component {
             src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}
             moveCard={this.moveCardHandler}
             showCard={this.showCardDetailHandler}
+            getLink={this.getLinkHandler}
             id={1}
             index={0}
           />
           <Image
             src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
             moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}          
+            showCard={this.showCardDetailHandler}
+            getLink={this.getLinkHandler}
             id={2}
             index={1}
           />
           <Image
             src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
             moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}            
+            showCard={this.showCardDetailHandler}
+            getLink={this.getLinkHandler}
             id={3}
             index={2}
           />
           <Image
             src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
             moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}          
+            showCard={this.showCardDetailHandler}
+            getLink={this.getLinkHandler}
             id={4}
             index={3}
           />
           <Image
             src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
             moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}          
+            showCard={this.showCardDetailHandler}
+            getLink={this.getLinkHandler}
             id={5}
             index={4}
           />
@@ -101,20 +97,9 @@ class ImageExplorer extends Component {
             <DetailCard
               type={ItemTypes.IMAGE}
               hideCard={this.hideCardDetailHandler}
+              updateCard={this.updateCardHanlder}
             />
         }
-        {
-          this.state.isShowProcessBar &&
-            <ProcessWrapper>
-              <ProcessBar
-                ratio={50}
-              />
-            </ProcessWrapper>
-        }
-        {/* {
-          this.state.isShowToast &&
-            <Toast/>
-        } */}
       </Wrapper>
     )
   }
