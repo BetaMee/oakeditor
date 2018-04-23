@@ -25,6 +25,8 @@ const Link = styled.a`
 	color: #9E9E9E;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 80px;
 	&:hover {
 		color: #424242;
 	}
@@ -58,7 +60,6 @@ const imageSource = {
 		console.log('beginDrag')
 		return {
 			id: props.id,
-			index: props.index,
 		}
 	},
 }
@@ -122,7 +123,7 @@ class Image extends Component {
 					<LinkWrapper
 						wHeight='24px'
 					>
-						<Link>http://xxx.jpg</Link>
+						<Link>{src}</Link>
 						<SVGIconWrapper
 							wSize={22}
 							hoverColor='#424242'

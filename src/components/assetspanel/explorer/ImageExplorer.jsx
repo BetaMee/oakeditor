@@ -9,10 +9,12 @@ import Image from '../components/Image'
 import DetailCard from '../components/DetailCard'
 import ItemTypes from '../components/ItemTypes'
 import ProcessBar from '../../common/components/ProcessBar'
+import accepts from '../../../config/accepts'
 
 class ImageExplorer extends Component {
   state = {
     isShowCardDetail: false,
+    assetKey: '',
   }
   // 拖拽上传
   DropEvtHandler = (props, monitor) => {
@@ -20,7 +22,7 @@ class ImageExplorer extends Component {
     if (monitor) {
 			const droppedFiles = monitor.getItem().files
       // 上传文件数据
-      uploadFile('image', droppedFiles[0])
+      uploadFile(accepts.__IMAGE__, droppedFiles[0])
 		}
   }
   // 拖拽卡片
@@ -32,9 +34,11 @@ class ImageExplorer extends Component {
 
   }
   // 显示卡片详情
-  showCardDetailHandler = () => {
+  showCardDetailHandler = (assetKey) => {
+    // console.log(assetKey)
     this.setState({
-      isShowCardDetail: true
+      isShowCardDetail: true,
+      assetKey: assetKey
     })
   }
   // 关闭卡片详情
@@ -45,57 +49,33 @@ class ImageExplorer extends Component {
   }
   render() {
     const { FILE } = NativeTypes
+    const { assets } = this.props
+    const { assetKey } = this.state
     return (
       <Wrapper>
         <DragDropZone
           onDrop={this.DropEvtHandler}
           accepts={[FILE]}
         >
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}
-            getLink={this.getLinkHandler}
-            id={1}
-            index={0}
-          />
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}
-            getLink={this.getLinkHandler}
-            id={2}
-            index={1}
-          />
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}
-            getLink={this.getLinkHandler}
-            id={3}
-            index={2}
-          />
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}
-            getLink={this.getLinkHandler}
-            id={4}
-            index={3}
-          />
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}
-            getLink={this.getLinkHandler}
-            id={5}
-            index={4}
-          />
+          {
+            assets.map(item => (
+              <Image
+                key={item.get('assetKey')}
+                src={item.get('url')}
+                id={item.get('assetKey')}
+                getLink={this.getLinkHandler}
+                moveCard={this.moveCardHandler}
+                showCard={() => this.showCardDetailHandler(item.get('assetKey'))}
+              />
+            ))
+          }
         </DragDropZone>
         {
           this.state.isShowCardDetail &&
             <DetailCard
               type={ItemTypes.IMAGE}
+              assets={assets}
+              assetKey={assetKey}
               hideCard={this.hideCardDetailHandler}
               updateCard={this.updateCardHanlder}
             />

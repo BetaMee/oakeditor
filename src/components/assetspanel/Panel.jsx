@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { fromJS, List, Map } from 'immutable'
 // 布局组件
 import Wrapper from '../common/components/Wrapper'
 import { Grid, Cell } from '../common/GridLayout'
@@ -35,10 +36,15 @@ const ProcessWrapper = Wrapper.extend`
 class Panel extends Component {
   panelRef = React.createRef()
   state = {
-    currentTabId: 0,
-    fileData: null,
-    isShowProcessBar: false,
-    completed: 0
+    currentTabId: 0, // tab切换
+    isShowProcessBar: false, // 展示进度条
+    completed: 0, // 完成度
+    assets: fromJS({
+      image: [],
+      file: [],
+      video: [],
+      audio: []
+    }), // 加载出来的资源
   }
   handleTabSwitch = (e, tabId) => {
     this.setState({
@@ -50,9 +56,15 @@ class Panel extends Component {
     e.preventDefault()
     e.stopPropagation()
   }
-  uploadFile = async (type, file) => {
-    const data = await request.upload(type, file, (completed) => {
-      console.log(completed)
+  uploadAsset = async (type, file) => {
+    // 生成表单数据
+    const formData = new FormData()
+    formData.append('userId', 'd5da709f-dc12-413f-a7d6-073357799fb5')
+    formData.append(type, file)
+    // 生辰纲url前缀
+    const prefix = `assets/upload/${type}`
+    // 发送数据
+    const data = await request.uploadAsset(prefix, formData, (completed) => {
       if (completed === 100) {
         this.setState({
           isShowProcessBar: false,
@@ -67,19 +79,42 @@ class Panel extends Component {
     })
     console.log(data)
   }
-  loadFile = async (type) => {
+  loadAssets = async (type) => {
+    // 可以从本地存储中获取这些数据
+    const userId = 'd5da709f-dc12-413f-a7d6-073357799fb5'
+    // 生成前缀
+    const archiveType = `${type}s`
+    const params = [archiveType, userId]
+    // 获取数据
+    const fetchedAssets = await request.fetch('assets', params)
+    if (fetchedAssets.success) {
+      // 更新数据
+      this.setState(({ assets }) => {
+        const newAssets = assets.update(type, list => {
+          return list.concat(fromJS(fetchedAssets.data))
+        })
+        return {
+          assets: newAssets
+        }
+      })
+    } else {
+      // toast提示
+      console.log(fetchedAssets.message)
+    }
+  }
+  updateAsset = async (type, fileId) => {
 
   }
-  updateFile = async (type, fileId) => {
+  deleteAsset = async (type, fileId) => {
 
   }
-  deleteFile = async (type, fileId) => {
-
+  componentDidMount() {
+    this.loadAssets('image')
   }
   render() {
     const {
       currentTabId,
-      fileData,
+      assets,
       completed,
     } = this.state
     return (
@@ -113,11 +148,11 @@ class Panel extends Component {
             <Explorer
               currentTabId={currentTabId}
               panelRef={this.panelRef}
-              fileData={fileData}
-              uploadFile={this.uploadFile}
-              loadFile={this.loadFile}
-              updateFile={this.updateFile}
-              deleteFile={this.deleteFile}
+              assets={assets}
+              uploadAsset={this.uploadAsset}
+              loadAssets={this.loadAssets}
+              updateAsset={this.updateAsset}
+              deleteAsset={this.deleteAsset}
             />
           </Cell>
         </Grid>

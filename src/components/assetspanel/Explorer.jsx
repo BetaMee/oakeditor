@@ -33,11 +33,11 @@ const Explorer = (props) => {
   const {
     currentTabId,
     panelRef,
-    fileData,
-    uploadFile,
-    loadFile,
-    updateFile,
-    deleteFile
+    assets,
+    uploadAsset,
+    loadAssets,
+    updateAsset,
+    deleteAsset
   } = props
   return (
     <Wrapper>
@@ -45,40 +45,44 @@ const Explorer = (props) => {
         currentTabId === 0 &&
           <LoadableImageExplorer
             panelRef={panelRef}
-            uploadFile={uploadFile}
-            loadFile={loadFile}
-            updateFile={updateFile}
-            deleteFile={deleteFile}
+            assets={assets.get('image')}
+            uploadAsset={uploadAsset}
+            loadAssets={loadAssets}
+            updateAsset={updateAsset}
+            deleteAsset={deleteAsset}
           />
       }
       {
         currentTabId === 1 &&
           <LoadableFileExplorer
-            panelRef={panelRef}          
-            uploadFile={uploadFile}
-            loadFile={loadFile}
-            updateFile={updateFile}
-            deleteFile={deleteFile}
+            panelRef={panelRef}
+            assets={assets.get('file')}
+            uploadAsset={uploadAsset}
+            loadAssets={loadAssets}
+            updateAsset={updateAsset}
+            deleteAsset={deleteAsset}
           />
       }
       {
         currentTabId === 2 &&
           <LoadableAudioExplorer
-            panelRef={panelRef}          
-            uploadFile={uploadFile}
-            loadFile={loadFile}
-            updateFile={updateFile}
-            deleteFile={deleteFile}
+            panelRef={panelRef}
+            assets={assets.get('audio')}
+            uploadAsset={uploadAsset}
+            loadAssets={loadAssets}
+            updateAsset={updateAsset}
+            deleteAsset={deleteAsset}
           />
       }
       {
         currentTabId === 3 &&
           <LoadableVideoExplorer
-            panelRef={panelRef}          
-            uploadFile={uploadFile}
-            loadFile={loadFile}
-            updateFile={updateFile}
-            deleteFile={deleteFile}
+            panelRef={panelRef} 
+            assets={assets.get('video')}
+            uploadAsset={uploadAsset}
+            loadAssets={loadAssets}
+            updateAsset={updateAsset}
+            deleteAsset={deleteAsset}
           />
       }
     </Wrapper>
