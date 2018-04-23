@@ -9,12 +9,22 @@ import Image from '../components/Image'
 import DetailCard from '../components/DetailCard'
 import ItemTypes from '../components/ItemTypes'
 import ProcessBar from '../../common/components/ProcessBar'
-import accepts from '../../../config/accepts'
+
+const ImageExplorerWrapper = Wrapper.extend`
+  ${'' /* overflow-y: hidden; */}
+`
 
 class ImageExplorer extends Component {
   state = {
     isShowCardDetail: false,
     assetKey: '',
+  }
+  componentDidMount() {
+    const {
+      loadAssets
+    } = this.props
+    // 加载数据
+    loadAssets(ItemTypes.IMAGE)
   }
   // 拖拽上传
   DropEvtHandler = (props, monitor) => {
@@ -22,7 +32,7 @@ class ImageExplorer extends Component {
     if (monitor) {
 			const droppedFiles = monitor.getItem().files
       // 上传文件数据
-      uploadFile(accepts.__IMAGE__, droppedFiles[0])
+      uploadFile(ItemTypes.IMAGE, droppedFiles[0])
 		}
   }
   // 拖拽卡片
@@ -52,7 +62,7 @@ class ImageExplorer extends Component {
     const { assets } = this.props
     const { assetKey } = this.state
     return (
-      <Wrapper>
+      <ImageExplorerWrapper>
         <DragDropZone
           onDrop={this.DropEvtHandler}
           accepts={[FILE]}
@@ -80,7 +90,7 @@ class ImageExplorer extends Component {
               updateCard={this.updateCardHanlder}
             />
         }
-      </Wrapper>
+      </ImageExplorerWrapper>
     )
   }
 }

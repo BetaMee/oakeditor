@@ -33,7 +33,7 @@ const Explorer = (props) => {
   const {
     currentTabId,
     panelRef,
-    assets,
+    assetsMap,
     uploadAsset,
     loadAssets,
     updateAsset,
@@ -45,7 +45,7 @@ const Explorer = (props) => {
         currentTabId === 0 &&
           <LoadableImageExplorer
             panelRef={panelRef}
-            assets={assets.get('image')}
+            assets={assetsMap.get('image')}
             uploadAsset={uploadAsset}
             loadAssets={loadAssets}
             updateAsset={updateAsset}
@@ -56,7 +56,7 @@ const Explorer = (props) => {
         currentTabId === 1 &&
           <LoadableFileExplorer
             panelRef={panelRef}
-            assets={assets.get('file')}
+            assets={assetsMap.get('file')}
             uploadAsset={uploadAsset}
             loadAssets={loadAssets}
             updateAsset={updateAsset}
@@ -67,7 +67,7 @@ const Explorer = (props) => {
         currentTabId === 2 &&
           <LoadableAudioExplorer
             panelRef={panelRef}
-            assets={assets.get('audio')}
+            assets={assetsMap.get('audio')}
             uploadAsset={uploadAsset}
             loadAssets={loadAssets}
             updateAsset={updateAsset}
@@ -78,7 +78,7 @@ const Explorer = (props) => {
         currentTabId === 3 &&
           <LoadableVideoExplorer
             panelRef={panelRef} 
-            assets={assets.get('video')}
+            assets={assetsMap.get('video')}
             uploadAsset={uploadAsset}
             loadAssets={loadAssets}
             updateAsset={updateAsset}

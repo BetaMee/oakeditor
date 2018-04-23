@@ -106,7 +106,6 @@ class Image extends Component {
 			isDragging,
 			connectDragSource,
 			connectDropTarget,
-			// config
 		} = this.props
 		const opacity = isDragging ? 0 : 1
 		return connectDragSource(connectDropTarget(

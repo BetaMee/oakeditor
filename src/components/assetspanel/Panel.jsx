@@ -39,7 +39,7 @@ class Panel extends Component {
     currentTabId: 0, // tab切换
     isShowProcessBar: false, // 展示进度条
     completed: 0, // 完成度
-    assets: fromJS({
+    assetsMap: fromJS({
       image: [],
       file: [],
       video: [],
@@ -89,12 +89,12 @@ class Panel extends Component {
     const fetchedAssets = await request.fetch('assets', params)
     if (fetchedAssets.success) {
       // 更新数据
-      this.setState(({ assets }) => {
-        const newAssets = assets.update(type, list => {
-          return list.concat(fromJS(fetchedAssets.data))
+      this.setState(({ assetsMap }) => {
+        const newAssets = assetsMap.update(type, list => {
+          return fromJS(fetchedAssets.data)
         })
         return {
-          assets: newAssets
+          assetsMap: newAssets
         }
       })
     } else {
@@ -108,13 +108,10 @@ class Panel extends Component {
   deleteAsset = async (type, fileId) => {
 
   }
-  componentDidMount() {
-    this.loadAssets('image')
-  }
   render() {
     const {
       currentTabId,
-      assets,
+      assetsMap,
       completed,
     } = this.state
     return (
@@ -148,7 +145,7 @@ class Panel extends Component {
             <Explorer
               currentTabId={currentTabId}
               panelRef={this.panelRef}
-              assets={assets}
+              assetsMap={assetsMap}
               uploadAsset={this.uploadAsset}
               loadAssets={this.loadAssets}
               updateAsset={this.updateAsset}

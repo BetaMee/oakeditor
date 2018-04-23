@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 // 布局组件
 import Wrapper from '../../common/components/Wrapper'
@@ -102,64 +102,106 @@ const UpdateWrapper = Wrapper.extend`
   }
 `
 
-const DetailCard = ({ hideCard, updateCard, assets, assetKey}) => {
-  const detailAsset = assets.find(item => item.get('assetKey') === assetKey)
-  return (
-    <React.Fragment>
-      {/* 详情主体 */}
-      <CardWrapper
-        layout='columnTop'
-      >
-        {/* 头部 */}
-        <TitleWrapper
-          wHeight='10%'
+class DetailCard extends Component {
+  constructor(props) {
+    super(props)
+    const {
+      assetKey,
+      assets
+    } = props
+    const detailAsset = assets.find(item => item.get('assetKey') === assetKey)
+    this.state = {
+      assetName: detailAsset.get('assetName'),
+      description: detailAsset.get('description'),
+      detailAsset: detailAsset
+    }
+  }
+
+  assetNameChangeHandler = (e) => {
+    this.setState({
+      assetName: e.target.value
+    })
+  }
+
+  descriptionChangeHandler = (e) => {
+    this.setState({
+      description: e.target.value
+    })
+  }
+
+  render () {
+    const {
+      hideCard,
+      updateCard,
+      assetKey
+    } = this.props
+
+    const {
+      assetName,
+      description,
+      detailAsset
+    } = this.state
+
+    return (
+      <React.Fragment>
+        {/* 详情主体 */}
+        <CardWrapper
+          layout='columnTop'
         >
-          <CardTitle>{detailAsset.get('assetName')}</CardTitle>
-          <CardControl
-            onClick={hideCard}
-          >Done</CardControl>
-        </TitleWrapper>
-        {/* 展示 */}
-        <ContentWrapper>
-            <CardContent src={detailAsset.get('url')}/>
-        </ContentWrapper>
-        {/* 编辑 */}
-        <EditWrapper
-          layout='columnCenter'
-        >
-          <InputWrapper
-            layout='rowLeft'
+          {/* 头部 */}
+          <TitleWrapper
+            wHeight='10%'
           >
-            <EditName>文件名:</EditName>
-            <CardEdit
-              value={detailAsset.get('assetName')}
-            />
-          </InputWrapper>
-          <InputWrapper
-            layout='rowLeft'
+            <CardTitle>{detailAsset.get('assetName')}</CardTitle>
+            <CardControl
+              onClick={hideCard}
+            >Done</CardControl>
+          </TitleWrapper>
+          {/* 展示 */}
+          <ContentWrapper>
+              <CardContent src={detailAsset.get('url')}/>
+          </ContentWrapper>
+          {/* 编辑 */}
+          <EditWrapper
+            layout='columnCenter'
           >
-            <EditName>描述:</EditName>
-            <CardEdit
-              value={detailAsset.get('description')}
-            />
-          </InputWrapper>
-          <InputWrapper
-            layout='rowLeft'
-          >
-            <EditName>尺寸:</EditName>
-            <ContentSize>{detailAsset.get('assetSize')}</ContentSize>
-          </InputWrapper>
-        </EditWrapper>
-        <UpdateWrapper>
-          <SVGIcon name='CloudDone' size={32} />
-        </UpdateWrapper>
-      </CardWrapper>
-      {/* 背景模态 */}
-      <Modal
-        onClick={hideCard}
-      />
-    </React.Fragment>
-  )
+            <InputWrapper
+              layout='rowLeft'
+            >
+              <EditName>文件名:</EditName>
+              <CardEdit
+                value={assetName}
+                onChange={this.assetNameChangeHandler}
+              />
+            </InputWrapper>
+            <InputWrapper
+              layout='rowLeft'
+            >
+              <EditName>描述:</EditName>
+              <CardEdit
+                value={description}
+                onChange={this.descriptionChangeHandler}
+              />
+            </InputWrapper>
+            <InputWrapper
+              layout='rowLeft'
+            >
+              <EditName>尺寸:</EditName>
+              <ContentSize>{detailAsset.get('assetSize')}</ContentSize>
+            </InputWrapper>
+          </EditWrapper>
+          <UpdateWrapper>
+            <SVGIcon name='CloudDone' size={32} />
+          </UpdateWrapper>
+        </CardWrapper>
+        {/* 背景模态 */}
+        <Modal
+          onClick={hideCard}
+        />
+      </React.Fragment>
+    )
+  }
+
 }
 
 export default DetailCard
