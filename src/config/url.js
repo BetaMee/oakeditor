@@ -6,5 +6,5 @@ export default (prefix, params) => {
   if (params && params.length > 0) {
     paramUrl= params.reduce((total, param) => `${total}${param}/`, '/')
   }
-  return `${baseServerUrl}/${prefix}${paramUrl}`
+  return `${baseServerUrl}/${prefix}${paramUrl}`.replace(/\/$/ ,'')
 }

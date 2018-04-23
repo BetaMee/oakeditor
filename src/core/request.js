@@ -1,40 +1,57 @@
 import axios from 'axios'
+import { Url } from '../config'
 
 const request = {
-  // get数据
-  get() {
-
+  // 加载数据
+  fetch: async (prefix, params) => {
+    try {
+      const data = await axios.get(Url(prefix, params))
+      if (data.statusText === 'OK' && data.data) {
+        const fetchedData = data.data
+        if (fetchedData.success) {
+          return {
+             data: fetchedData.item || fetchedData.items,
+             success: true
+          }
+        } else {
+          throw(new Error(fetchedData.message))
+        }
+      }
+    } catch(e) {
+      // 容错，可提示toast
+      console.warn(e)
+      return {
+        message: e.message,
+        success: false
+      }
+    }
   },
   // 上传数据
   post() {
 
   },
+  // 更新数据
   update() {
 
   },
+  // 删除数据
   delete() {
 
   },
-  // 上传文件
-  upload(type, file, onUploadProgressCb) {
+  // 上传资源
+  upload(prefix, data, onUploadProgressCb) {
     // 配置
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
       },
       onUploadProgress: (progressEvent) => {
-        console.log(progressEvent)
         // 已完成的比例
         const percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total )
         onUploadProgressCb(percentCompleted)
       }
     }
-    // 生成表单数据
-    const formData = new FormData()
-    formData.append('userId', 'd5da709f-dc12-413f-a7d6-073357799fb5')
-    formData.append(type, file)
-
-    return axios.post('http://localhost:8080/assets/upload/image', formData, config)
+    return axios.post(Url(prefix), data, config)
   }
 }
 
