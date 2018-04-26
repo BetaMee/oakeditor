@@ -101,9 +101,11 @@ class Image extends Component {
 	render() {
 		const {
 			src,
+			id,
 			showCard,
 			getLink,
 			isDragging,
+			deleteAsset,
 			connectDragSource,
 			connectDropTarget,
 		} = this.props
@@ -115,7 +117,7 @@ class Image extends Component {
 				>
 					{/* 图片 */}
 					<ImageCard
-						showCardDetail={showCard}
+						showCardDetail={() => showCard(id)}
 						src={src}
 					/>
 					{/* 说明 */}
@@ -140,7 +142,7 @@ class Image extends Component {
 						<SVGIconWrapper
 							wSize={22}
 							hoverColor='#424242'
-							// onClick={config.deleteFile}
+							onClick={() => deleteAsset(ItemTypes.IMAGE, id)}
 						>
 							<SVGIcon name='Delete' size={18} />
 						</SVGIconWrapper>

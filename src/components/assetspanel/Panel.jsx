@@ -126,11 +126,42 @@ class Panel extends Component {
       console.log(fetchedAssets.message)
     }
   }
-  updateAsset = async (type, fileId) => {
-
+  updateAsset = async (type, assetKey, toUpdateData) => {
+    const prefix = 'assets/update'
+    // 更新数据
+    const updatedAsset = await request.update(prefix, [assetKey], toUpdateData)
+    if (updatedAsset.success) {
+      // 更新数据
+      this.setState(({ assetsMap }) => {
+        const toUpdateAssetIndex = assetsMap.get(type).findIndex((item) => item.get('assetKey') === assetKey)
+        const newAssets = assetsMap
+          .update(type, list => list.update(toUpdateAssetIndex, () => Map(updatedAsset.data)))
+        return {
+          assetsMap: newAssets
+        }
+      })
+    } else {
+      // toast提示
+      console.log(updatedAsset.message)
+    }
   }
-  deleteAsset = async (type, fileId) => {
-
+  deleteAsset = async (type, assetKey) => {  
+    const prefix = 'assets/delete'
+    // 删除数据
+    const deletedAsset = await request.delete(prefix, [assetKey])
+    if (deletedAsset.success) {
+      // 更新数据
+      this.setState(({ assetsMap }) => {
+        const toDeleteAssetIndex = assetsMap.get(type).findIndex((item) => item.get('assetKey') === assetKey)
+        const newAssets = assetsMap.update(type, list => list.delete(toDeleteAssetIndex))
+        return {
+          assetsMap: newAssets
+        }
+      })
+    } else {
+      // toast提示
+      console.log(deletedAsset.message)
+    }
   }
   render() {
     const {

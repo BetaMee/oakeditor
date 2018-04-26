@@ -10,10 +10,6 @@ import DetailCard from '../components/DetailCard'
 import ItemTypes from '../components/ItemTypes'
 import ProcessBar from '../../common/components/ProcessBar'
 
-const ImageExplorerWrapper = Wrapper.extend`
-  ${'' /* overflow-y: hidden; */}
-`
-
 class ImageExplorer extends Component {
   state = {
     isShowCardDetail: false,
@@ -58,10 +54,14 @@ class ImageExplorer extends Component {
   }
   render() {
     const { FILE } = NativeTypes
-    const { assets } = this.props
+    const {
+      assets,
+      deleteAsset,
+      updateAsset
+    } = this.props
     const { assetKey } = this.state
     return (
-      <ImageExplorerWrapper>
+      <Wrapper>
         <DragDropZone
           onDrop={this.DropEvtHandler}
           accepts={[FILE]}
@@ -74,7 +74,8 @@ class ImageExplorer extends Component {
                 id={item.get('assetKey')}
                 getLink={this.getLinkHandler}
                 moveCard={this.moveCardHandler}
-                showCard={() => this.showCardDetailHandler(item.get('assetKey'))}
+                deleteAsset={deleteAsset}
+                showCard={this.showCardDetailHandler}
               />
             ))
           }
@@ -86,10 +87,10 @@ class ImageExplorer extends Component {
               assets={assets}
               assetKey={assetKey}
               hideCard={this.hideCardDetailHandler}
-              updateCard={this.updateCardHanlder}
+              updateCard={updateAsset}
             />
         }
-      </ImageExplorerWrapper>
+      </Wrapper>
     )
   }
 }

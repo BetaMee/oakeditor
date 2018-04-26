@@ -112,8 +112,7 @@ class DetailCard extends Component {
     const detailAsset = assets.find(item => item.get('assetKey') === assetKey)
     this.state = {
       assetName: detailAsset.get('assetName'),
-      description: detailAsset.get('description'),
-      detailAsset: detailAsset
+      description: detailAsset.get('description')
     }
   }
 
@@ -129,19 +128,35 @@ class DetailCard extends Component {
     })
   }
 
+  updateCardHanlder = () => {
+    const {
+      updateCard,
+      assetKey,
+      type
+    } = this.props
+    const {
+      assetName,
+      description
+    } = this.state
+    const toUpdateData = {
+      assetName,
+      description
+    }
+    updateCard(type, assetKey, toUpdateData)
+  }
+
   render () {
     const {
       hideCard,
-      updateCard,
-      assetKey
+      assetKey,
+      assets
     } = this.props
-
     const {
       assetName,
-      description,
-      detailAsset
+      description
     } = this.state
-
+    // 每次数据更新
+    const detailAsset = assets.find(item => item.get('assetKey') === assetKey)
     return (
       <React.Fragment>
         {/* 详情主体 */}
@@ -190,7 +205,9 @@ class DetailCard extends Component {
               <ContentSize>{detailAsset.get('assetSize')}</ContentSize>
             </InputWrapper>
           </EditWrapper>
-          <UpdateWrapper>
+          <UpdateWrapper
+            onClick={this.updateCardHanlder}
+          >
             <SVGIcon name='CloudDone' size={32} />
           </UpdateWrapper>
         </CardWrapper>
