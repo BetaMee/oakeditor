@@ -39,7 +39,7 @@ const request = {
 
   },
   // 上传资源
-  upload(prefix, data, onUploadProgressCb) {
+  upload: (prefix, data, onUploadProgressCb) => {
     // 配置
     const config = {
       headers: {
