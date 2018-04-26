@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Url } from '../config'
+import { Url } from '../utils'
 
 const request = {
   // 加载数据
@@ -35,8 +35,14 @@ const request = {
 
   },
   // 删除数据
-  delete() {
+  delete: (prefix, params) => {
+    try {
+      // const data = await axios.delete(Url(prefix, params))
+      console.log(Url(prefix, params))
+      return Url(prefix, params)
+    } catch(e) {
 
+    }
   },
   // 上传资源
   upload: (prefix, data, onUploadProgressCb) => {
