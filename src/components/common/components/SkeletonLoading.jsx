@@ -49,7 +49,7 @@ const SkeletonItem = () =>
     </Grid>  
   </Skeleton>
 
-const Loading = () =>
+const SkeletonLoading = () =>
   <LoadingWrapper
     layout='columnTop'
   >
@@ -60,4 +60,4 @@ const Loading = () =>
   ))}
   </LoadingWrapper>
 
-export default Loading
+export default SkeletonLoading
