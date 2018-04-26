@@ -28,11 +28,11 @@ class ImageExplorer extends Component {
   }
   // 拖拽上传
   DropEvtHandler = (props, monitor) => {
-    const { uploadFile } = this.props
+    const { uploadAsset } = this.props
     if (monitor) {
-			const droppedFiles = monitor.getItem().files
+      const droppedFiles = monitor.getItem().files
       // 上传文件数据
-      uploadFile(ItemTypes.IMAGE, droppedFiles[0])
+      uploadAsset(ItemTypes.IMAGE, droppedFiles[0])
 		}
   }
   // 拖拽卡片
@@ -45,7 +45,6 @@ class ImageExplorer extends Component {
   }
   // 显示卡片详情
   showCardDetailHandler = (assetKey) => {
-    // console.log(assetKey)
     this.setState({
       isShowCardDetail: true,
       assetKey: assetKey

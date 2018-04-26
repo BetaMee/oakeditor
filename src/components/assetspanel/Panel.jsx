@@ -13,10 +13,11 @@ import PanelTab from './PanelTab'
 import Explorer from './Explorer'
 import ProcessBar from '../common/components/ProcessBar'
 import { request } from '../../core'
+import { date } from '../../utils'
 
 const PanelWrapper = Wrapper.extend`
   width: 450px;
-  height: 90%;
+  height: 644px;
   background-color: #FAFAFA;
   animation: ${slideInRight} 0.3s linear;
   position: absolute;
@@ -56,28 +57,49 @@ class Panel extends Component {
     e.preventDefault()
     e.stopPropagation()
   }
-  uploadAsset = async (type, file) => {
+  uploadAsset = async (type, asset) => {
     // 生成表单数据
     const formData = new FormData()
     formData.append('userId', 'd5da709f-dc12-413f-a7d6-073357799fb5')
-    formData.append(type, file)
+    formData.append(type, asset)
     // 生辰纲url前缀
     const prefix = `assets/upload/${type}`
-    // 发送数据
-    const data = await request.uploadAsset(prefix, formData, (completed) => {
-      if (completed === 100) {
-        this.setState({
-          isShowProcessBar: false,
-          completed: completed
-        })
+    try {
+      // 发送数据
+      const data = await request.upload(prefix, formData, (completed) => {
+        if (completed === 100) {
+          this.setState({
+            isShowProcessBar: false,
+            completed: completed
+          })
+        } else {
+          this.setState({
+            isShowProcessBar: true,
+            completed: completed
+          })
+        }
+      })
+      // 数据处理
+      if (data.statusText === 'OK' && data.data) {
+        const uploadedAsset = data.data
+        if (uploadedAsset.success) {
+          // 更新数据
+          this.setState(({ assetsMap }) => {
+            const newAssets = assetsMap.update(type, list => list.unshift(Map(uploadedAsset.item)))
+            return {
+              assetsMap: newAssets
+            }
+          })
+        } else {
+          throw(new Error(uploadedAsset.message))
+        } 
       } else {
-        this.setState({
-          isShowProcessBar: true,
-          completed: completed
-        })
+        throw(new Error('bad request'))
       }
-    })
-    console.log(data)
+    } catch(e) {
+      // 容错，可提示toast
+      console.error(e)
+    }
   }
   loadAssets = async (type) => {
     // 可以从本地存储中获取这些数据
@@ -90,9 +112,11 @@ class Panel extends Component {
     if (fetchedAssets.success) {
       // 更新数据
       this.setState(({ assetsMap }) => {
-        const newAssets = assetsMap.update(type, list => {
-          return fromJS(fetchedAssets.data)
-        })
+        const newAssets = assetsMap
+          .update(type, list =>
+            fromJS(fetchedAssets.data)
+              .sort((prevData, nextData) => date.sortDataByMomentDes(prevData.get('updatedAt'), nextData.get('updatedAt')))
+          )
         return {
           assetsMap: newAssets
         }
@@ -122,7 +146,7 @@ class Panel extends Component {
       >
         <Grid
           gColumns={'55px 1fr'}
-          gRows={'44px 1fr'}
+          gRows={'44px 600px'}
           gap='0px'
           gHeight='100%'
           gWidth='100%'

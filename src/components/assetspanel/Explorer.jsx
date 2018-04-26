@@ -40,7 +40,9 @@ const Explorer = (props) => {
     deleteAsset
   } = props
   return (
-    <Wrapper>
+    <Wrapper
+      wOverFlow='auto'
+    >
       {
         currentTabId === 0 &&
           <LoadableImageExplorer
