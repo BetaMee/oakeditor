@@ -84,7 +84,7 @@ class ImageExplorer extends Component {
           this.state.isShowCardDetail &&
             <DetailCard
               type={ItemTypes.IMAGE}
-              assets={assets}
+              detailAsset={assets.find(item => item.get('assetKey') === assetKey)}
               assetKey={assetKey}
               hideCard={this.hideCardDetailHandler}
               updateCard={updateAsset}

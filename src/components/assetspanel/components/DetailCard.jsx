@@ -94,37 +94,46 @@ const UpdateWrapper = Wrapper.extend`
   bottom: 3%;
   right: 5%;
   fill: #42A5F5;
-  ${'' /* stroke: #42A5F5; */}
+  ${({ isStroke }) => isStroke && `stroke: #42A5F5`};
   cursor: pointer;  
   &:hover{
     fill: #1E88E5;
-    ${'' /* stroke: #1E88E5; */}
+    ${({ isStroke }) => isStroke && `stroke: #42A5F5`};
   }
 `
 
 class DetailCard extends Component {
-  constructor(props) {
-    super(props)
-    const {
-      assetKey,
-      assets
-    } = props
-    const detailAsset = assets.find(item => item.get('assetKey') === assetKey)
-    this.state = {
-      assetName: detailAsset.get('assetName'),
-      description: detailAsset.get('description')
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      isShowCloudLoading: false,
+      isShowCloudToUpload: false
     }
   }
 
+  state = {
+    initAssetName: this.props.detailAsset.get('assetName'),
+    initDescription: this.props.detailAsset.get('description'),
+    assetName: this.props.detailAsset.get('assetName'),
+    description: this.props.detailAsset.get('description'),
+    isShowCloudLoading: false, // 加载
+    isShowCloudToUpload: false // 需要保存
+  }
+
   assetNameChangeHandler = (e) => {
+    const { initAssetName } = this.state
     this.setState({
-      assetName: e.target.value
+      assetName: e.target.value,
+      isShowCloudLoading: false,
+      isShowCloudToUpload: e.target.value !== initAssetName
     })
   }
 
   descriptionChangeHandler = (e) => {
+    const { initDescription } = this.state
     this.setState({
-      description: e.target.value
+      description: e.target.value,
+      isShowCloudLoading: false,
+      isShowCloudToUpload: e.target.value !== initDescription
     })
   }
 
@@ -136,27 +145,55 @@ class DetailCard extends Component {
     } = this.props
     const {
       assetName,
-      description
+      description,
+      isShowCloudLoading,
+      isShowCloudToUpload
     } = this.state
+    // 判断是都需要提交
+    if (!isShowCloudToUpload) {
+      return
+    }
+    // 要提交的数据
     const toUpdateData = {
       assetName,
       description
     }
+    // 展示按钮loading
+    this.setState({
+      isShowCloudLoading: true,
+      isShowCloudToUpload: false
+    })
+    // 提交更新数据
     updateCard(type, assetKey, toUpdateData)
+  }
+
+  getSVGIconNameByState = () => {
+    const {
+      isShowCloudLoading,
+      isShowCloudToUpload
+    } = this.state
+
+    if (isShowCloudLoading && !isShowCloudToUpload) {
+      return 'Rolling'
+    } else if(!isShowCloudLoading && isShowCloudToUpload) {
+      return 'CloudUpload'
+    } else {
+      return 'CloudDone'
+    }
   }
 
   render () {
     const {
       hideCard,
       assetKey,
-      assets
+      detailAsset
     } = this.props
     const {
       assetName,
-      description
+      description,
+      isShowCloudLoading
     } = this.state
     // 每次数据更新
-    const detailAsset = assets.find(item => item.get('assetKey') === assetKey)
     return (
       <React.Fragment>
         {/* 详情主体 */}
@@ -207,8 +244,12 @@ class DetailCard extends Component {
           </EditWrapper>
           <UpdateWrapper
             onClick={this.updateCardHanlder}
+            isStroke={isShowCloudLoading}
           >
-            <SVGIcon name='CloudDone' size={32} />
+            <SVGIcon
+              name={this.getSVGIconNameByState()}
+              size={32}
+            />
           </UpdateWrapper>
         </CardWrapper>
         {/* 背景模态 */}
