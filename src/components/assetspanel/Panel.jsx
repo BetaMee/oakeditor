@@ -14,6 +14,7 @@ import Explorer from './Explorer'
 import ProcessBar from '../common/components/ProcessBar'
 import { request } from '../../core'
 import { date } from '../../utils'
+import { CircleToast } from '../common/components/Toast'
 
 const PanelWrapper = Wrapper.extend`
   width: 450px;
@@ -38,6 +39,7 @@ class Panel extends Component {
   panelRef = React.createRef()
   state = {
     currentTabId: 0, // tab切换
+    isShowDataLoading:false, // 是否展示数据加载
     isShowProcessBar: false, // 展示进度条
     completed: 0, // 完成度
     assetsMap: fromJS({
@@ -58,50 +60,47 @@ class Panel extends Component {
     e.stopPropagation()
   }
   uploadAsset = async (type, asset) => {
+    const $panelContainer = this.panelRef.current
+    CircleToast.loading($panelContainer)
     // 生成表单数据
     const formData = new FormData()
     formData.append('userId', 'd5da709f-dc12-413f-a7d6-073357799fb5')
     formData.append(type, asset)
     // 生辰纲url前缀
     const prefix = `assets/upload/${type}`
-    try {
-      // 发送数据
-      const data = await request.upload(prefix, formData, (completed) => {
-        if (completed === 100) {
-          this.setState({
-            isShowProcessBar: false,
-            completed: completed
-          })
-        } else {
-          this.setState({
-            isShowProcessBar: true,
-            completed: completed
-          })
+    // 发送数据
+    const uploadedAsset = await request.upload(prefix, formData, (completed) => {
+      if (completed === 100) {
+        this.setState({
+          isShowProcessBar: false,
+          completed: completed
+        })
+      } else {
+        this.setState({
+          isShowProcessBar: true,
+          completed: completed
+        })
+      }
+    })
+    if (uploadedAsset.success) {
+      CircleToast.success(2000, $panelContainer)
+      // 更新数据
+      this.setState(({ assetsMap }) => {
+        const newAssets = assetsMap.update(type, list => list.unshift(Map(uploadedAsset.data)))
+        return {
+          assetsMap: newAssets
         }
       })
-      // 数据处理
-      if (data.statusText === 'OK' && data.data) {
-        const uploadedAsset = data.data
-        if (uploadedAsset.success) {
-          // 更新数据
-          this.setState(({ assetsMap }) => {
-            const newAssets = assetsMap.update(type, list => list.unshift(Map(uploadedAsset.item)))
-            return {
-              assetsMap: newAssets
-            }
-          })
-        } else {
-          throw(new Error(uploadedAsset.message))
-        } 
-      } else {
-        throw(new Error('bad request'))
-      }
-    } catch(e) {
-      // 容错，可提示toast
-      console.error(e)
+    } else {
+      // toast提示
+      console.log(uploadedAsset.message)
+      CircleToast.fail(2000, $panelContainer)
     }
   }
   loadAssets = async (type) => {
+    this.setState({
+      isShowDataLoading: true
+    })
     // 可以从本地存储中获取这些数据
     const userId = 'd5da709f-dc12-413f-a7d6-073357799fb5'
     // 生成前缀
@@ -118,19 +117,26 @@ class Panel extends Component {
               .sort((prevData, nextData) => date.sortDataByMomentDes(prevData.get('updatedAt'), nextData.get('updatedAt')))
           )
         return {
-          assetsMap: newAssets
+          assetsMap: newAssets,
+          isShowDataLoading: false
         }
       })
     } else {
       // toast提示
       console.log(fetchedAssets.message)
+      this.setState({
+        isShowDataLoading: false
+      })
     }
   }
   updateAsset = async (type, assetKey, toUpdateData) => {
+    const $panelContainer = this.panelRef.current
+    CircleToast.loading($panelContainer)
     const prefix = 'assets/update'
     // 更新数据
     const updatedAsset = await request.update(prefix, [assetKey], toUpdateData)
     if (updatedAsset.success) {
+      CircleToast.success(2000, $panelContainer)
       // 更新数据
       this.setState(({ assetsMap }) => {
         const toUpdateAssetIndex = assetsMap.get(type).findIndex((item) => item.get('assetKey') === assetKey)
@@ -143,13 +149,17 @@ class Panel extends Component {
     } else {
       // toast提示
       console.log(updatedAsset.message)
+      CircleToast.fail(2000, $panelContainer)
     }
   }
-  deleteAsset = async (type, assetKey) => {  
+  deleteAsset = async (type, assetKey) => {
+    const $panelContainer = this.panelRef.current
+    CircleToast.loading($panelContainer)
     const prefix = 'assets/delete'
     // 删除数据
     const deletedAsset = await request.delete(prefix, [assetKey])
     if (deletedAsset.success) {
+      CircleToast.success(2000, $panelContainer)
       // 更新数据
       this.setState(({ assetsMap }) => {
         const toDeleteAssetIndex = assetsMap.get(type).findIndex((item) => item.get('assetKey') === assetKey)
@@ -161,10 +171,12 @@ class Panel extends Component {
     } else {
       // toast提示
       console.log(deletedAsset.message)
+      CircleToast.fail(2000, $panelContainer)      
     }
   }
   render() {
     const {
+      isShowDataLoading,
       currentTabId,
       assetsMap,
       completed,
@@ -205,6 +217,7 @@ class Panel extends Component {
               loadAssets={this.loadAssets}
               updateAsset={this.updateAsset}
               deleteAsset={this.deleteAsset}
+              isShowDataLoading={isShowDataLoading}
             />
           </Cell>
         </Grid>

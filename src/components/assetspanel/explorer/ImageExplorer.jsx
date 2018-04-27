@@ -9,6 +9,8 @@ import Image from '../components/Image'
 import DetailCard from '../components/DetailCard'
 import ItemTypes from '../components/ItemTypes'
 import ProcessBar from '../../common/components/ProcessBar'
+import SkeletonLoading from '../../common/components/SkeletonLoading'
+
 
 class ImageExplorer extends Component {
   state = {
@@ -57,10 +59,11 @@ class ImageExplorer extends Component {
     const {
       assets,
       deleteAsset,
-      updateAsset
+      updateAsset,
+      isShowDataLoading
     } = this.props
     const { assetKey } = this.state
-    return (
+    return isShowDataLoading ?  <SkeletonLoading /> :
       <Wrapper>
         <DragDropZone
           onDrop={this.DropEvtHandler}
@@ -91,7 +94,6 @@ class ImageExplorer extends Component {
             />
         }
       </Wrapper>
-    )
   }
 }
 

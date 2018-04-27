@@ -3,34 +3,14 @@ import Loadable from 'react-loadable';
 // 布局组件
 import Wrapper from '../common/components/Wrapper'
 // 其他组件
-import Loading from '../common/components/Loading'
-
-const LoadableImageExplorer = Loadable({
-  loader: () => import('./explorer/ImageExplorer'),
-  loading: Loading,
-  delay: 1000
-})
-
-const LoadableFileExplorer = Loadable({
-  loader: () => import('./explorer/FileExplorer'),
-  loading: Loading,
-  delay: 1000
-})
-
-const LoadableAudioExplorer = Loadable({
-  loader: () => import('./explorer/AudioExplorer'),
-  loading: Loading,
-  delay: 1000
-})
-
-const LoadableVideoExplorer = Loadable({
-  loader: () => import('./explorer/VideoExplorer'),
-  loading: Loading,
-  delay: 1000
-})
+import ImageExplorer from './explorer/ImageExplorer'
+import FileExplorer from './explorer/FileExplorer'
+import AudioExplorer from './explorer/AudioExplorer'
+import VideoExplorer from './explorer/VideoExplorer'
 
 const Explorer = (props) => {
   const {
+    isShowDataLoading,
     currentTabId,
     panelRef,
     assetsMap,
@@ -45,7 +25,8 @@ const Explorer = (props) => {
     >
       {
         currentTabId === 0 &&
-          <LoadableImageExplorer
+          <ImageExplorer
+            isShowDataLoading={isShowDataLoading}
             panelRef={panelRef}
             assets={assetsMap.get('image')}
             uploadAsset={uploadAsset}
@@ -56,7 +37,8 @@ const Explorer = (props) => {
       }
       {
         currentTabId === 1 &&
-          <LoadableFileExplorer
+          <FileExplorer
+            isShowDataLoading={isShowDataLoading}
             panelRef={panelRef}
             assets={assetsMap.get('file')}
             uploadAsset={uploadAsset}
@@ -67,7 +49,8 @@ const Explorer = (props) => {
       }
       {
         currentTabId === 2 &&
-          <LoadableAudioExplorer
+          <AudioExplorer
+            isShowDataLoading={isShowDataLoading}
             panelRef={panelRef}
             assets={assetsMap.get('audio')}
             uploadAsset={uploadAsset}
@@ -78,7 +61,8 @@ const Explorer = (props) => {
       }
       {
         currentTabId === 3 &&
-          <LoadableVideoExplorer
+          <VideoExplorer
+            isShowDataLoading={isShowDataLoading}
             panelRef={panelRef} 
             assets={assetsMap.get('video')}
             uploadAsset={uploadAsset}

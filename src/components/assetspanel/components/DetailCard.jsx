@@ -53,7 +53,7 @@ const ContentWrapper = Wrapper.extend`
 
 const CardContent = styled.img`
   height: 88%;
-  width: auto;
+  max-width: 380px;
   object-fit: cover;
   border-radius: 4px;
 `
