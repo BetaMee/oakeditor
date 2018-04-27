@@ -17,6 +17,8 @@ const request = {
         } else {
           throw(new Error(fetchedData.message))
         }
+      } else {
+        throw(new Error('bad request'))
       }
     } catch(e) {
       // 容错，可提示toast
@@ -42,6 +44,8 @@ const request = {
         } else {
           throw(new Error(updatedData.message))
         }
+      } else {
+        throw(new Error('bad request'))
       }
     } catch(e) {
       // 容错，可提示toast
@@ -66,6 +70,8 @@ const request = {
         } else {
           throw(new Error(deletedData.message))
         }
+      } else {
+        throw(new Error('bad request'))
       }
     } catch(e) {
       // 容错，可提示toast
@@ -77,7 +83,7 @@ const request = {
     }
   },
   // 上传资源
-  upload: (prefix, data, onUploadProgressCb) => {
+  upload: async (prefix, data, onUploadProgressCb) => {
     // 配置
     const config = {
       headers: {
@@ -89,7 +95,30 @@ const request = {
         onUploadProgressCb(percentCompleted)
       }
     }
-    return axios.post(Url(prefix), data, config)
+    try {
+      const response = await axios.post(Url(prefix), data, config)
+      if (response.statusText === 'OK' && response.data) {
+        const uploadedData = response.data
+        if (uploadedData.success) {
+          return {
+             data: uploadedData.item || uploadedData.items,
+             message: uploadedData.message,
+             success: true
+          }
+        } else {
+          throw(new Error(uploadedData.message))
+        }
+      } else {
+        throw(new Error('bad request'))
+      }
+    } catch(e) {
+      // 容错，可提示toast
+      console.warn(e)
+      return {
+        message: e.message,
+        success: false
+      }
+    }
   }
 }
 
