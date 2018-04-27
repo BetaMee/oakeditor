@@ -10,8 +10,6 @@ import SVGIconWrapper from '../../common/components/SVGIconWrapper'
 import ItemTypes from './ItemTypes'
 import ImageCard from './ImageCard'
 
-import { CircleToast } from '../../common/components/Toast/'
-
 const LinkWrapper = Wrapper.extend`
 	margin: 4px 0;
 	padding: 0 4px;

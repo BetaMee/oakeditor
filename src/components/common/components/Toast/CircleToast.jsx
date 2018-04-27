@@ -14,7 +14,7 @@ const ToastContentMap = {
 let newNotification
 // 获得一个Notification
 const getNewNotification = ($container) => {
-  // 单例 保持页面始终只有一个Notification
+  // 每次都要重写，原因在于assets panel会被unmount，但Notification实例仍然会保持，所以需要每次都用reWrite生成
   if (!newNotification) {
     newNotification = Notification.reWrite($container)
   }
@@ -31,6 +31,10 @@ const notice = (type, duration = 3000, $container, onClose, mask = true) => {
     mask: mask,
     content: (<CircleToastWrapper>{ToastContentMap[type]}</CircleToastWrapper>),
     onClose: () => {
+      // 清理实例
+      notificationInstance.destroy()
+      newNotification = null
+      // 回调函数
       onClose && onClose()
     }
   })
