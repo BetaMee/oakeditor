@@ -53,8 +53,6 @@ class Notification extends Component {
       notices
     } = this.state
     let result = []
-    console.log('notices')
-    console.log(notices)
     notices.map((notice)=>{
       // 每个Notice onClose的时候 删除掉notices中对应key的notice
       const closeCallback = () => {

@@ -3,7 +3,7 @@ import Wrapper from '../../Wrapper'
 
 const CircleToastWrapper = Wrapper.extend`
   position: absolute;
-  z-index: 999;
+  z-index: 9999999;
   top: 40%;
   left: 175px;
   width: 100px;
