@@ -146,7 +146,6 @@ class DetailCard extends Component {
     const {
       assetName,
       description,
-      isShowCloudLoading,
       isShowCloudToUpload
     } = this.state
     // 判断是都需要提交
@@ -185,7 +184,6 @@ class DetailCard extends Component {
   render () {
     const {
       hideCard,
-      assetKey,
       detailAsset
     } = this.props
     const {

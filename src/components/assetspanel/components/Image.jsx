@@ -51,6 +51,19 @@ const ImageWrapper = Wrapper.extend`
 	background-color: #FFFFFF;
   box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 2px 6px 1px rgba(0,0,0,0.09);
 	cursor: move;
+	position: relative;
+`
+
+const Mask = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	opacity: 0.5;
+	box-sizing: border-box;
+	border-radius: 4px;
 `
 
 const imageSource = {
@@ -100,6 +113,7 @@ class Image extends Component {
 		const {
 			src,
 			id,
+			maskShowKey,
 			showCard,
 			getLink,
 			isDragging,
@@ -145,6 +159,9 @@ class Image extends Component {
 							<SVGIcon name='Delete' size={18} />
 						</SVGIconWrapper>
 					</Wrapper>
+					{
+						maskShowKey === id ? <Mask /> : null
+					}
 				</ImageWrapper>
 			</div>
 		))

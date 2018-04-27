@@ -11,6 +11,7 @@ import VideoExplorer from './explorer/VideoExplorer'
 const Explorer = (props) => {
   const {
     isShowDataLoading,
+    maskShowKey,
     currentTabId,
     panelRef,
     assetsMap,
@@ -28,6 +29,7 @@ const Explorer = (props) => {
           <ImageExplorer
             isShowDataLoading={isShowDataLoading}
             panelRef={panelRef}
+            maskShowKey={maskShowKey}
             assets={assetsMap.get('image')}
             uploadAsset={uploadAsset}
             loadAssets={loadAssets}
@@ -40,6 +42,7 @@ const Explorer = (props) => {
           <FileExplorer
             isShowDataLoading={isShowDataLoading}
             panelRef={panelRef}
+            maskShowKey={maskShowKey}
             assets={assetsMap.get('file')}
             uploadAsset={uploadAsset}
             loadAssets={loadAssets}
@@ -52,6 +55,7 @@ const Explorer = (props) => {
           <AudioExplorer
             isShowDataLoading={isShowDataLoading}
             panelRef={panelRef}
+            maskShowKey={maskShowKey}
             assets={assetsMap.get('audio')}
             uploadAsset={uploadAsset}
             loadAssets={loadAssets}
@@ -63,7 +67,8 @@ const Explorer = (props) => {
         currentTabId === 3 &&
           <VideoExplorer
             isShowDataLoading={isShowDataLoading}
-            panelRef={panelRef} 
+            panelRef={panelRef}
+            maskShowKey={maskShowKey}
             assets={assetsMap.get('video')}
             uploadAsset={uploadAsset}
             loadAssets={loadAssets}

@@ -8,9 +8,8 @@ import DragDropZone from '../components/DragDropZone'
 import Image from '../components/Image'
 import DetailCard from '../components/DetailCard'
 import ItemTypes from '../components/ItemTypes'
-import ProcessBar from '../../common/components/ProcessBar'
 import SkeletonLoading from '../../common/components/SkeletonLoading'
-
+import Placeholder from '../components/Placeholder'
 
 class ImageExplorer extends Component {
   state = {
@@ -60,7 +59,8 @@ class ImageExplorer extends Component {
       assets,
       deleteAsset,
       updateAsset,
-      isShowDataLoading
+      isShowDataLoading,
+      maskShowKey
     } = this.props
     const { assetKey } = this.state
     return isShowDataLoading ?  <SkeletonLoading /> :
@@ -70,17 +70,24 @@ class ImageExplorer extends Component {
           accepts={[FILE]}
         >
           {
-            assets.map(item => (
-              <Image
-                key={item.get('assetKey')}
-                src={item.get('url')}
-                id={item.get('assetKey')}
-                getLink={this.getLinkHandler}
-                moveCard={this.moveCardHandler}
-                deleteAsset={deleteAsset}
-                showCard={this.showCardDetailHandler}
-              />
-            ))
+            assets.map(item => {
+              if (!item.get('isFake')) {
+                return (
+                  <Image
+                    key={item.get('assetKey')}
+                    src={item.get('url')}
+                    id={item.get('assetKey')}
+                    getLink={this.getLinkHandler}
+                    moveCard={this.moveCardHandler}
+                    deleteAsset={deleteAsset}
+                    showCard={this.showCardDetailHandler}
+                    maskShowKey={maskShowKey}
+                  />
+                )
+              } else {
+                return <Placeholder key={item.get('assetKey')} />
+              }
+            })
           }
         </DragDropZone>
         {

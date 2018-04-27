@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { fromJS, List, Map } from 'immutable'
+import { fromJS, Map } from 'immutable'
 // 布局组件
 import Wrapper from '../common/components/Wrapper'
 import { Grid, Cell } from '../common/GridLayout'
@@ -15,6 +15,7 @@ import ProcessBar from '../common/components/ProcessBar'
 import { request } from '../../core'
 import { date } from '../../utils'
 import { CircleToast } from '../common/components/Toast'
+import { PlaceholderFakeData } from './components/Placeholder'
 
 const PanelWrapper = Wrapper.extend`
   width: 450px;
@@ -41,6 +42,7 @@ class Panel extends Component {
     currentTabId: 0, // tab切换
     isShowDataLoading:false, // 是否展示数据加载
     isShowProcessBar: false, // 展示进度条
+    maskShowKey: '', // 展示图片Mask的key
     completed: 0, // 完成度
     assetsMap: fromJS({
       image: [],
@@ -60,6 +62,15 @@ class Panel extends Component {
     e.stopPropagation()
   }
   uploadAsset = async (type, asset) => {
+    // 添加加载占位符
+    this.setState(({ assetsMap }) => {
+      // 伪数据
+      const newAssets = assetsMap.update(type, list => list.unshift(Map(PlaceholderFakeData)))
+      return {
+        assetsMap: newAssets
+      }
+    })
+    // 获取panel的ref
     const $panelContainer = this.panelRef.current
     CircleToast.loading($panelContainer)
     // 生成表单数据
@@ -86,7 +97,7 @@ class Panel extends Component {
       CircleToast.success(2000, $panelContainer)
       // 更新数据
       this.setState(({ assetsMap }) => {
-        const newAssets = assetsMap.update(type, list => list.unshift(Map(uploadedAsset.data)))
+        const newAssets = assetsMap.update(type, list => list.shift().unshift(Map(uploadedAsset.data)))
         return {
           assetsMap: newAssets
         }
@@ -95,6 +106,13 @@ class Panel extends Component {
       // toast提示
       console.log(uploadedAsset.message)
       CircleToast.fail(2000, $panelContainer)
+      this.setState(({ assetsMap }) => {
+        // 伪数据
+        const newAssets = assetsMap.update(type, list => list.shift())
+        return {
+          assetsMap: newAssets
+        }
+      })
     }
   }
   loadAssets = async (type) => {
@@ -115,7 +133,8 @@ class Panel extends Component {
           .update(type, list =>
             fromJS(fetchedAssets.data)
               .sort((prevData, nextData) => date.sortDataByMomentDes(prevData.get('updatedAt'), nextData.get('updatedAt')))
-          )
+              .map(item => item.set('isFake', false))
+            )
         return {
           assetsMap: newAssets,
           isShowDataLoading: false
@@ -130,6 +149,10 @@ class Panel extends Component {
     }
   }
   updateAsset = async (type, assetKey, toUpdateData) => {
+    // 展示mask
+    this.setState({
+      maskShowKey: assetKey
+    })
     const $panelContainer = this.panelRef.current
     CircleToast.loading($panelContainer)
     const prefix = 'assets/update'
@@ -141,18 +164,29 @@ class Panel extends Component {
       this.setState(({ assetsMap }) => {
         const toUpdateAssetIndex = assetsMap.get(type).findIndex((item) => item.get('assetKey') === assetKey)
         const newAssets = assetsMap
-          .update(type, list => list.update(toUpdateAssetIndex, () => Map(updatedAsset.data)))
+          .update(type, list => list
+            .update(toUpdateAssetIndex, () => Map(updatedAsset.data))
+            .sort((prevData, nextData) => date.sortDataByMomentDes(prevData.get('updatedAt'), nextData.get('updatedAt')))
+          )
         return {
-          assetsMap: newAssets
+          assetsMap: newAssets,
+          maskShowKey: ''
         }
       })
     } else {
       // toast提示
       console.log(updatedAsset.message)
       CircleToast.fail(2000, $panelContainer)
+      this.setState({
+        maskShowKey: ''
+      })
     }
   }
   deleteAsset = async (type, assetKey) => {
+    // 展示mask
+    this.setState({
+      maskShowKey: assetKey
+    })
     const $panelContainer = this.panelRef.current
     CircleToast.loading($panelContainer)
     const prefix = 'assets/delete'
@@ -165,13 +199,17 @@ class Panel extends Component {
         const toDeleteAssetIndex = assetsMap.get(type).findIndex((item) => item.get('assetKey') === assetKey)
         const newAssets = assetsMap.update(type, list => list.delete(toDeleteAssetIndex))
         return {
-          assetsMap: newAssets
+          assetsMap: newAssets,
+          maskShowKey: ''
         }
       })
     } else {
       // toast提示
       console.log(deletedAsset.message)
-      CircleToast.fail(2000, $panelContainer)      
+      CircleToast.fail(2000, $panelContainer)
+      this.setState({
+        maskShowKey: ''
+      })
     }
   }
   render() {
@@ -180,6 +218,7 @@ class Panel extends Component {
       currentTabId,
       assetsMap,
       completed,
+      maskShowKey
     } = this.state
     return (
       <PanelWrapper
@@ -218,6 +257,7 @@ class Panel extends Component {
               updateAsset={this.updateAsset}
               deleteAsset={this.deleteAsset}
               isShowDataLoading={isShowDataLoading}
+              maskShowKey={maskShowKey}
             />
           </Cell>
         </Grid>
