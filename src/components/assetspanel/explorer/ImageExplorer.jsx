@@ -77,6 +77,7 @@ class ImageExplorer extends Component {
                     key={item.get('assetKey')}
                     src={item.get('url')}
                     id={item.get('assetKey')}
+                    size={item.get('assetSize')}
                     getLink={this.getLinkHandler}
                     moveCard={this.moveCardHandler}
                     deleteAsset={deleteAsset}

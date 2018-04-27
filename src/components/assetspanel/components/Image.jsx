@@ -9,6 +9,7 @@ import SVGIcon from '../../common/components/SVGIcon'
 import SVGIconWrapper from '../../common/components/SVGIconWrapper'
 import ItemTypes from './ItemTypes'
 import ImageCard from './ImageCard'
+import { File } from '../../../utils'
 
 const LinkWrapper = Wrapper.extend`
 	margin: 4px 0;
@@ -113,6 +114,7 @@ class Image extends Component {
 		const {
 			src,
 			id,
+			size,
 			maskShowKey,
 			showCard,
 			getLink,
@@ -145,7 +147,7 @@ class Image extends Component {
 							<SVGIcon name='Link' size={18}/>
 						</SVGIconWrapper>
 					</LinkWrapper>
-					<Size>1.5M</Size>
+					<Size>{File.calculateFileSize(size)}</Size>
 					<Wrapper
 						layout='rowRight'
 						wHeight='28px'

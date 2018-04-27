@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Wrapper from '../../common/components/Wrapper'
 import Input from '../../common/components/Input'
 import SVGIcon from '../../common/components/SVGIcon'
+import { File } from '../../../utils'
 
 const CardWrapper = Wrapper.extend `
   position: absolute;
@@ -237,7 +238,7 @@ class DetailCard extends Component {
               layout='rowLeft'
             >
               <EditName>尺寸:</EditName>
-              <ContentSize>{detailAsset.get('assetSize')}</ContentSize>
+              <ContentSize>{File.calculateFileSize(detailAsset.get('assetSize'))}</ContentSize>
             </InputWrapper>
           </EditWrapper>
           <UpdateWrapper

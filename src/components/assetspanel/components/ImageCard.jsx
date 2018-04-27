@@ -3,10 +3,10 @@ import styled from 'styled-components'
 
 import Wrapper from '../../common/components/Wrapper'
 import alt from '../../../assets/images/alt.svg'
+import Image from '../../common/components/Image'
 
-const Card = styled.img`
+const Card = Image.extend`
 	border-radius: 4px 4px 0 0;
-  object-fit: cover;
   width: 100%;
   height: 100%;
   cursor: pointer;
