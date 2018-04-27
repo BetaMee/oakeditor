@@ -53,9 +53,9 @@ class Notice extends Component {
     } = this.state
 
     return (
-      <div>
+      <React.Fragment>
         {this.props.content}
-      </div>
+      </React.Fragment>
     )
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import Notice from './Notice'
-import Mask from './Mask'
+import Mask from './components/Mask'
 
 // 统计notice总数 防止重复
 let noticeNumber = 0
@@ -22,13 +22,19 @@ class Notification extends Component {
     const { notices } = this.state
     const key = notice.key ? notice.key : notice.key = getUuid()
     const mask = notice.mask ? notice.mask : false
+    const unique = notice.unique ? notice.unique : false
     const temp = notices.filter((item) => item.key === key).length
 
-    if(!temp){
+    if(!temp && !unique){
       // 不存在重复的 添加
       notices.push(notice)
       this.setState({
         notices: notices,
+        hasMask: mask
+      })
+    } else if(!temp && unique){
+      this.setState({
+        notices: [notice],
         hasMask: mask
       })
     }
@@ -38,7 +44,7 @@ class Notification extends Component {
     this.setState(previousState => {
       return {
         notices: previousState.notices.filter(notice => notice.key !== key)
-        }
+      }
     })
   }
   getNoticeDOM () {
@@ -47,7 +53,8 @@ class Notification extends Component {
       notices
     } = this.state
     let result = []
-
+    console.log('notices')
+    console.log(notices)
     notices.map((notice)=>{
       // 每个Notice onClose的时候 删除掉notices中对应key的notice
       const closeCallback = () => {

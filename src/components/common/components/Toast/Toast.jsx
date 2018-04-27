@@ -22,7 +22,7 @@ const notice = (content, type, duration = 3000, $container, onClose, mask = true
     mask: mask,
     content: (<div>{content}</div>),
     onClose: () => {
-      onClose && onClose();
+      onClose && onClose()
     }
   })
 }
