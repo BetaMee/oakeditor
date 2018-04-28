@@ -9,6 +9,8 @@ import SVGIcon from '../../common/components/SVGIcon'
 import SVGIconWrapper from '../../common/components/SVGIconWrapper'
 import ItemTypes from './ItemTypes'
 import ImageCard from './ImageCard'
+import { File } from '../../../utils'
+import Clipboard from '../../common/components/Clipbord'
 
 const LinkWrapper = Wrapper.extend`
 	margin: 4px 0;
@@ -23,6 +25,8 @@ const Link = styled.a`
 	color: #9E9E9E;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 80px;
 	&:hover {
 		color: #424242;
 	}
@@ -49,6 +53,19 @@ const ImageWrapper = Wrapper.extend`
 	background-color: #FFFFFF;
   box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 2px 6px 1px rgba(0,0,0,0.09);
 	cursor: move;
+	position: relative;
+`
+
+const Mask = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	opacity: 0.5;
+	box-sizing: border-box;
+	border-radius: 4px;
 `
 
 const imageSource = {
@@ -56,7 +73,6 @@ const imageSource = {
 		console.log('beginDrag')
 		return {
 			id: props.id,
-			index: props.index,
 		}
 	},
 }
@@ -98,11 +114,15 @@ class Image extends Component {
 	render() {
 		const {
 			src,
+			id,
+			size,
+			index,
+			maskShowKey,
 			showCard,
 			isDragging,
+			deleteAsset,
 			connectDragSource,
 			connectDropTarget,
-			// config
 		} = this.props
 		const opacity = isDragging ? 0 : 1
 		return connectDragSource(connectDropTarget(
@@ -112,23 +132,30 @@ class Image extends Component {
 				>
 					{/* 图片 */}
 					<ImageCard
-						showCardDetail={showCard}
+						showCardDetail={() => showCard(id)}
 						src={src}
 					/>
 					{/* 说明 */}
 					<LinkWrapper
 						wHeight='24px'
 					>
-						<Link>http://xxx.jpg</Link>
-						<SVGIconWrapper
-							wSize={22}
-							hoverColor='#424242'
-							// onClick={config.getLinkHandler}
+						<Link
+							title={src}
+						>{src}</Link>
+						<Clipboard
+							data={src}
+							id={index}
 						>
-							<SVGIcon name='Link' size={18}/>
-						</SVGIconWrapper>
+							<SVGIconWrapper
+								wSize={22}
+								hoverColor='#424242'
+								title={'获取链接'}
+							>
+								<SVGIcon name='Link' size={18}/>
+							</SVGIconWrapper>
+						</Clipboard>
 					</LinkWrapper>
-					<Size>1.5M</Size>
+					<Size>{File.calculateFileSize(size)}</Size>
 					<Wrapper
 						layout='rowRight'
 						wHeight='28px'
@@ -137,11 +164,14 @@ class Image extends Component {
 						<SVGIconWrapper
 							wSize={22}
 							hoverColor='#424242'
-							// onClick={config.deleteFile}
+							onClick={() => deleteAsset(ItemTypes.IMAGE, id)}
 						>
 							<SVGIcon name='Delete' size={18} />
 						</SVGIconWrapper>
 					</Wrapper>
+					{
+						maskShowKey === id ? <Mask /> : null
+					}
 				</ImageWrapper>
 			</div>
 		))

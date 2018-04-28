@@ -8,32 +8,39 @@ import DragDropZone from '../components/DragDropZone'
 import Image from '../components/Image'
 import DetailCard from '../components/DetailCard'
 import ItemTypes from '../components/ItemTypes'
+import SkeletonLoading from '../../common/components/SkeletonLoading'
+import Placeholder from '../components/Placeholder'
 
 class ImageExplorer extends Component {
   state = {
-    isShowCardDetail: false
+    isShowCardDetail: false,
+    assetKey: '',
+  }
+  componentDidMount() {
+    const {
+      loadAssets
+    } = this.props
+    // 加载数据
+    loadAssets(ItemTypes.IMAGE)
   }
   // 拖拽上传
   DropEvtHandler = (props, monitor) => {
+    const { uploadAsset } = this.props
     if (monitor) {
-			const droppedFiles = monitor.getItem().files
+      const droppedFiles = monitor.getItem().files
       // 上传文件数据
-      console.log(droppedFiles)
+      uploadAsset(ItemTypes.IMAGE, droppedFiles[0])
 		}
   }
   // 拖拽卡片
   moveCardHandler = (dragIndex, hoverIndex) => {
 
   }
-  // 获取图片链接
-  getLinkHandler = () => {
-
-  }
-
   // 显示卡片详情
-  showCardDetailHandler = () => {
+  showCardDetailHandler = (assetKey) => {
     this.setState({
-      isShowCardDetail: true
+      isShowCardDetail: true,
+      assetKey: assetKey
     })
   }
   // 关闭卡片详情
@@ -42,60 +49,55 @@ class ImageExplorer extends Component {
       isShowCardDetail: false
     })
   }
-
   render() {
     const { FILE } = NativeTypes
-    return (
+    const {
+      assets,
+      deleteAsset,
+      updateAsset,
+      isShowDataLoading,
+      maskShowKey
+    } = this.props
+    const { assetKey } = this.state
+    return isShowDataLoading ?  <SkeletonLoading /> :
       <Wrapper>
         <DragDropZone
           onDrop={this.DropEvtHandler}
           accepts={[FILE]}
         >
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}
-            id={1}
-            index={0}
-          />
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}          
-            id={2}
-            index={1}
-          />
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}            
-            id={3}
-            index={2}
-          />
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}          
-            id={4}
-            index={3}
-          />
-          <Image
-            src={'https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'}          
-            moveCard={this.moveCardHandler}
-            showCard={this.showCardDetailHandler}          
-            id={5}
-            index={4}
-          />
+          {
+            assets.map((item, index) => {
+              if (!item.get('isFake')) {
+                return (
+                  <Image
+                    key={item.get('assetKey')}
+                    src={item.get('url')}
+                    id={item.get('assetKey')}
+                    index={index}
+                    size={item.get('assetSize')}
+                    moveCard={this.moveCardHandler}
+                    deleteAsset={deleteAsset}
+                    showCard={this.showCardDetailHandler}
+                    maskShowKey={maskShowKey}
+                  />
+                )
+              } else {
+                return <Placeholder key={item.get('assetKey')} />
+              }
+            })
+          }
         </DragDropZone>
         {
           this.state.isShowCardDetail &&
             <DetailCard
               type={ItemTypes.IMAGE}
+              detailAsset={assets.find(item => item.get('assetKey') === assetKey)}
+              assetKey={assetKey}
               hideCard={this.hideCardDetailHandler}
+              updateCard={updateAsset}
             />
         }
       </Wrapper>
-    )
   }
 }
 

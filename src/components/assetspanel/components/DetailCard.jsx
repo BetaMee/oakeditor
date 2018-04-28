@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 // 布局组件
 import Wrapper from '../../common/components/Wrapper'
 import Input from '../../common/components/Input'
 import SVGIcon from '../../common/components/SVGIcon'
+import { File } from '../../../utils'
 
 const CardWrapper = Wrapper.extend `
   position: absolute;
@@ -33,6 +34,11 @@ const Modal = styled.div`
 const CardTitle = styled.p`
   color: #b9b9b9;
   font-size: 14px;
+  width: 60%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
 `
 const CardControl = styled.span`
   position: absolute;
@@ -53,7 +59,7 @@ const ContentWrapper = Wrapper.extend`
 
 const CardContent = styled.img`
   height: 88%;
-  width: auto;
+  max-width: 380px;
   object-fit: cover;
   border-radius: 4px;
 `
@@ -87,6 +93,14 @@ const CardEdit = Input.extend`
   color: #757575;
 `
 
+const Extension = styled.span`
+  background-color: #BDBDBD;
+  font-size: 14px;
+  color: #757575;
+  border-radius: 2px;
+  padding: 0 1px;
+`
+
 const UpdateWrapper = Wrapper.extend`
   height: 35px;
   width: 35px;
@@ -94,64 +108,182 @@ const UpdateWrapper = Wrapper.extend`
   bottom: 3%;
   right: 5%;
   fill: #42A5F5;
-  ${'' /* stroke: #42A5F5; */}
+  ${({ isStroke }) => isStroke && `stroke: #42A5F5`};
   cursor: pointer;  
   &:hover{
     fill: #1E88E5;
-    ${'' /* stroke: #1E88E5; */}
+    ${({ isStroke }) => isStroke && `stroke: #42A5F5`};
   }
 `
 
-const DetailCard = ({ hideCard }) =>
-  <React.Fragment>
-    {/* 详情主体 */}
-    <CardWrapper
-      layout='columnTop'
-    >
-      {/* 头部 */}
-      <TitleWrapper
-        wHeight='10%'
-      >
-        <CardTitle>File Name</CardTitle>
-        <CardControl
+class DetailCard extends Component {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      isShowCloudLoading: false,
+      isShowCloudToUpload: false
+    }
+  }
+  constructor(props) {
+    super(props)
+    const {
+      detailAsset
+    } = props
+
+    const assetInfo = File.splitFileExtension(detailAsset.get('assetName'))
+
+    this.state = {
+      initAssetName: detailAsset.get('assetName'),
+      initDescription: detailAsset.get('description'),
+      assetName: assetInfo.fileName,
+      extension: assetInfo.extension,
+      description: detailAsset.get('description'),
+      isShowCloudLoading: false, // 加载
+      isShowCloudToUpload: false // 需要保存
+    }
+  }
+
+  assetNameChangeHandler = (e) => {
+    const { initAssetName } = this.state
+    this.setState({
+      assetName: e.target.value,
+      isShowCloudLoading: false,
+      isShowCloudToUpload: e.target.value !== initAssetName
+    })
+  }
+
+  descriptionChangeHandler = (e) => {
+    const { initDescription } = this.state
+    this.setState({
+      description: e.target.value,
+      isShowCloudLoading: false,
+      isShowCloudToUpload: e.target.value !== initDescription
+    })
+  }
+
+  updateCardHanlder = () => {
+    const {
+      updateCard,
+      assetKey,
+      type
+    } = this.props
+    const {
+      assetName,
+      description,
+      extension,
+      isShowCloudToUpload
+    } = this.state
+    // 判断是都需要提交
+    if (!isShowCloudToUpload) {
+      return
+    }
+    // 要提交的数据
+    const toUpdateData = {
+      assetName: `${assetName}${extension}`,
+      description
+    }
+    // 展示按钮loading
+    this.setState({
+      isShowCloudLoading: true,
+      isShowCloudToUpload: false
+    })
+    // 提交更新数据
+    updateCard(type, assetKey, toUpdateData)
+  }
+
+  getSVGIconNameByState = () => {
+    const {
+      isShowCloudLoading,
+      isShowCloudToUpload
+    } = this.state
+
+    if (isShowCloudLoading && !isShowCloudToUpload) {
+      return 'Rolling'
+    } else if(!isShowCloudLoading && isShowCloudToUpload) {
+      return 'CloudUpload'
+    } else {
+      return 'CloudDone'
+    }
+  }
+
+  render () {
+    const {
+      hideCard,
+      detailAsset
+    } = this.props
+    const {
+      assetName,
+      extension,
+      description,
+      isShowCloudLoading
+    } = this.state
+    // 每次数据更新
+    return (
+      <React.Fragment>
+        {/* 详情主体 */}
+        <CardWrapper
+          layout='columnTop'
+        >
+          {/* 头部 */}
+          <TitleWrapper
+            wHeight='10%'
+          >
+            <CardTitle>{detailAsset.get('assetName')}</CardTitle>
+            <CardControl
+              onClick={hideCard}
+            >Done</CardControl>
+          </TitleWrapper>
+          {/* 展示 */}
+          <ContentWrapper>
+              <CardContent src={detailAsset.get('url')}/>
+          </ContentWrapper>
+          {/* 编辑 */}
+          <EditWrapper
+            layout='columnCenter'
+          >
+            <InputWrapper
+              layout='rowLeft'
+            >
+              <EditName>文件名:</EditName>
+              <CardEdit
+                value={assetName}
+                onChange={this.assetNameChangeHandler}
+              />
+              <Extension>{`[${extension}]`}</Extension>
+            </InputWrapper>
+            <InputWrapper
+              layout='rowLeft'
+            >
+              <EditName>描述:</EditName>
+              <CardEdit
+                value={description}
+                onChange={this.descriptionChangeHandler}
+              />
+            </InputWrapper>
+            <InputWrapper
+              layout='rowLeft'
+            >
+              <EditName>尺寸:</EditName>
+              <ContentSize>{File.calculateFileSize(detailAsset.get('assetSize'))}</ContentSize>
+            </InputWrapper>
+          </EditWrapper>
+          <UpdateWrapper
+            onClick={this.updateCardHanlder}
+            isStroke={isShowCloudLoading}
+          >
+            <SVGIcon
+              name={this.getSVGIconNameByState()}
+              size={32}
+            />
+          </UpdateWrapper>
+        </CardWrapper>
+        {/* 背景模态 */}
+        <Modal
           onClick={hideCard}
-        >Done</CardControl>
-      </TitleWrapper>
-      {/* 展示 */}
-      <ContentWrapper>
-          <CardContent src='https://avatars0.githubusercontent.com/u/30206305?s=460&v=4'/>
-      </ContentWrapper>
-      {/* 编辑 */}
-      <EditWrapper
-        layout='columnCenter'
-      >
-        <InputWrapper
-          layout='rowLeft'
-        >
-          <EditName>文件名:</EditName>
-          <CardEdit />
-        </InputWrapper>
-        <InputWrapper
-          layout='rowLeft'
-        >
-          <EditName>描述:</EditName>
-          <CardEdit />
-        </InputWrapper>
-        <InputWrapper
-          layout='rowLeft'
-        >
-          <EditName>尺寸:</EditName>
-          <ContentSize>100M</ContentSize>
-        </InputWrapper>
-      </EditWrapper>
-      <UpdateWrapper>
-        <SVGIcon name='CloudDone' size={32} />
-      </UpdateWrapper>
-    </CardWrapper>
-    {/* 背景模态 */}
-    <Modal
-      onClick={hideCard}
-    />
-  </React.Fragment>
+        />
+      </React.Fragment>
+    )
+  }
+
+}
 
 export default DetailCard

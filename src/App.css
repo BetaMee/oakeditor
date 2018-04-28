@@ -1,3 +1,23 @@
 body {
   margin: 0;
 }
+
+/*滚动条整体部分*/
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar, ::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #bbb;
+}
+
+/*滚动条两端的箭头*/
+::-webkit-scrollbar-button{
+  display: none;
+}

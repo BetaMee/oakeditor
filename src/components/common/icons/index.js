@@ -30,6 +30,10 @@ import File from './File'
 import CloudDone from './CloudDone'
 import CloudUpload from './CloudUpload'
 import Rolling from './Rolling'
+import Spinner from './Spinner'
+import Done from './Done'
+import Success from './Success'
+import Failure from './Failure'
 
 export {
   Bold,
@@ -63,5 +67,9 @@ export {
   File,
   CloudDone,
   CloudUpload,
-  Rolling
+  Rolling,
+  Spinner,
+  Done,
+  Success,
+  Failure
 }

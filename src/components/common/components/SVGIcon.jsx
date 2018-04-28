@@ -33,7 +33,11 @@ import {
   File,
   CloudDone,
   CloudUpload,
-  Rolling
+  Rolling,
+  Spinner,
+  Done,
+  Success,
+  Failure
 } from '../icons'
 
 const SVGIconGroupMap = {
@@ -68,7 +72,11 @@ const SVGIconGroupMap = {
   File,
   CloudDone,
   CloudUpload,
-  Rolling
+  Rolling,
+  Spinner,
+  Done,
+  Success,
+  Failure
 }
 
 const SVGIcon = ({ name, className}) => {

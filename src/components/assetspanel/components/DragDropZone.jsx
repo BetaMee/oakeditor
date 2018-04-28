@@ -6,6 +6,7 @@ import Wrapper from '../../common/components/Wrapper'
 const DragDropWrapper = Wrapper.extend`
 	flex-wrap: wrap;
 	align-content: flex-start;
+	align-items: flex-start;
 `
 
 const dragDropStyle = {
