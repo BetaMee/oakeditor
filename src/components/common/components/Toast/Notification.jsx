@@ -52,27 +52,21 @@ class Notification extends Component {
     const {
       notices
     } = this.state
-    let result = []
-    notices.map((notice)=>{
+    return notices.map((notice)=>{
       // 每个Notice onClose的时候 删除掉notices中对应key的notice
       const closeCallback = () => {
       _this.remove(notice.key);
         // 如果有用户传入的onClose 执行
         if(notice.onClose) notice.onClose();
       }
-
-      result.push(
-        <Notice key={notice.key} {...notice} onClose={closeCallback} />
-      )
+      return <Notice key={notice.key} {...notice} onClose={closeCallback} />
     })
-
-    return result
   }
   getMaskDOM () {
     const {notices, hasMask} = this.state;
     // notices为空的时候 不显示蒙版
     // 始终只有一个蒙版
-    if(notices.length > 0 && hasMask == true) return <Mask />
+    if(notices.length > 0 && hasMask === true) return <Mask />
   }
   render () {
     const noticesDOM = this.getNoticeDOM()

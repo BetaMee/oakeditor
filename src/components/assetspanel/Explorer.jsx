@@ -1,5 +1,4 @@
 import React from 'react'
-import Loadable from 'react-loadable';
 // 布局组件
 import Wrapper from '../common/components/Wrapper'
 // 其他组件

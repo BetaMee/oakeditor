@@ -47,10 +47,6 @@ class Notice extends Component {
     }, 300);
   }
   render () {
-    const {
-      shouldClose
-    } = this.state
-
     return (
       <React.Fragment>
         {this.props.content}

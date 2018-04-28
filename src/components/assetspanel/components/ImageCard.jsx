@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 
 import Wrapper from '../../common/components/Wrapper'
 import alt from '../../../assets/images/alt.svg'
