@@ -10,6 +10,7 @@ import SVGIconWrapper from '../../common/components/SVGIconWrapper'
 import ItemTypes from './ItemTypes'
 import ImageCard from './ImageCard'
 import { File } from '../../../utils'
+import Clipboard from '../../common/components/Clipbord'
 
 const LinkWrapper = Wrapper.extend`
 	margin: 4px 0;
@@ -115,9 +116,9 @@ class Image extends Component {
 			src,
 			id,
 			size,
+			index,
 			maskShowKey,
 			showCard,
-			getLink,
 			isDragging,
 			deleteAsset,
 			connectDragSource,
@@ -138,14 +139,21 @@ class Image extends Component {
 					<LinkWrapper
 						wHeight='24px'
 					>
-						<Link>{src}</Link>
-						<SVGIconWrapper
-							wSize={22}
-							hoverColor='#424242'
-							onClick={getLink}
+						<Link
+							title={src}
+						>{src}</Link>
+						<Clipboard
+							data={src}
+							id={index}
 						>
-							<SVGIcon name='Link' size={18}/>
-						</SVGIconWrapper>
+							<SVGIconWrapper
+								wSize={22}
+								hoverColor='#424242'
+								title={'获取链接'}
+							>
+								<SVGIcon name='Link' size={18}/>
+							</SVGIconWrapper>
+						</Clipboard>
 					</LinkWrapper>
 					<Size>{File.calculateFileSize(size)}</Size>
 					<Wrapper

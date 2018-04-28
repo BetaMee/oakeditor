@@ -36,10 +36,6 @@ class ImageExplorer extends Component {
   moveCardHandler = (dragIndex, hoverIndex) => {
 
   }
-  // 获取图片链接
-  getLinkHandler = () => {
-
-  }
   // 显示卡片详情
   showCardDetailHandler = (assetKey) => {
     this.setState({
@@ -70,15 +66,15 @@ class ImageExplorer extends Component {
           accepts={[FILE]}
         >
           {
-            assets.map(item => {
+            assets.map((item, index) => {
               if (!item.get('isFake')) {
                 return (
                   <Image
                     key={item.get('assetKey')}
                     src={item.get('url')}
                     id={item.get('assetKey')}
+                    index={index}
                     size={item.get('assetSize')}
-                    getLink={this.getLinkHandler}
                     moveCard={this.moveCardHandler}
                     deleteAsset={deleteAsset}
                     showCard={this.showCardDetailHandler}

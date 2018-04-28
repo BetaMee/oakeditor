@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "clipboard": "^2.0.0",
     "immutable": "^3.8.2",
     "lodash": "^4.17.5",
     "moment": "^2.22.1",
