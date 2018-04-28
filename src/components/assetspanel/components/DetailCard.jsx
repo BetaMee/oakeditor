@@ -34,6 +34,11 @@ const Modal = styled.div`
 const CardTitle = styled.p`
   color: #b9b9b9;
   font-size: 14px;
+  width: 60%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
 `
 const CardControl = styled.span`
   position: absolute;
@@ -88,6 +93,14 @@ const CardEdit = Input.extend`
   color: #757575;
 `
 
+const Extension = styled.span`
+  background-color: #BDBDBD;
+  font-size: 14px;
+  color: #757575;
+  border-radius: 2px;
+  padding: 0 1px;
+`
+
 const UpdateWrapper = Wrapper.extend`
   height: 35px;
   width: 35px;
@@ -110,14 +123,23 @@ class DetailCard extends Component {
       isShowCloudToUpload: false
     }
   }
+  constructor(props) {
+    super(props)
+    const {
+      detailAsset
+    } = props
 
-  state = {
-    initAssetName: this.props.detailAsset.get('assetName'),
-    initDescription: this.props.detailAsset.get('description'),
-    assetName: this.props.detailAsset.get('assetName'),
-    description: this.props.detailAsset.get('description'),
-    isShowCloudLoading: false, // 加载
-    isShowCloudToUpload: false // 需要保存
+    const assetInfo = File.splitFileExtension(detailAsset.get('assetName'))
+
+    this.state = {
+      initAssetName: detailAsset.get('assetName'),
+      initDescription: detailAsset.get('description'),
+      assetName: assetInfo.fileName,
+      extension: assetInfo.extension,
+      description: detailAsset.get('description'),
+      isShowCloudLoading: false, // 加载
+      isShowCloudToUpload: false // 需要保存
+    }
   }
 
   assetNameChangeHandler = (e) => {
@@ -147,6 +169,7 @@ class DetailCard extends Component {
     const {
       assetName,
       description,
+      extension,
       isShowCloudToUpload
     } = this.state
     // 判断是都需要提交
@@ -155,7 +178,7 @@ class DetailCard extends Component {
     }
     // 要提交的数据
     const toUpdateData = {
-      assetName,
+      assetName: `${assetName}${extension}`,
       description
     }
     // 展示按钮loading
@@ -189,6 +212,7 @@ class DetailCard extends Component {
     } = this.props
     const {
       assetName,
+      extension,
       description,
       isShowCloudLoading
     } = this.state
@@ -224,6 +248,7 @@ class DetailCard extends Component {
                 value={assetName}
                 onChange={this.assetNameChangeHandler}
               />
+              <Extension>{`[${extension}]`}</Extension>
             </InputWrapper>
             <InputWrapper
               layout='rowLeft'
