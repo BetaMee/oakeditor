@@ -34,6 +34,11 @@ import Spinner from './Spinner'
 import Done from './Done'
 import Success from './Success'
 import Failure from './Failure'
+import ToggleUp from './ToggleUp'
+import ToggleDown from './ToggleDown'
+import RenderMode from './RenderMode'
+import WriteMode from './WriteMode'
+
 
 export {
   Bold,
@@ -71,5 +76,9 @@ export {
   Spinner,
   Done,
   Success,
-  Failure
+  Failure,
+  ToggleUp,
+  ToggleDown,
+  RenderMode,
+  WriteMode
 }
