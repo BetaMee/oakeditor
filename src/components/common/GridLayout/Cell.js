@@ -15,6 +15,8 @@ const justifySelf = ({ justifySelf }) => justifySelf && `justify-self: ${justify
 
 const alignSelf = ({ alignSelf }) => alignSelf && `align-self: ${alignSelf}`
 
+const display = ({ gDisplay }) => !gDisplay && `display: none`
+
 const Cell = styled.section`
   ${height};
   ${width};
@@ -24,7 +26,8 @@ const Cell = styled.section`
   grid-row-end: ${({ spanHeight = 1 }) => `span ${spanHeight}`};
   ${gridArea};
   ${justifySelf};
-  ${alignSelf}
+  ${alignSelf};
+  ${display}
 `
 
 Cell.propTypes = {
@@ -38,6 +41,11 @@ Cell.propTypes = {
   alignSelf: PropTypes.string,  
   spanHeight: PropTypes.number,
   spanWidth: PropTypes.number,
+  gDisplay: PropTypes.bool
+}
+
+Cell.defaultProps = {
+  gDisplay: true
 }
 
 export default Cell
