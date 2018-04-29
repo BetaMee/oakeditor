@@ -2,45 +2,86 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import Wrapper from '../common/components/Wrapper'
-
-const ContentEditArea = styled.div`
-  height: 100%;
-  width: 50%;
-  padding-left: 50px;
-`
+import ContentEditArea from './ContentEditArea'
+import ContentPreviewArea from './ContentPreviewArea'
+import SettingBar from './SettingBar'
+import { Grid, Cell } from '../common/GridLayout'
 
 class Board extends Component {
-  handleInput = (e) => {
-    console.log('handleInput')    
-    console.log(e.target)
+  state = {
+    renderMode: 0 // 页面渲染模式, 0是普通模式 1是写模式 2是预览模式
   }
-  handleChange = (e) => {
-    console.log('handleChange')    
-    console.log(e)
+  toggleRenderMode = (mode) => {
+    this.setState(({ renderMode }) => {
+      if (renderMode === mode) {
+        return {
+          renderMode: 0
+        }
+      } else {
+        return {
+          renderMode: mode
+        }
+      }
+    })
   }
-  handleKeyDown = (e) => {
-    console.log('handleKeyDown')
-    // console.log(e)
-    let selection = window.getSelection();
-    let range = selection.getRangeAt(0);
-    console.log(range)
+  getRenderModeLayout = () => {
+    const {
+      renderMode
+    } = this.state
+    switch(renderMode) {
+      case 0: // 普通模式
+        return `1fr 26px 1fr`
+      case 1: // 写模式
+        return `1fr 26px`
+      case 2: // 预览模式
+        return `26px 1fr`
+    }
   }
-  handleBlur = (e) => {
-    console.log('handleBlur')
-    console.log(e)
-  }
+
   render() {
+    const {
+      toggleUp,
+      toggleDown,
+      isToggleUp,
+      isToggleDown,
+    } = this.props
+    const {
+      renderMode
+    } = this.state
+    const gridColumnParams = this.getRenderModeLayout()
     return (
-      <Wrapper
-        layout='rowLeft'
-      >
-        <ContentEditArea
-          contentEditable={true}
-          onChange={this.handleChange}
-          onInput={this.handleInput}
-          onKeyDown={this.handleKeyDown}
-          onBlur={this.handleBlur}
-        />
+      <Wrapper>
+        <Grid
+          gColumns={gridColumnParams}
+          gRows={1}
+          gap='0px'
+          gHeight='100%'
+          gWidth='100%'
+        >
+          {/* 编辑内容区域 */}
+          <Cell
+            gDisplay={renderMode !== 2}
+          >
+            <ContentEditArea />
+          </Cell>
+          {/* 设置栏 */}
+          <Cell>
+            <SettingBar
+              toggleUp={toggleUp}
+              toggleDown={toggleDown}
+              toggleRenderMode={this.toggleRenderMode}
+              renderMode={renderMode}
+              isToggleUp={isToggleUp}
+              isToggleDown={isToggleDown}
+            />
+          </Cell>
+          {/* 预览区域 */}
+          <Cell
+            gDisplay={renderMode !== 1}
+          >
+            <ContentPreviewArea />
+          </Cell>
+        </Grid>
       </Wrapper>
     )
   }

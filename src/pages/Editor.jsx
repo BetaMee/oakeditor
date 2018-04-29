@@ -14,7 +14,9 @@ class Editor extends Component {
   state = {
     isShowFilePanel: false,
     isShowMenuPanel: false,
-    isShowAssetsPanel: false
+    isShowAssetsPanel: false,
+    isToggleUp: false, // 页面切换模式
+    isToggleDown: false
   }
 
   openFilePanel = () => {
@@ -53,7 +55,31 @@ class Editor extends Component {
     }))
   }
 
+  toggleUp = () => {
+    this.setState(({ isToggleUp }) => ({
+      isToggleUp: !isToggleUp
+    }))
+  }
+
+  toggleDown = () => {
+    this.setState(({ isToggleDown }) => ({
+      isToggleDown: !isToggleDown
+    }))
+  }
+
+  getPageToggleLayout = () => {
+    const {
+      isToggleUp,
+      isToggleDown,
+    } = this.state
+    return `${isToggleUp ? '': '44px'} 1fr ${isToggleDown ? '': '22px'}`
+  }
   render() {
+    const gridRowParams = this.getPageToggleLayout()
+    const {
+      isToggleUp,
+      isToggleDown,
+    } = this.state
     return (
       <Wrapper
         wWidth='100vw'
@@ -61,13 +87,15 @@ class Editor extends Component {
       >
         <Grid
           gColumns={1}
-          gRows={'44px 1fr 22px'}
+          gRows={gridRowParams}
           gap='0px'
           gHeight='100%'
           gWidth='100%'
         >
           {/* 工具栏 */}
-          <Cell>
+          <Cell
+            gDisplay={!isToggleUp}
+          >
             <ToolBar
               openFilePanel={this.openFilePanel}
               openMenuPanel={this.openMenuPanel}
@@ -76,10 +104,17 @@ class Editor extends Component {
           </Cell>
           {/* 编辑器主板 */}
           <Cell>
-            <Borad />
+            <Borad
+              toggleUp={this.toggleUp}
+              toggleDown={this.toggleDown}
+              isToggleUp={isToggleUp}
+              isToggleDown={isToggleDown}
+            />
           </Cell>
           {/* 底部状态栏 */}
-          <Cell>
+          <Cell
+            gDisplay={!isToggleDown}
+          >
             <StatusBar />
           </Cell>
         </Grid>
