@@ -8,8 +8,10 @@ class ContentPreviewArea extends Component {
 
   render() {
     return (
-      <div>
-      </div>
+      <Wrapper
+        backgroundColor='#f3f3f3'
+      >
+      </Wrapper>
     )
   }
 }

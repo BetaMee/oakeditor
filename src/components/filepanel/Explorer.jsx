@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { fromJS } from 'immutable'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import Wrapper from '../common/components/Wrapper'
 import ContextMenuEnhance from '../common/enhance/ContextMenuEnhance'
@@ -94,6 +96,23 @@ const ExplorerLists = fromJS([
   }
 ])
 
+const GET_ARCHIVES = gql`
+  {
+    archive(archiveId: "8b656dfd-0465-4c03-a470-001706d61f1b") {
+      name
+      updatedAt
+      createdAt
+      articles {
+        title
+        content
+        updatedAt
+        createdAt
+        isPublished
+      }
+    }
+  }
+`
+
 class Explorer extends Component {
   state = {
     explorerLists: ExplorerLists,
@@ -184,44 +203,46 @@ class Explorer extends Component {
     } = this.state
 
     return (
-      <ExplorerWrapper
-        menuConfig={this.getExplorerContextMenuDefine()}
-        layout='columnTopLeft'
-        wHeight='90%'
-      >
-        {
-          explorerLists.map(folder => (
-            <FolderWrapper
-              key={folder.get('folderIndex')}
-            >
-              <Folder
-                menuConfig={this.getFolderContextMenuDefine()}
-                name={folder.get('folderName')}
-                isExpand={folder.get('isExpand')}
-                folderKey={folder.get('folderIndex')}
-                folderClickHandler={this.folderClickHandler}
-              />
-              <FileWrapper
-                isExpand={folder.get('isExpand')}
+      // <Query query={GET_ARCHIVES}>
+        <ExplorerWrapper
+          menuConfig={this.getExplorerContextMenuDefine()}
+          layout='columnTopLeft'
+          wHeight='90%'
+        >
+          {
+            explorerLists.map(folder => (
+              <FolderWrapper
+                key={folder.get('folderIndex')}
               >
-                {
-                  folder.get('fileLists').map(file => (
-                    <File
-                      menuConfig={this.getFileContextMenuDefine()}                    
-                      name={file.get('fileName')}
-                      key={file.get('fileIndex')}
-                      isSelected={file.get('isSelected')}
-                      folderKey={folder.get('folderIndex')}                      
-                      fileKey={file.get('fileIndex')}
-                      fileClickHandler={this.fileClickHandler}
-                    />
-                  ))
-                }
-              </FileWrapper>
-            </FolderWrapper>
-          ))
-        }
-      </ExplorerWrapper>
+                <Folder
+                  menuConfig={this.getFolderContextMenuDefine()}
+                  name={folder.get('folderName')}
+                  isExpand={folder.get('isExpand')}
+                  folderKey={folder.get('folderIndex')}
+                  folderClickHandler={this.folderClickHandler}
+                />
+                <FileWrapper
+                  isExpand={folder.get('isExpand')}
+                >
+                  {
+                    folder.get('fileLists').map(file => (
+                      <File
+                        menuConfig={this.getFileContextMenuDefine()}                    
+                        name={file.get('fileName')}
+                        key={file.get('fileIndex')}
+                        isSelected={file.get('isSelected')}
+                        folderKey={folder.get('folderIndex')}                      
+                        fileKey={file.get('fileIndex')}
+                        fileClickHandler={this.fileClickHandler}
+                      />
+                    ))
+                  }
+                </FileWrapper>
+              </FolderWrapper>
+            ))
+          }
+        </ExplorerWrapper>
+      // </Query>
     )
   }
 }
