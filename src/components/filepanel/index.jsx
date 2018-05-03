@@ -12,16 +12,21 @@ const FileWrapper = Wrapper.extend`
   left: 0;
   z-index: 999;
   background-color: rgba(0,0,0,0.3);
+  ${({ isDisplay }) => !isDisplay && `display: none`}
 `
 
 class FilePanel extends Component {
   render() {
-    const { hideFilePanel } = this.props
+    const {
+      hideFilePanel,
+      isDisplay
+    } = this.props
     return (
       <Modal>
         <FileWrapper
           onClick={hideFilePanel}
           isUserSelect={false}
+          isDisplay={isDisplay}
         >
           {/* file panel */}
           <Panel />

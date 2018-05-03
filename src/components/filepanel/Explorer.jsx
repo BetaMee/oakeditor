@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { fromJS } from 'immutable'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { fromJS, Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 import Wrapper from '../common/components/Wrapper'
 import ContextMenuEnhance from '../common/enhance/ContextMenuEnhance'
-
 import {
   FolderWrapper,
   Folder
@@ -18,104 +17,27 @@ import {
 
 const ExplorerWrapper = ContextMenuEnhance(Wrapper)
 
-const ExplorerLists = fromJS([
-  {
-    folderName: 'LifeLogs',
-    folderIndex: 0,
-    isExpand: true,
-    fileLists: [
-      {
-        fileName: 'Issuse: 毕设怎么搞啊',
-        fileLink: '',
-        fileIndex: 0,
-        isSelected: true,        
-      },
-      {
-        fileName: 'Issuse: 毕设怎么搞啊',
-        fileLink: '',
-        fileIndex: 1,
-        isSelected: false,        
-      },
-      {
-        fileName: 'Issuse: 毕设怎么搞啊',
-        fileLink: '',
-        fileIndex: 2,
-        isSelected: false,        
-      }
-    ],
-  },
-  {
-    folderName: 'LinuxLogs',
-    folderIndex: 1,
-    isExpand: false,
-    fileLists: [
-      {
-        fileName: 'Issuse: 论如何学好前端',
-        fileLink: '',
-        fileIndex: 3,
-        isSelected: false,        
-      },
-      {
-        fileName: 'Issuse: 论如何学好前端',
-        fileLink: '',
-        fileIndex: 4,
-        isSelected: false,      
-      },
-      {
-        fileName: 'Issuse: 论如何学好前端',
-        fileLink: '',
-        fileIndex: 5,
-        isSelected: false,        
-      }
-    ],
-  },
-  {
-    folderName: 'LifeLogs',
-    folderIndex: 2,
-    isExpand: false,
-    fileLists: [
-      {
-        fileName: 'Issuse: 做人呢，最重要的是开心',
-        fileLink: '',
-        fileIndex: 6,
-        isSelected: false,                
-      },
-      {
-        fileName: 'Issuse: 做人呢，最重要的是开心',
-        fileLink: '',
-        fileIndex: 7,
-        isSelected: false,                
-      },
-      {
-        fileName: 'Issuse: 做人呢，最重要的是开心',
-        fileLink: '',
-        fileIndex: 8,
-        isSelected: false,        
-      }
-    ],
-  }
-])
-
-const GET_ARCHIVES = gql`
-  {
-    archive(archiveId: "8b656dfd-0465-4c03-a470-001706d61f1b") {
-      name
-      updatedAt
-      createdAt
-      articles {
-        title
-        content
-        updatedAt
-        createdAt
-        isPublished
-      }
-    }
-  }
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: rgba(0,0,0,.75);
 `
 
 class Explorer extends Component {
+  // 转换数据
+  static convertDataToExplorerList = data => data.map(item => fromJS({
+    folderName: item.get('name'),
+    folderIndex: item.get('archiveId'),
+    isExpand: false,
+    fileLists: item.get('articles').map(article => Map({
+      fileName: article.get('title'),
+      fileIndex: article.get('articleId'),
+      fileLink: article.get('articleId'),
+      isSelected: false
+    }))
+  }))
+
   state = {
-    explorerLists: ExplorerLists,
+    explorerLists: Explorer.convertDataToExplorerList(this.props.data),
   }
 
   getExplorerContextMenuDefine = () => {
@@ -201,48 +123,48 @@ class Explorer extends Component {
     const {
       explorerLists
     } = this.state
-
+    console.log(explorerLists.toJS())
     return (
-      // <Query query={GET_ARCHIVES}>
-        <ExplorerWrapper
-          menuConfig={this.getExplorerContextMenuDefine()}
-          layout='columnTopLeft'
-          wHeight='90%'
-        >
-          {
-            explorerLists.map(folder => (
-              <FolderWrapper
-                key={folder.get('folderIndex')}
+      <ExplorerWrapper
+        menuConfig={this.getExplorerContextMenuDefine()}
+        layout='columnTopLeft'
+        wHeight='90%'
+      >
+        {
+          explorerLists.map(folder => (
+            <FolderWrapper
+              key={folder.get('folderIndex')}
+            >
+              <Folder
+                menuConfig={this.getFolderContextMenuDefine()}
+                name={folder.get('folderName')}
+                isExpand={folder.get('isExpand')}
+                folderKey={folder.get('folderIndex')}
+                folderClickHandler={this.folderClickHandler}
+              />
+              <FileWrapper
+                isExpand={folder.get('isExpand')}
               >
-                <Folder
-                  menuConfig={this.getFolderContextMenuDefine()}
-                  name={folder.get('folderName')}
-                  isExpand={folder.get('isExpand')}
-                  folderKey={folder.get('folderIndex')}
-                  folderClickHandler={this.folderClickHandler}
-                />
-                <FileWrapper
-                  isExpand={folder.get('isExpand')}
-                >
-                  {
-                    folder.get('fileLists').map(file => (
+                {
+                  folder.get('fileLists').map(file => (
+                    <StyledLink to={`/${folder.get('folderName')}/${file.get('fileIndex')}`}>
                       <File
-                        menuConfig={this.getFileContextMenuDefine()}                    
+                        menuConfig={this.getFileContextMenuDefine()}
                         name={file.get('fileName')}
                         key={file.get('fileIndex')}
                         isSelected={file.get('isSelected')}
-                        folderKey={folder.get('folderIndex')}                      
+                        folderKey={folder.get('folderIndex')}
                         fileKey={file.get('fileIndex')}
                         fileClickHandler={this.fileClickHandler}
                       />
-                    ))
-                  }
-                </FileWrapper>
-              </FolderWrapper>
-            ))
-          }
-        </ExplorerWrapper>
-      // </Query>
+                    </StyledLink>
+                  ))
+                }
+              </FileWrapper>
+            </FolderWrapper>
+          ))
+        }
+      </ExplorerWrapper>
     )
   }
 }

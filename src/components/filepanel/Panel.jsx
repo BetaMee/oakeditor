@@ -3,6 +3,22 @@ import React, { Component } from 'react'
 import Wrapper from '../common/components/Wrapper'
 import PanelTitle from './PanelTitle'
 import Explorer from './Explorer'
+import { fromJS } from 'immutable'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+
+const GET_ARCHIVES = gql`
+query archives($attachId: String!){
+  attachedArchives(attachId: $attachId) {
+    archiveId
+    name
+    articles {
+      articleId
+      title
+    }
+  }
+}
+`
 
 const PanelWrapper = Wrapper.extend`
   width: 20%;
@@ -50,6 +66,7 @@ class Panel extends Component {
   }
 
   render() {
+    const attachId = 'd5da709f-dc12-413f-a7d6-073357799fb5'
     return (
       <PanelWrapper
         layout='columnTop'
@@ -59,14 +76,31 @@ class Panel extends Component {
         {/* title */}
         <PanelTitle />
         {/* explorer */}
-        <Explorer
-          AddNewFileHandler={this.AddNewFileHandler}
-          AddNewFolderHandler={this.AddNewFolderHandler}
-          DeleteFileHandler={this.DeleteFileHandler}
-          DeleteFolderHandler={this.DeleteFolderHandler}
-          RenameFileHandler={this.RenameFileHandler}
-          RenameFolderHandler={this.RenameFolderHandler}
-        />
+        <Query
+          query={GET_ARCHIVES}
+          variables={{ attachId }}
+        >
+          {({ loading, error, data }) => {
+            if (loading) {
+              return null
+            }
+            if (error) {
+              return null
+            }
+            const { attachedArchives } = data
+            return (
+              <Explorer
+                AddNewFileHandler={this.AddNewFileHandler}
+                AddNewFolderHandler={this.AddNewFolderHandler}
+                DeleteFileHandler={this.DeleteFileHandler}
+                DeleteFolderHandler={this.DeleteFolderHandler}
+                RenameFileHandler={this.RenameFileHandler}
+                RenameFolderHandler={this.RenameFolderHandler}
+                data={fromJS(attachedArchives)}
+              />
+            )
+          }}
+        </Query>
       </PanelWrapper>
     )
   }

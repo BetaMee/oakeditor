@@ -119,19 +119,15 @@ class Editor extends Component {
           </Cell>
         </Grid>
         {/* file panel */}
-        {
-          this.state.isShowFilePanel &&
-            <FilePanel
-              hideFilePanel={this.hideFilePanel}
-            />
-        }
+        <FilePanel
+          isDisplay={this.state.isShowFilePanel}
+          hideFilePanel={this.hideFilePanel}
+        />
         {/* setting panel */}
-        {
-          this.state.isShowMenuPanel &&
-            <MenuPanel
-              hideMenuPanel={this.hideMenuPanel}
-            />
-        }
+        <MenuPanel
+          isDisplay={this.state.isShowMenuPanel}
+          hideMenuPanel={this.hideMenuPanel}
+        />
         {/* assets panel */}
         {
           this.state.isShowAssetsPanel &&
