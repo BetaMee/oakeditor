@@ -106,7 +106,8 @@ class Panel extends Component {
       contextAction
     } = this.props
     const {
-      editorSrore
+      editorSrore,
+      articleId
     } = contextData
     const {
       updateArticleId
@@ -128,6 +129,7 @@ class Panel extends Component {
           RenameFileHandler={this.RenameFileHandler}
           RenameFolderHandler={this.RenameFolderHandler}
           data={editorSrore}
+          articleId={articleId}
           updateArticleId={updateArticleId}
         />
       </PanelWrapper>

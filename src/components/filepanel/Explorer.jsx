@@ -24,26 +24,35 @@ const StyledLink = styled(Link)`
 
 class Explorer extends Component {
   // 转换数据
-  static convertDataToExplorerList = (data, explorerData) => data.map((item, index) => {
+  static convertDataToExplorerList = (data, explorerData, currentArticleId) => data.map((item, index) => {
+    let isExpand = explorerData.size !== 0 ? explorerData.get(index).get('isExpand') : false
+    // 判断是否folder展示有冲突
+    const currentArticle = item.get('articles').find(article => article.get('articleId') === currentArticleId)
+    const isCurrentFlag = Map.isMap(currentArticle) && !isExpand
+    if (isCurrentFlag) {
+      isExpand = true
+    }
     return fromJS({
       folderName: item.get('name'),
       folderIndex: item.get('archiveId'),
-      isExpand: explorerData.size !== 0 ? explorerData.get(index).get('isExpand') : false,
-      fileLists: item.get('articles').map(article => Map({
-        fileName: article.get('title'),
-        fileIndex: article.get('articleId'),
-        fileLink: article.get('articleId'),
-        isSelected: explorerData.size !== 0 ? explorerData.get(index).get('isSelected') : false
-      }))
+      isExpand: isExpand,
+      fileLists: item.get('articles').map(article => {
+        return Map({
+          fileName: article.get('title'),
+          fileIndex: article.get('articleId'),
+          fileLink: article.get('articleId'),
+          isSelected: article.get('articleId') === currentArticleId
+        })
+      })
     })
   })
   static getDerivedStateFromProps (nextProps, prevState) {
     return {
-      explorerLists: Explorer.convertDataToExplorerList(nextProps.data, prevState.explorerLists)
+      explorerLists: Explorer.convertDataToExplorerList(nextProps.data, prevState.explorerLists, nextProps.articleId)
     }
   }
   state = {
-    explorerLists: Explorer.convertDataToExplorerList(this.props.data, List()),
+    explorerLists: Explorer.convertDataToExplorerList(this.props.data, List(), this.props.articleId),
   }
 
   getExplorerContextMenuDefine = () => {
@@ -135,6 +144,7 @@ class Explorer extends Component {
     const {
       explorerLists
     } = this.state
+    // console.log(explorerLists.toJS())
     return (
       <ExplorerWrapper
         menuConfig={this.getExplorerContextMenuDefine()}
