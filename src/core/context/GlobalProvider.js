@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import GlobalContext from './GlobalContext'
+import { List } from 'immutable'
 
 class GlobalProvider extends Component {
   state = { // 全局state
     articleId: '',
-    userId: ''
+    userId: 'd5da709f-dc12-413f-a7d6-073357799fb5',
+    editorSrore: List()
   }
   // 操作
   updateArticleId = (newArticleId) => {
@@ -17,19 +19,27 @@ class GlobalProvider extends Component {
       userId: newUserId
     })
   }
+  updateEditorSrore = (newStore) => {
+    this.setState({
+      editorSrore: newStore
+    })
+  }
   render() {
     const {
       articleId,
-      userId
+      userId,
+      editorSrore
     } = this.state
     const providerValue = {
       data: {
         articleId,
-        userId
+        userId,
+        editorSrore
       },
       action: {
         updateArticleId: this.updateArticleId,
-        updateUserId: this.updateUserId
+        updateUserId: this.updateUserId,
+        updateEditorSrore: this.updateEditorSrore
       }
     }
     return (

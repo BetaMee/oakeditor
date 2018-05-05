@@ -7,9 +7,11 @@ class ContentEditArea extends Component {
   }
 
   render() {
+    const { content } = this.props
     return (
-      <div>
-      </div>
+      <Wrapper>
+        {content}
+      </Wrapper>
     )
   }
 }

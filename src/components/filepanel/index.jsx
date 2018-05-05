@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import Wrapper from '../common/components/Wrapper'
 // Modal组件
@@ -15,25 +15,16 @@ const FileWrapper = Wrapper.extend`
   ${({ isDisplay }) => !isDisplay && `display: none`}
 `
 
-class FilePanel extends Component {
-  render() {
-    const {
-      hideFilePanel,
-      isDisplay
-    } = this.props
-    return (
-      <Modal>
-        <FileWrapper
-          onClick={hideFilePanel}
-          isUserSelect={false}
-          isDisplay={isDisplay}
-        >
-          {/* file panel */}
-          <Panel />
-        </FileWrapper>
-      </Modal>
-    )
-  }
-}
+const FilePanel = ({ hideFilePanel, isDisplay }) =>
+  <Modal>
+    <FileWrapper
+      onClick={hideFilePanel}
+      isUserSelect={false}
+      isDisplay={isDisplay}
+    >
+      {/* file panel */}
+      <Panel />
+    </FileWrapper>
+  </Modal>
 
 export default FilePanel

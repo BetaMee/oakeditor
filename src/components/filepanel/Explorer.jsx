@@ -35,7 +35,11 @@ class Explorer extends Component {
       isSelected: false
     }))
   }))
-
+  static getDerivedStateFromProps (nextProps, prevState) {
+    return {
+      explorerLists: Explorer.convertDataToExplorerList(nextProps.data)
+    }
+  }
   state = {
     explorerLists: Explorer.convertDataToExplorerList(this.props.data),
   }
@@ -96,8 +100,14 @@ class Explorer extends Component {
 
   fileClickHandler = (folderKey, fileKey) => {
     const {
+      updateArticleId
+    } = this.props
+    const {
       explorerLists
     } = this.state
+    // 更新全局contex
+    updateArticleId(fileKey)
+    // 生成新的explorerlist
     const newExplorerLists = explorerLists
       .map(explorer => {
         if (explorer.get('folderIndex') === folderKey) {
@@ -123,7 +133,6 @@ class Explorer extends Component {
     const {
       explorerLists
     } = this.state
-    console.log(explorerLists.toJS())
     return (
       <ExplorerWrapper
         menuConfig={this.getExplorerContextMenuDefine()}
@@ -147,11 +156,13 @@ class Explorer extends Component {
               >
                 {
                   folder.get('fileLists').map(file => (
-                    <StyledLink to={`/${folder.get('folderName')}/${file.get('fileIndex')}`}>
+                    <StyledLink
+                      key={file.get('fileIndex')}
+                      to={`/${folder.get('folderName')}/${file.get('fileIndex')}`}
+                    >
                       <File
                         menuConfig={this.getFileContextMenuDefine()}
                         name={file.get('fileName')}
-                        key={file.get('fileIndex')}
                         isSelected={file.get('isSelected')}
                         folderKey={folder.get('folderIndex')}
                         fileKey={file.get('fileIndex')}

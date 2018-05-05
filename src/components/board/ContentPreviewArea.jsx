@@ -7,10 +7,12 @@ class ContentPreviewArea extends Component {
   }
 
   render() {
+    const { content } = this.props    
     return (
       <Wrapper
         backgroundColor='#f3f3f3'
       >
+      { content }
       </Wrapper>
     )
   }

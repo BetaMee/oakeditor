@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Route } from 'react-router-dom'
 // 引入组件
 import AssetsPanel from '../components/assetspanel'
 import Borad from '../components/board'
@@ -9,6 +10,7 @@ import ToolBar from '../components/toolbar'
 import Wrapper from '../components/common/components/Wrapper'
 // Grid布局组件
 import { Grid, Cell } from '../components/common/GridLayout'
+
 
 class Editor extends Component {
   state = {
@@ -104,11 +106,17 @@ class Editor extends Component {
           </Cell>
           {/* 编辑器主板 */}
           <Cell>
-            <Borad
-              toggleUp={this.toggleUp}
-              toggleDown={this.toggleDown}
-              isToggleUp={isToggleUp}
-              isToggleDown={isToggleDown}
+            <Route
+              path='/:archive/:articleId'
+              render={({ match }) => (
+                <Borad
+                  toggleUp={this.toggleUp}
+                  toggleDown={this.toggleDown}
+                  isToggleUp={isToggleUp}
+                  isToggleDown={isToggleDown}
+                  routeParams={match.params}
+                />
+              )}
             />
           </Cell>
           {/* 底部状态栏 */}

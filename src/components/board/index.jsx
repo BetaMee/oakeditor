@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
+import { Map } from 'immutable'
 
 import Wrapper from '../common/components/Wrapper'
 import ContentEditArea from './ContentEditArea'
 import ContentPreviewArea from './ContentPreviewArea'
 import SettingBar from './SettingBar'
 import { Grid, Cell } from '../common/GridLayout'
+import { context } from '../../core'
+
+const { GlobalConsumer } = context
 
 class Board extends Component {
   state = {
@@ -38,17 +41,58 @@ class Board extends Component {
     }
   }
 
+  getCurrentArticle = (id, store) => {
+    const currentArticle = store.map(archive => archive.get('articles'))
+      .flatten(1)
+      .find((article) => article.get('articleId') === id)
+    if (currentArticle) {
+      return currentArticle
+    } else {
+      return Map({
+        content: 'Loading...'
+      })
+    }
+  }
+
+  componentDidMount() {
+    const {
+      contextData,
+      contextAction,
+      routeParams
+    } = this.props
+    const {
+      updateArticleId
+    } = contextAction
+    const {
+      articleId
+    } = routeParams
+    // 判断全家store是否为空
+    if (contextData.articleId === '') {
+      updateArticleId(articleId)
+    }
+  }
+
   render() {
     const {
       toggleUp,
       toggleDown,
       isToggleUp,
       isToggleDown,
+      contextData,
+      routeParams
     } = this.props
     const {
       renderMode
     } = this.state
+    const {
+      editorSrore
+    } = contextData
+    const {
+      articleId
+    } = routeParams
+    // 获取布局参数
     const gridColumnParams = this.getRenderModeLayout()
+    const currentArticle = this.getCurrentArticle(articleId, editorSrore)
     return (
       <Wrapper>
         <Grid
@@ -62,7 +106,9 @@ class Board extends Component {
           <Cell
             gDisplay={renderMode !== 2}
           >
-            <ContentEditArea />
+            <ContentEditArea
+              content={currentArticle.get('content')}
+            />
           </Cell>
           {/* 设置栏 */}
           <Cell>
@@ -79,7 +125,9 @@ class Board extends Component {
           <Cell
             gDisplay={renderMode !== 1}
           >
-            <ContentPreviewArea />
+            <ContentPreviewArea
+              content={currentArticle.get('content')}
+            />
           </Cell>
         </Grid>
       </Wrapper>
@@ -87,4 +135,4 @@ class Board extends Component {
   }
 }
 
-export default Board
+export default GlobalConsumer(Board)
