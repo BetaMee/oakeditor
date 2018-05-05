@@ -75,12 +75,14 @@ class Status extends Component {
         const _newEditorSrore = editorSrore.map(archive => archive.update('articles', (articles) => {
           return articles.map((article) => {
             if (article.get('articleId') === articleId) {
-              return article.update('title', () => updatedArticle.title)
+              return article.update('title', () => updatedArticle.data.title)
             } else {
               return article
             }
           })
         }))
+        console.log(editorSrore.toJS())
+        console.log(_newEditorSrore.toJS())
         updateEditorSrore(_newEditorSrore)
       } else {
         console.log(updatedArticle.message)
