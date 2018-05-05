@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { fromJS, Map } from 'immutable'
+import { fromJS, Map, List } from 'immutable'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -24,24 +24,26 @@ const StyledLink = styled(Link)`
 
 class Explorer extends Component {
   // 转换数据
-  static convertDataToExplorerList = data => data.map(item => fromJS({
-    folderName: item.get('name'),
-    folderIndex: item.get('archiveId'),
-    isExpand: false,
-    fileLists: item.get('articles').map(article => Map({
-      fileName: article.get('title'),
-      fileIndex: article.get('articleId'),
-      fileLink: article.get('articleId'),
-      isSelected: false
-    }))
-  }))
+  static convertDataToExplorerList = (data, explorerData) => data.map((item, index) => {
+    return fromJS({
+      folderName: item.get('name'),
+      folderIndex: item.get('archiveId'),
+      isExpand: explorerData.size !== 0 ? explorerData.get(index).get('isExpand') : false,
+      fileLists: item.get('articles').map(article => Map({
+        fileName: article.get('title'),
+        fileIndex: article.get('articleId'),
+        fileLink: article.get('articleId'),
+        isSelected: explorerData.size !== 0 ? explorerData.get(index).get('isSelected') : false
+      }))
+    })
+  })
   static getDerivedStateFromProps (nextProps, prevState) {
     return {
-      explorerLists: Explorer.convertDataToExplorerList(nextProps.data)
+      explorerLists: Explorer.convertDataToExplorerList(nextProps.data, prevState.explorerLists)
     }
   }
   state = {
-    explorerLists: Explorer.convertDataToExplorerList(this.props.data),
+    explorerLists: Explorer.convertDataToExplorerList(this.props.data, List()),
   }
 
   getExplorerContextMenuDefine = () => {
