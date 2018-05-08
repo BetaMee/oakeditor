@@ -78,18 +78,15 @@ class Board extends Component {
       toggleDown,
       isToggleUp,
       isToggleDown,
-      contextData,
-      routeParams
+      contextData
     } = this.props
     const {
       renderMode
     } = this.state
     const {
-      editorSrore
-    } = contextData
-    const {
+      editorSrore,
       articleId
-    } = routeParams
+    } = contextData
     // 获取布局参数
     const gridColumnParams = this.getRenderModeLayout()
     const currentArticle = this.getCurrentArticle(articleId, editorSrore)

@@ -24,29 +24,31 @@ const StyledLink = styled(Link)`
 
 class Explorer extends Component {
   // 转换数据
-  static convertDataToExplorerList = (data, explorerData, currentArticleId) => data.map((item, index) => {
+  static convertDataToExplorerList = (data, explorerData, currentArticleId) => data.map((_item, index) => {
     let isExpand = explorerData.size !== 0 ? explorerData.get(index).get('isExpand') : false
     // 判断是否folder展示有冲突
-    const currentArticle = item.get('articles').find(article => article.get('articleId') === currentArticleId)
+    const currentArticle = _item.get('articles').find(_article => _article.get('articleId') === currentArticleId)
     const isCurrentFlag = Map.isMap(currentArticle) && !isExpand
     if (isCurrentFlag) {
       isExpand = true
     }
     return fromJS({
-      folderName: item.get('name'),
-      folderIndex: item.get('archiveId'),
+      folderName: _item.get('name'),
+      folderIndex: _item.get('archiveId'),
       isExpand: isExpand,
-      fileLists: item.get('articles').map(article => {
+      folderEdit: false,
+      fileLists: _item.get('articles').map(_article => {
         return Map({
-          fileName: article.get('title'),
-          fileIndex: article.get('articleId'),
-          fileLink: article.get('articleId'),
-          isSelected: article.get('articleId') === currentArticleId
+          fileName: _article.get('title'),
+          fileIndex: _article.get('articleId'),
+          fileEdit: false,
+          isSelected: _article.get('articleId') === currentArticleId
         })
       })
     })
   })
   static getDerivedStateFromProps (nextProps, prevState) {
+    console.log(nextProps)
     return {
       explorerLists: Explorer.convertDataToExplorerList(nextProps.data, prevState.explorerLists, nextProps.articleId)
     }
@@ -60,55 +62,132 @@ class Explorer extends Component {
       AddNewFolderHandler,
     } = this.props
 
-    return {
-      activeHandler: AddNewFolderHandler,
-      activeTag: 0,
-      displayTags: [0, 1, 2, 3]
-    }
+    return [
+      {
+        handler: AddNewFolderHandler,
+        tag: 0
+      }
+    ]
   }
-
-  getFolderContextMenuDefine = () => {
-    const {
-      AddNewFolderHandler,
-    } = this.props
-
-    return {
-      activeHandler: AddNewFolderHandler,
-      activeTag: 1,
-      displayTags: [0, 1, 2, 3]
-    }
+  // 生成文件夹右键菜单栏
+  getFolderContextMenuDefine = (folderKey) => {
+    return [
+      {
+        handler: () => this.AddNewFileHandler(folderKey),
+        tag: 1
+      },
+      {
+        handler: () => this.RenameFolderHandler(folderKey),
+        tag: 2
+      },
+      {
+        handler: () => this.DeleteFolderHandler(folderKey),
+        tag: 3
+      }
+    ]
   }
-
-  getFileContextMenuDefine = () => {
-    const {
-      AddNewFolderHandler,
-    } = this.props
-
-    return {
-      activeHandler: AddNewFolderHandler,
-      activeTag: 2,
-      displayTags: [0, 1, 2, 3]
-    }
+  // 生成文件右键菜单栏
+  getFileContextMenuDefine = (folderKey, fileKey) => {
+    return [
+      {
+        handler: () => this.RenameFileHandler(folderKey, fileKey),
+        tag: 2
+      },
+      {
+        handler: () => this.DeleteFileHandler(fileKey),
+        tag: 3
+      }
+    ]
   }
+  // 编辑模式：对文件夹操作
+  AddNewFileHandler = (folderKey) => {
 
-  folderClickHandler = (folderKey) => {
+  }
+  RenameFolderHandler = (folderKey) => {
     const {
       explorerLists
     } = this.state
-    const newExplorerLists = explorerLists.map(explorer => {
-      // 设置isExpand
-      if (explorer.get('folderIndex') === folderKey) {
-        return explorer
-          .update('isExpand', val => !val)
+    const _newExplorerLists = explorerLists.map(_explorer => {
+      // 设置为edit mode
+      if (_explorer.get('folderIndex') === folderKey) {
+        return _explorer
+          .update('folderEdit', () => true)
       } else {
-        return explorer
+        return _explorer
       }
     })
     this.setState({
-      explorerLists: newExplorerLists
+      explorerLists: _newExplorerLists
     })
   }
+  DeleteFolderHandler = (folderKey) => {
 
+  }
+  // 编辑模式：对文件操作
+  RenameFileHandler = (folderKey, fileKey) => {
+    const {
+      explorerLists
+    } = this.state
+    const _newExplorerLists = explorerLists
+      .map(_explorer => {
+        if (_explorer.get('folderIndex') === folderKey) {
+          return _explorer
+            .update('fileLists', _fileLists => _fileLists.map(_file => {
+              if (_file.get('fileIndex') === fileKey) {
+                console.log('funck')
+                return _file.update('fileEdit', () => true)
+              } else {
+                return _file
+              }     
+            }))
+        } else {
+          return _explorer
+        }
+      })
+    console.log(_newExplorerLists.toJS())
+    this.setState({
+      explorerLists: _newExplorerLists
+    })
+  }
+  DeleteFileHandler = (fileKey) => {
+
+  }
+  // 取消编辑模式
+  cancelEditMode = () => {
+    const {
+      explorerLists
+    } = this.state
+    const _newExplorerLists = explorerLists.map(_explorer => {
+      // 设置为edit mode为false
+      return _explorer
+        .update('folderEdit', () => false)
+        .update('fileLists', _fileLists => _fileLists.map(_file => {
+          return _file.update('fileEdit', () => false)    
+        }))
+    })
+    this.setState({
+      explorerLists: _newExplorerLists
+    })
+  }
+  // 点击文件夹展开
+  folderClickHandler = (folderKey, contextMenuClickFlag) => {
+    const {
+      explorerLists
+    } = this.state
+    const _newExplorerLists = explorerLists.map(_explorer => {
+      // 设置isExpand
+      if (_explorer.get('folderIndex') === folderKey) {
+        return _explorer
+          .update('isExpand', val => !val || contextMenuClickFlag)
+      } else {
+        return _explorer
+      }
+    })
+    this.setState({
+      explorerLists: _newExplorerLists
+    })
+  }
+  // 点击文件展开
   fileClickHandler = (folderKey, fileKey) => {
     const {
       updateArticleId
@@ -119,24 +198,24 @@ class Explorer extends Component {
     // 更新全局contex
     updateArticleId(fileKey)
     // 生成新的explorerlist
-    const newExplorerLists = explorerLists
-      .map(explorer => {
-        if (explorer.get('folderIndex') === folderKey) {
-          return explorer
-            .update('fileLists', fileLists => fileLists.map(file => {
-              if (file.get('fileIndex') === fileKey) {
-                return file.update('isSelected', val => true)
+    const _newExplorerLists = explorerLists
+      .map(_explorer => {
+        if (_explorer.get('folderIndex') === folderKey) {
+          return _explorer
+            .update('fileLists', _fileLists => _fileLists.map(_file => {
+              if (_file.get('fileIndex') === fileKey) {
+                return _file.update('isSelected', () => true)
               } else {
-                return file.update('isSelected', val => false)
+                return _file.update('isSelected', () => false)
               }     
             }))
         } else {
-          return explorer
-            .update('fileLists', fileLists => fileLists.map(file => file.update('isSelected', val => false)))
+          return _explorer
+            .update('fileLists', _fileLists => _fileLists.map(_file => _file.update('isSelected', () => false)))
         }
       })
     this.setState({
-      explorerLists: newExplorerLists
+      explorerLists: _newExplorerLists
     })
   }
 
@@ -144,7 +223,11 @@ class Explorer extends Component {
     const {
       explorerLists
     } = this.state
-    // console.log(explorerLists.toJS())
+    const {
+      RenameFolderRequest,
+      RenameFileRequest
+    } = this.props
+    console.log(explorerLists.toJS())
     return (
       <ExplorerWrapper
         menuConfig={this.getExplorerContextMenuDefine()}
@@ -157,31 +240,40 @@ class Explorer extends Component {
               key={folder.get('folderIndex')}
             >
               <Folder
-                menuConfig={this.getFolderContextMenuDefine()}
+                menuConfig={this.getFolderContextMenuDefine(folder.get('folderIndex'))}
                 name={folder.get('folderName')}
-                isExpand={folder.get('isExpand')}
                 folderKey={folder.get('folderIndex')}
+                isExpand={folder.get('isExpand')}
+                isInEdit={folder.get('folderEdit')}
                 folderClickHandler={this.folderClickHandler}
+                RenameFolderRequest={RenameFolderRequest}
+                cancelEditMode={this.cancelEditMode}
               />
               <FileWrapper
                 isExpand={folder.get('isExpand')}
               >
                 {
-                  folder.get('fileLists').map(file => (
-                    <StyledLink
-                      key={file.get('fileIndex')}
-                      to={`/${folder.get('folderName')}/${file.get('fileIndex')}`}
-                    >
-                      <File
-                        menuConfig={this.getFileContextMenuDefine()}
-                        name={file.get('fileName')}
-                        isSelected={file.get('isSelected')}
-                        folderKey={folder.get('folderIndex')}
-                        fileKey={file.get('fileIndex')}
-                        fileClickHandler={this.fileClickHandler}
-                      />
-                    </StyledLink>
-                  ))
+                  folder.get('fileLists').map(file => {
+                    console.log(file.toJS())
+                    return (
+                      <StyledLink
+                        to={`/${folder.get('folderName')}/${file.get('fileIndex')}`}
+                        key={file.get('fileIndex')}
+                      >
+                        <File
+                          menuConfig={this.getFileContextMenuDefine(folder.get('folderIndex'), file.get('fileIndex'))}
+                          name={file.get('fileName')}
+                          isSelected={file.get('isSelected')}
+                          isInEdit={file.get('fileEdit')}
+                          folderKey={folder.get('folderIndex')}
+                          fileKey={file.get('fileIndex')}
+                          fileClickHandler={this.fileClickHandler}
+                          RenameFileRequest={RenameFileRequest}
+                          cancelEditMode={this.cancelEditMode}
+                        />
+                      </StyledLink>
+                    )
+                  })
                 }
               </FileWrapper>
             </FolderWrapper>

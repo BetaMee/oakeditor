@@ -3,13 +3,13 @@ import React, { Component } from 'react'
 import Wrapper from '../common/components/Wrapper'
 import PanelTitle from './PanelTitle'
 import Explorer from './Explorer'
-import { fromJS } from 'immutable'
+import { fromJS, Map } from 'immutable'
 import { request, context } from '../../core'
 
 const { GlobalConsumer } = context
 
 const PanelWrapper = Wrapper.extend`
-  width: 20%;
+  width: 260px;
   height: 100%;
   background-color: #dadada;
   position: absolute;
@@ -24,30 +24,45 @@ class Panel extends Component {
     e.preventDefault();
     e.stopPropagation();
   }
+  // 请求函数
+  RenameFolderRequest = async (newFolderName, archiveId) => {
+    const {
+      contextData,
+      contextAction
+    } = this.props
+    const {
+      userId,
+      editorSrore
+    } = contextData
+    const {
+      updateEditorSrore
+    } = contextAction
+    const archivePrefix = 'rest/archive/update'
+    const archiveParam = [archiveId]
+    const toUpdateData = {
+      name: newFolderName,
+      attachId: userId
+    }
+    const updatedArchive = await request.update(archivePrefix, archiveParam, toUpdateData)
+    if (updatedArchive.success) {
+      const newEditorSrore = editorSrore.map(_archive => {
+        if (_archive.get('archiveId') === archiveId) {
+          return _archive.update('name', () => updatedArchive.data.name)
+        } else {
+          return _archive
+        }
+      })
+      updateEditorSrore(newEditorSrore)
+    } else {
+      // toast提示
+      console.log(updatedArchive.message)
+    }
+  }
 
-  AddNewFileHandler = () => {
+  RenameFileRequest = async () => {
 
   }
 
-  AddNewFolderHandler = () => {
-    console.log('something')
-  }
-
-  DeleteFileHandler = () => {
-
-  }
-
-  DeleteFolderHandler = () => {
-
-  }
-
-  RenameFileHandler = () => {
-
-  }
-
-  RenameFolderHandler = () => {
-
-  }
   async componentDidMount() {
     const {
       contextData,
@@ -74,7 +89,7 @@ class Panel extends Component {
             articleId: article.articleId,
             title: article.title,
             content: article.content,
-            isPublished: article.isPublished
+            isPublished: article.isPublished,
           }))
           return {
             archiveId: archive.archiveId,
@@ -86,15 +101,12 @@ class Panel extends Component {
         }
       })
       // 使用promise获取最终结果
-      Promise.all(promisedResult)
-        .then((result) => {
-          // 更新全局store
-          updateEditorSrore(fromJS(result))
-        })
-        .catch((e) => {
-          // 容错处理
-          console.log(e)
-        })
+      try {
+        const result = await Promise.all(promisedResult)
+        updateEditorSrore(fromJS(result))
+      } catch(e) {
+        console.log(e)
+      }
     } else {
        // toast提示
        console.log(fetchedArchives.message)
@@ -122,12 +134,8 @@ class Panel extends Component {
         <PanelTitle />
         {/* explorer */}
         <Explorer
-          AddNewFileHandler={this.AddNewFileHandler}
-          AddNewFolderHandler={this.AddNewFolderHandler}
-          DeleteFileHandler={this.DeleteFileHandler}
-          DeleteFolderHandler={this.DeleteFolderHandler}
-          RenameFileHandler={this.RenameFileHandler}
-          RenameFolderHandler={this.RenameFolderHandler}
+          RenameFileRequest={this.RenameFileRequest}
+          RenameFolderRequest={this.RenameFolderRequest}
           data={editorSrore}
           articleId={articleId}
           updateArticleId={updateArticleId}

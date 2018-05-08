@@ -5,7 +5,7 @@ import PanelTitle from './PanelTitle'
 import Explorer from './Explorer'
 
 const PanelWrapper = Wrapper.extend`
-  width: 20%;
+  width: 260px;
   height: 100%;
   background-color: #dadada;
   position: absolute;

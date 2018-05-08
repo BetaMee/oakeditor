@@ -81,8 +81,6 @@ class Status extends Component {
             }
           })
         }))
-        console.log(editorSrore.toJS())
-        console.log(_newEditorSrore.toJS())
         updateEditorSrore(_newEditorSrore)
       } else {
         console.log(updatedArticle.message)

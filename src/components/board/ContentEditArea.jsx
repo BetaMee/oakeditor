@@ -6,10 +6,19 @@ class ContentEditArea extends Component {
 
   }
 
+  // SaveContent = (e)  => {
+  //   if(e.ctrlKey === true && e.keyCode === 83) {
+  //     console.log('ctrl+s')
+  //     return false // 截取返回false就不会保存网页了
+  //   }
+  // }
+
   render() {
     const { content } = this.props
     return (
-      <Wrapper>
+      <Wrapper
+        onKeyDown={this.SaveContent}
+      >
         {content}
       </Wrapper>
     )
