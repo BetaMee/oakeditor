@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { withRouter } from 'react-router'
 
 import ContextMenuEnhance from '../common/enhance/ContextMenuEnhance'
 import Wrapper from '../common/components/Wrapper'
@@ -9,7 +10,6 @@ import { Edit } from './Edit'
 const ExtendWrapper = Wrapper.extend`
   cursor: pointer;
   padding-left: 22px;
-  padding-right: 15px;
   height: 24px;
   ${({ active }) => active && `background-color: rgba(0,0,0,.3);`};
   ${({ isInEdit }) => !isInEdit && `
@@ -40,11 +40,13 @@ const File = (props) => {
     menuConfig,
     isSelected,
     folderKey,
+    folderName,
     fileKey,
     fileClickHandler,
     RenameFileRequest,
     cancelEditMode,
-    isInEdit
+    isInEdit,
+    history
   } = props
   return (
     <ContextWrapper
@@ -53,7 +55,10 @@ const File = (props) => {
       active={isSelected}
       isInEdit={isInEdit}
       onClick={() => fileClickHandler(folderKey, fileKey)}
-      onContextMenuEvtCb={() => fileClickHandler(folderKey, fileKey)}
+      onContextMenuEvtCb={() => {
+        history.push(`/${folderName}/${fileKey}`)
+        fileClickHandler(folderKey, fileKey)
+      }}
     >
       <Wrapper
         wWidth='12%'
@@ -83,7 +88,9 @@ const FileWrapper = styled.div`
   ${({ isExpand }) => !isExpand && `display: none`};
 `
 
+const withRouterFile = withRouter(File)
+
 export {
   FileWrapper,
-  File
+  withRouterFile as File
 }

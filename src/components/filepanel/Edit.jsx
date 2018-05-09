@@ -65,6 +65,7 @@ class Edit extends Component {
 
   maskClickHandler = (e) => {
     e.stopPropagation()
+    e.preventDefault()    
     const {
       cancelEditMode
     } = this.props
@@ -83,7 +84,10 @@ class Edit extends Component {
           onChange={this.editValueChangeHandler}
           onKeyUp={this.enterToSubmitHandler}
           onKeyDown={this.escToCancel}
-          onClick={(e) => {e.stopPropagation()}}   
+          onClick={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+          }}   
           onContextMenu={(e) => {e.stopPropagation()}}          
         />
         <EditMask

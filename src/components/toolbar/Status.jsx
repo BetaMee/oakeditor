@@ -72,12 +72,12 @@ class Status extends Component {
       // 提交
       const updatedArticle = await request.update(updatePrefix, updateParam, { title })
       if (updatedArticle.success) {
-        const _newEditorSrore = editorSrore.map(archive => archive.update('articles', (articles) => {
-          return articles.map((article) => {
-            if (article.get('articleId') === articleId) {
-              return article.update('title', () => updatedArticle.data.title)
+        const _newEditorSrore = editorSrore.map(_archive => _archive.update('articles', (_articles) => {
+          return _articles.map((_article) => {
+            if (_article.get('articleId') === articleId) {
+              return _article.update('title', () => updatedArticle.data.title)
             } else {
-              return article
+              return _article
             }
           })
         }))

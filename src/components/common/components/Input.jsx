@@ -6,6 +6,7 @@ const Input = styled.input`
   background-color: transparent;
   border: 0;
   outline: none;
+  font-family: 'Microsoft YaHei';
 `
 
 export default Input

@@ -59,8 +59,36 @@ class Panel extends Component {
     }
   }
 
-  RenameFileRequest = async () => {
-
+  RenameFileRequest = async (newFileName, articleId) => {
+    const {
+      contextData,
+      contextAction
+    } = this.props
+    const {
+      editorSrore
+    } = contextData
+    const {
+      updateEditorSrore
+    } = contextAction
+    const updatePrefix = 'rest/article/update'
+    const updateParam = [articleId]
+    // 提交
+    const updatedArticle = await request.update(updatePrefix, updateParam, { title: newFileName })
+    if (updatedArticle.success) {
+      const _newEditorSrore = editorSrore.map(_archive => _archive.update('articles', (_articles) => {
+        return _articles.map((_article) => {
+          if (_article.get('articleId') === articleId) {
+            return _article.update('title', () => updatedArticle.data.title)
+          } else {
+            return _article
+          }
+        })
+      }))
+      updateEditorSrore(_newEditorSrore)
+    } else {
+      // toast提示
+      console.log(updatedArticle.message)
+    }
   }
 
   async componentDidMount() {

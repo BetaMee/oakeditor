@@ -48,7 +48,6 @@ class Explorer extends Component {
     })
   })
   static getDerivedStateFromProps (nextProps, prevState) {
-    console.log(nextProps)
     return {
       explorerLists: Explorer.convertDataToExplorerList(nextProps.data, prevState.explorerLists, nextProps.articleId)
     }
@@ -134,7 +133,6 @@ class Explorer extends Component {
           return _explorer
             .update('fileLists', _fileLists => _fileLists.map(_file => {
               if (_file.get('fileIndex') === fileKey) {
-                console.log('funck')
                 return _file.update('fileEdit', () => true)
               } else {
                 return _file
@@ -144,7 +142,6 @@ class Explorer extends Component {
           return _explorer
         }
       })
-    console.log(_newExplorerLists.toJS())
     this.setState({
       explorerLists: _newExplorerLists
     })
@@ -207,7 +204,7 @@ class Explorer extends Component {
                 return _file.update('isSelected', () => true)
               } else {
                 return _file.update('isSelected', () => false)
-              }     
+              }
             }))
         } else {
           return _explorer
@@ -227,7 +224,6 @@ class Explorer extends Component {
       RenameFolderRequest,
       RenameFileRequest
     } = this.props
-    console.log(explorerLists.toJS())
     return (
       <ExplorerWrapper
         menuConfig={this.getExplorerContextMenuDefine()}
@@ -254,7 +250,6 @@ class Explorer extends Component {
               >
                 {
                   folder.get('fileLists').map(file => {
-                    console.log(file.toJS())
                     return (
                       <StyledLink
                         to={`/${folder.get('folderName')}/${file.get('fileIndex')}`}
@@ -266,6 +261,7 @@ class Explorer extends Component {
                           isSelected={file.get('isSelected')}
                           isInEdit={file.get('fileEdit')}
                           folderKey={folder.get('folderIndex')}
+                          folderName={folder.get('folderName')}
                           fileKey={file.get('fileIndex')}
                           fileClickHandler={this.fileClickHandler}
                           RenameFileRequest={RenameFileRequest}
