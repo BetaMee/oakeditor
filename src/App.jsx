@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { ApolloProvider } from 'react-apollo'
 import { BrowserRouter as Router} from 'react-router-dom'
 
 // import User from './pages/User'

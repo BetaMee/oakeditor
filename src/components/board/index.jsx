@@ -38,6 +38,8 @@ class Board extends Component {
         return `1fr 26px`
       case 2: // 预览模式
         return `26px 1fr`
+      default:
+        return `1fr 26px 1fr`
     }
   }
 
