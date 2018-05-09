@@ -182,7 +182,10 @@ class Explorer extends Component {
     })
   }
   DeleteFileHandler = (fileKey) => {
-
+    const {
+      DeleteFileRequest
+    } = this.props
+    DeleteFileRequest(fileKey)
   }
   // 取消编辑模式
   cancelEditMode = () => {

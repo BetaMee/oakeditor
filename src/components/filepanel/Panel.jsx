@@ -143,7 +143,6 @@ class Panel extends Component {
   }
 
   AddNewFolderRequest = async (newFolderName) => {
-    console.log(newFolderName)
     const {
       contextData,
       contextAction
@@ -173,6 +172,41 @@ class Panel extends Component {
     } else {
       // toast提示
       console.log(addedFolder.message)
+    }
+  }
+
+  DeleteFileRequest = async (fileKey) => {
+    const {
+      contextData,
+      contextAction,
+      history
+    } = this.props
+    const {
+      editorSrore
+    } = contextData
+    const {
+      updateEditorSrore
+    } = contextAction
+
+    const deleteFilePrefix = 'rest/article/delete'
+    const deleteFileParam = [fileKey]
+
+    const deletedFile = await request.delete(deleteFilePrefix, deleteFileParam)
+    if (deletedFile.success) {
+      const _newEditorSrore = editorSrore.map(_archive => _archive.update('articles', (_articles) => {
+        return _articles.filter((_article) => {
+          if (_article.get('articleId') === fileKey) {
+            return false
+          } else {
+            return true
+          }
+        })
+      }))
+      updateEditorSrore(_newEditorSrore)
+      history.push('')
+    } else {
+       // toast提示
+       console.log(deletedFile.message)
     }
   }
 
@@ -251,6 +285,7 @@ class Panel extends Component {
           RenameFolderRequest={this.RenameFolderRequest}
           AddNewFileRequest={this.AddNewFileRequest}
           AddNewFolderRequest={this.AddNewFolderRequest}
+          DeleteFileRequest={this.DeleteFileRequest}
           data={editorSrore}
           articleId={articleId}
           updateArticleId={updateArticleId}
