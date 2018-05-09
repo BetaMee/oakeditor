@@ -4,7 +4,7 @@ import { BrowserRouter as Router} from 'react-router-dom'
 
 // import User from './pages/User'
 import Editor from './pages/Editor'
-import { client, context } from './core'
+import { context } from './core'
 import './App.css'
 
 const {
@@ -15,11 +15,9 @@ class App extends Component {
   render() {
     return (
       <GlobalProvider>
-        <ApolloProvider client={client}>
-          <Router>
-            <Editor />
-          </Router>
-        </ApolloProvider>
+        <Router>
+          <Editor />
+        </Router>
       </GlobalProvider>
     )
   }
