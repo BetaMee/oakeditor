@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router'
 
 import Wrapper from '../common/components/Wrapper'
 import PanelTitle from './PanelTitle'
@@ -91,6 +92,90 @@ class Panel extends Component {
     }
   }
 
+  AddNewFileRequest = async (newFileName, archiveId) => {
+    const {
+      contextData,
+      contextAction,
+      history
+    } = this.props
+    const {
+      userId,
+      editorSrore
+    } = contextData
+    const {
+      updateEditorSrore,
+      updateArticleId
+    } = contextAction
+    const addFilePrefix = 'rest/article/create'
+    const addFileData = {
+      title: newFileName,
+      content: '新文章',
+      archive: archiveId,
+      author: userId
+    }
+    const addedFile = await request.post(addFilePrefix, addFileData)
+    if (addedFile.success) {
+      // 新建的文章
+      const article = addedFile.data
+      // archive名
+      let archiveName
+      const _newEditorSrore = editorSrore.map(_archive => {
+        if (_archive.get('archiveId') === archiveId) {
+          archiveName = _archive.get('name')
+          return _archive.update('articles', (_articles) => _articles.unshift(Map({
+            articleId: article.articleId,
+            title: article.title,
+            content: article.content,
+            isPublished: article.isPublished,
+          })))
+        } else {
+          return _archive
+        }
+      })
+      updateEditorSrore(_newEditorSrore)
+      updateArticleId(article.articleId)
+      // 更新URL
+      history.push(`/${archiveName}/${article.articleId}`)
+    } else {
+     // toast提示
+     console.log(addedFile.message)
+    }
+  }
+
+  AddNewFolderRequest = async (newFolderName) => {
+    console.log(newFolderName)
+    const {
+      contextData,
+      contextAction
+    } = this.props
+    const {
+      userId,
+      editorSrore
+    } = contextData
+    const {
+      updateEditorSrore
+    } = contextAction
+
+    const addedFolderPrefix = 'rest/archive/create'
+    const addedFolderData = {
+      name: newFolderName, 
+      attachId: userId
+    }
+    const addedFolder = await request.post(addedFolderPrefix, addedFolderData)
+    if (addedFolder.success) {
+      const archive = addedFolder.data
+      const _newEditorSrore = editorSrore.push(fromJS({
+        archiveId: archive.archiveId,
+        name: archive.name,
+        articles: [],
+      }))
+      updateEditorSrore(_newEditorSrore)
+    } else {
+      // toast提示
+      console.log(addedFolder.message)
+    }
+  }
+
   async componentDidMount() {
     const {
       contextData,
@@ -164,6 +249,8 @@ class Panel extends Component {
         <Explorer
           RenameFileRequest={this.RenameFileRequest}
           RenameFolderRequest={this.RenameFolderRequest}
+          AddNewFileRequest={this.AddNewFileRequest}
+          AddNewFolderRequest={this.AddNewFolderRequest}
           data={editorSrore}
           articleId={articleId}
           updateArticleId={updateArticleId}
@@ -173,4 +260,4 @@ class Panel extends Component {
   }
 }
 
-export default GlobalConsumer(Panel)
+export default GlobalConsumer(withRouter(Panel))

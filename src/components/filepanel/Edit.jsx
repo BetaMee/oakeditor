@@ -44,13 +44,13 @@ class Edit extends Component {
   enterToSubmitHandler = (e) => {
     const {
       submitRequest,
-      requestId
+      requestParam
     } = this.props
     const {
       value
     } = this.state
     if (e.keyCode === 13) {
-      submitRequest(value, requestId)
+      submitRequest(value, requestParam)
     }
   }
 

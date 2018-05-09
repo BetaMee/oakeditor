@@ -2,6 +2,33 @@ import axios from 'axios'
 import { Url } from '../utils'
 
 const request = {
+  // 上传数据
+  post: async (prefix, data) => {
+    try {
+      const response = await axios.post(Url(prefix), data)
+      if (response.statusText === 'OK' && response.data) {
+        const postData = response.data
+        if (postData.success) {
+          return {
+             data: postData.item || postData.items,
+             message: postData.message,
+             success: true
+          }
+        } else {
+          throw(new Error(postData.message))
+        }
+      } else {
+        throw(new Error('bad request'))
+      }
+    } catch (e) {
+      // 容错，可提示toast
+      console.warn(e)
+      return {
+        message: e.message,
+        success: false
+      }
+    }
+  },
   // 加载数据
   fetch: async (prefix, params) => {
     try {

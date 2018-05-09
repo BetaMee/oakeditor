@@ -44,10 +44,13 @@ const File = (props) => {
     fileKey,
     fileClickHandler,
     RenameFileRequest,
+    AddNewFileRequest,
     cancelEditMode,
     isInEdit,
+    isInAdd,
     history
   } = props
+  const requestParam = isInAdd ? folderKey : fileKey
   return (
     <ContextWrapper
       menuConfig={menuConfig}
@@ -69,10 +72,10 @@ const File = (props) => {
         <FileName>{name}</FileName>
         { isInEdit &&
             <Edit
-              submitRequest={RenameFileRequest}
+              submitRequest={isInAdd ? AddNewFileRequest : RenameFileRequest}
               cancelEditMode={cancelEditMode}
+              requestParam={requestParam}
               value={name}
-              requestId={fileKey}
             />
         }
       </FileNameWrapper>

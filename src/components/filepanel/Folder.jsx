@@ -35,10 +35,13 @@ const Folder = (props) => {
     folderClickHandler,
     folderKey,
     isInEdit,
+    isInAdd,
     // 请求函数
     RenameFolderRequest,
+    AddNewFolderRequest,
     cancelEditMode
   } = props
+
   return (
     <ContextWrapper
       menuConfig={menuConfig}
@@ -58,10 +61,10 @@ const Folder = (props) => {
         <FolderName>{name}</FolderName>
         { isInEdit &&
             <Edit
-              submitRequest={RenameFolderRequest}
+              submitRequest={isInAdd ? AddNewFolderRequest : RenameFolderRequest}
               cancelEditMode={cancelEditMode}
               value={name}
-              requestId={folderKey}
+              requestParam={isInAdd ? '' : folderKey}
             />
         }
       </FolderNameWrapper>
