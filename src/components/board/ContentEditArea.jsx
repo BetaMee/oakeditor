@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Wrapper from '../common/components/Wrapper'
+import { editor } from '../../core'
 
 class ContentEditArea extends Component {
   state = {
@@ -13,13 +14,30 @@ class ContentEditArea extends Component {
   //   }
   // }
 
+  inputHandler = (e) => {
+    // console.log(e.target.value)
+  }
+
+  componentDidMount() {
+    editor.DOMObserver()
+  }
+
   render() {
     const { content } = this.props
     return (
       <Wrapper
         onKeyDown={this.SaveContent}
       >
-        {content}
+        <div
+          id='article'
+          style={{
+            width: '100%',
+            height: '100%'
+          }}
+          contentEditable='plaintext-only'
+          dangerouslySetInnerHTML={{__html: content}}
+          onInput={this.inputHandler}
+        ></div>
       </Wrapper>
     )
   }
