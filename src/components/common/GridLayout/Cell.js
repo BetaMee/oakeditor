@@ -27,7 +27,8 @@ const Cell = styled.section`
   ${gridArea};
   ${justifySelf};
   ${alignSelf};
-  ${display}
+  ${display};
+  overflow: auto;
 `
 
 Cell.propTypes = {
