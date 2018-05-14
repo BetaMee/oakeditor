@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "clipboard": "^2.0.0",
+    "codemirror": "^5.37.0",
     "immutable": "^3.8.2",
     "lodash": "^4.17.5",
     "markdown-it": "^8.4.1",
