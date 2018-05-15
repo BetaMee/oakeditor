@@ -1,69 +1,54 @@
 import MarkdownIt from 'markdown-it'
-import ReactDOM from 'react-dom'
-import React from 'react'
-
-import EditorZone from './components/EditorZone'
+import Codemirror from 'codemirror'
+import 'codemirror/mode/gfm/gfm'
+import 'codemirror/mode/javascript/javascript'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/theme/idea.css'
+import 'codemirror/addon/edit/closebrackets'
+import 'codemirror/addon/edit/matchbrackets.js'
+import 'codemirror/addon/edit/continuelist.js'
+import 'codemirror/keymap/sublime'
+// 自定义样式
+import './Editor.css'
 
 class Editor {
   mdRender = new MarkdownIt()
 
-  /**
-   * 将字符串格式化为标记语言
-   * @param {*} rawString 
-   */
-  formatStringToMarkup(rawString) {
-    const h1Reg = /^#{1}\s{2,}/g
-    const h2Reg = /^#{2}\s{2,}/g
+  mdEditor = null
 
-    if (h2Reg.test(rawString)) {
-      return [
-        {
-          type: 'h2',
-          content: '##'
-        },
-        {
-          type: 'text',
-          content: rawString.replace(/^##/, '')
-        }
-      ]
-    }
-    
-  }
-
-  convertRawStringToSplitedArr(rawString) {
-    if (typeof rawString !== 'string') {
-      throw new Error('rawString is not string')
-    }
-    const splitedArr = []
-    let toSplitString = rawString
-    // 位置
-    let toSplitStartIndex = 0
-    let toSplitEndIndex = toSplitString.search(/\n\n(?!\n)/)
-    while(toSplitEndIndex > -1) {
-      const splitedString = toSplitString.slice(toSplitStartIndex, toSplitEndIndex + 2)
-      // 添加进数组中
-      splitedArr.push(splitedString)
-      // 分离原数组，去除已search过的字符
-      toSplitString = toSplitString.slice(toSplitEndIndex + 2)
-      // 更新end index
-      toSplitEndIndex = toSplitString.search(/\n\n(?!\n)/)
-    }
-    // 将最后一段加进去
-    splitedArr.push(toSplitString)
-    return splitedArr
-  }
   /**
-   * 将字符串渲染成markdown编辑内容的格式
-   * @param {*} rawString 
+   * 初始化Markdown编辑器
    */
-  renderToMD(rawString) {
-    const convertedArr = this.convertRawStringToSplitedArr(rawString)
-    console.log(convertedArr)
-    const editorData = convertedArr.map(paragraph => {
-      return this.formatStringToMarkup(paragraph)
+  initMDEditor($container) {
+    this.mdEditor = Codemirror($container, {
+      lineNumbers: true,
+      lineWrapping: true,
+      showCursorWhenSelecting: true,
+      autoCloseBrackets: true,
+      matchBrackets: true,
+      tabSize: 2,
+      mode: 'text/x-gfm',
+      theme: 'idea',
+      keyMap: 'sublime',
+      extraKeys: {'Enter': 'newlineAndIndentContinueMarkdownList'}
     })
+    this.mdEditor.setValue(`## Oakeditor
 
-    ReactDOM.render(<EditorZone raw={editorData} />, document.getElementById('article'))
+    A editor for LoveOak
+    
+    ## Introduction
+    
+    ## Installing / Getting started
+    
+    ## Deployment
+    
+    ## Testing
+    
+    ## Technology Stack
+    
+    ## Licence
+    
+    MIT License`)
   }
 
   renderToHTML(rawString) {
