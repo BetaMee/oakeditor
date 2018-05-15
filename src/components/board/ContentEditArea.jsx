@@ -1,37 +1,47 @@
 import React, { Component } from 'react'
 
 import Wrapper from '../common/components/Wrapper'
-import EditBoard from './EditBoard'
-
-const content = `## Oakeditor
-
-A editor for LoveOak
-
-## Introduction
-
-## Installing / Getting started
-
-## Deployment
-
-## Testing
-
-## Technology Stack
-
-## Licence
-
-MIT License`
+import { editor } from '../../core'
 
 class ContentEditArea extends Component {
-  state = {
-    content: content
+  editorRef = React.createRef()
+
+  componentDidUpdate() {
+    const {
+      content
+    } = this.props
+    editor.updateMDEditorValue(content)
+  }
+  componentDidMount() {
+    editor
+      .initMDEditor(this.editorRef.current)
+      .bindEditorChangeHandler(this.editorOnChangeHanlder)
+  }
+
+  editorOnChangeHanlder = (value) => {
+    console.log(value)
+    const {
+      updateEditorSrore,
+      contentId,
+      editorSrore
+    } = this.props
+    const newEditorSrore = editorSrore.map(_archive => _archive.update('articles', (_articles) => {
+      return _articles.map((_article) => {
+        if (_article.get('articleId') === contentId) {
+          return _article.update('content', () => value)
+        } else {
+          return _article
+        }
+      })
+    }))
+    // updateEditorSrore(newEditorSrore)
   }
 
   render() {
     return (
-      <Wrapper>
-        <EditBoard
-          value={'test'}
-        />
+      <Wrapper
+        innerRef={this.editorRef}
+      >
       </Wrapper>
     )
   }

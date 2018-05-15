@@ -32,23 +32,20 @@ class Editor {
       keyMap: 'sublime',
       extraKeys: {'Enter': 'newlineAndIndentContinueMarkdownList'}
     })
-    this.mdEditor.setValue(`## Oakeditor
+    return this
+  }
 
-    A editor for LoveOak
-    
-    ## Introduction
-    
-    ## Installing / Getting started
-    
-    ## Deployment
-    
-    ## Testing
-    
-    ## Technology Stack
-    
-    ## Licence
-    
-    MIT License`)
+  bindEditorChangeHandler(editorOnHandler) {
+    this.mdEditor.on('change', (editor) => {
+      editorOnHandler(editor.getValue())
+    })
+  }
+  /**
+   * 更新编辑器内容的值
+   * @param {*} value 
+   */
+  updateMDEditorValue(value) {
+    this.mdEditor.setValue(value)
   }
 
   renderToHTML(rawString) {

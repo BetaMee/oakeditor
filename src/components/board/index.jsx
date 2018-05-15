@@ -80,7 +80,8 @@ class Board extends Component {
       toggleDown,
       isToggleUp,
       isToggleDown,
-      contextData
+      contextData,
+      contextAction
     } = this.props
     const {
       renderMode
@@ -89,6 +90,9 @@ class Board extends Component {
       editorSrore,
       articleId
     } = contextData
+    const {
+      updateEditorSrore
+    } = contextAction
     // 获取布局参数
     const gridColumnParams = this.getRenderModeLayout()
     const currentArticle = this.getCurrentArticle(articleId, editorSrore)
@@ -106,6 +110,9 @@ class Board extends Component {
             gDisplay={renderMode !== 2}
           >
             <ContentEditArea
+              updateEditorSrore={updateEditorSrore}
+              editorSrore={editorSrore}
+              contentId={articleId}
               content={currentArticle.get('content')}
             />
           </Cell>

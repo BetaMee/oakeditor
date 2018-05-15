@@ -1,21 +1,22 @@
-import React, { Component } from 'react'
+import React from 'react'
+import styled from 'styled-components'
+
 import Wrapper from '../common/components/Wrapper'
+import { editor } from '../../core'
 
-class ContentPreviewArea extends Component {
-  state = {
+const Preview = styled.div`
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+`
 
-  }
-
-  render() {
-    const { content } = this.props    
-    return (
-      <Wrapper
-        backgroundColor='#f3f3f3'
-      >
-      { content }
-      </Wrapper>
-    )
-  }
-}
+const ContentPreviewArea = ({ content }) =>
+  <Wrapper
+   backgroundColor='#f3f3f3'
+  >
+    <Preview
+      dangerouslySetInnerHTML={{__html: editor.renderToHTML(content)}}
+    />
+  </Wrapper>
 
 export default ContentPreviewArea
