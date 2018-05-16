@@ -84,7 +84,7 @@ class Board extends Component {
         }
       })
     }))
-    updateEditorSrore(newEditorSrore)
+    // updateEditorSrore(newEditorSrore) // 变卡
 
     this.setState({
       editContent: editContent
