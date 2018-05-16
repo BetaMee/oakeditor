@@ -1,5 +1,7 @@
 import MarkdownIt from 'markdown-it'
 import Codemirror from 'codemirror'
+import hljs from 'highlightjs'
+import 'highlightjs/styles/github-gist.css'
 import 'codemirror/mode/gfm/gfm'
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/lib/codemirror.css'
@@ -12,7 +14,18 @@ import 'codemirror/keymap/sublime'
 import './Editor.css'
 
 class Editor {
-  mdRender = new MarkdownIt()
+  mdRender = new MarkdownIt({
+    // 高亮支持
+    highlight: function (str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(lang, str).value;
+        } catch (__) {}
+      }
+  
+      return ''; // use external default escaping
+    }
+  })
 
   mdEditor = null
 
