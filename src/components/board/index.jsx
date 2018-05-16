@@ -7,13 +7,18 @@ import ContentPreviewArea from './ContentPreviewArea'
 import SettingBar from './SettingBar'
 import { Grid, Cell } from '../common/GridLayout'
 import { context } from '../../core'
+import { editor } from '../../core'
 
 const { GlobalConsumer } = context
 
 class Board extends Component {
+  currentId = '' // 当前articleId
+  isContentLoked = false // 内容锁定
   state = {
-    renderMode: 0 // 页面渲染模式, 0是普通模式 1是写模式 2是预览模式
+    renderMode: 0, // 页面渲染模式, 0是普通模式 1是写模式 2是预览模式
+    editContent: '' // 编辑器展示的内容
   }
+
   toggleRenderMode = (mode) => {
     this.setState(({ renderMode }) => {
       if (renderMode === mode) {
@@ -48,12 +53,42 @@ class Board extends Component {
       .flatten(1)
       .find((article) => article.get('articleId') === id)
     if (currentArticle) {
-      return currentArticle
+      return currentArticle.set('isLoading', false)
     } else {
       return Map({
-        content: 'Loading...'
+        content: 'Loading...',
+        isLoading: true
       })
     }
+  }
+
+  editContentChangeHanlder = (editContent) => {
+    const {
+      contextData,
+      contextAction
+    } = this.props
+    const {
+      articleId,
+      editorSrore
+    } = contextData
+    const {
+      updateEditorSrore
+    } = contextAction
+
+    const newEditorSrore = editorSrore.map(_archive => _archive.update('articles', (_articles) => {
+      return _articles.map((_article) => {
+        if (_article.get('articleId') === articleId) {
+          return _article.update('content', () => editContent)
+        } else {
+          return _article
+        }
+      })
+    }))
+    updateEditorSrore(newEditorSrore)
+
+    this.setState({
+      editContent: editContent
+    })
   }
 
   componentDidMount() {
@@ -71,6 +106,27 @@ class Board extends Component {
     // 判断全家store是否为空
     if (contextData.articleId === '') {
       updateArticleId(articleId)
+      this.currentId = articleId
+    }
+  }
+
+  componentDidUpdate() {
+    const {
+      contextData
+    } = this.props
+    const {
+      editorSrore,
+      articleId
+    } = contextData
+    const currentArticle = this.getCurrentArticle(articleId, editorSrore)
+    // 解决codemirror onchange和react自身的数据流冲突死循环的解法
+    if (!currentArticle.get('isLoading') && !this.isContentLoked && this.currentId === articleId) {
+      editor.updateMDEditorValue(currentArticle.get('content'))
+      this.isContentLoked = true
+    } else if (this.isContentLoked && this.currentId !== articleId) {
+      editor.updateMDEditorValue(currentArticle.get('content'))
+      this.isContentLoked = true
+      this.currentId = articleId
     }
   }
 
@@ -79,23 +135,14 @@ class Board extends Component {
       toggleUp,
       toggleDown,
       isToggleUp,
-      isToggleDown,
-      contextData,
-      contextAction
+      isToggleDown
     } = this.props
     const {
-      renderMode
+      renderMode,
+      editContent
     } = this.state
-    const {
-      editorSrore,
-      articleId
-    } = contextData
-    const {
-      updateEditorSrore
-    } = contextAction
     // 获取布局参数
     const gridColumnParams = this.getRenderModeLayout()
-    const currentArticle = this.getCurrentArticle(articleId, editorSrore)
     return (
       <Wrapper>
         <Grid
@@ -110,10 +157,7 @@ class Board extends Component {
             gDisplay={renderMode !== 2}
           >
             <ContentEditArea
-              updateEditorSrore={updateEditorSrore}
-              editorSrore={editorSrore}
-              contentId={articleId}
-              content={currentArticle.get('content')}
+              onChange={this.editContentChangeHanlder}
             />
           </Cell>
           {/* 设置栏 */}
@@ -132,7 +176,7 @@ class Board extends Component {
             gDisplay={renderMode !== 1}
           >
             <ContentPreviewArea
-              content={currentArticle.get('content')}
+              content={editContent}
             />
           </Cell>
         </Grid>
