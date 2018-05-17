@@ -1,12 +1,11 @@
-import React, { Component } from 'react'; 
+import React, { Component } from 'react'
+import {
+  Route
+} from 'react-router-dom'
 
-class Login extends Component {
-
-}
-
-class Register extends Component {
-
-}
+import Wrapper from '../components/common/components/Wrapper'
+import Login from '../components/user/Login'
+import Register from '../components/user/Register'
 
 class User extends Component {
   state = {
@@ -16,9 +15,14 @@ class User extends Component {
 
   render() {
     return (
-      <div>
-        Login page
-      </div>
+      <Wrapper
+        wWidth='100vw'
+        wHeight='100vh'
+        backgroundColor='#f9f9f9'
+      >
+        <Route path='/login' component={Login}/>
+        <Route path='/register' component={Register}/>
+      </Wrapper>
     )
   }
 }

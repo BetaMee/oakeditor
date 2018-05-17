@@ -1,8 +1,11 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router} from 'react-router-dom'
+import React, { Component } from 'react'  
+import {
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom'
 
-// import User from './pages/User'
 import Editor from './pages/Editor'
+import User from './pages/User'
 import { context } from './core'
 import './App.css'
 
@@ -15,7 +18,7 @@ class App extends Component {
     return (
       <GlobalProvider>
         <Router>
-          <Editor />
+          <User />
         </Router>
       </GlobalProvider>
     )
