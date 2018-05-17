@@ -75,6 +75,9 @@ class Editor {
     })
     return this
   }
+  bindExtralKeyEvent(extraKeysMap) {
+    this.mdEditor.addKeyMap(extraKeysMap)
+  }
   /**
    * 更新编辑器内容的值
    * @param {*} value 

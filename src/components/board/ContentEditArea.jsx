@@ -14,6 +14,16 @@ class ContentEditArea extends Component {
     editor.initMDEditor(this.editorRef.current)
       .bindEditorChangeHandler(this.editorOnChangeHanlder)
       .bindEditorScrollHandler()
+      .bindExtralKeyEvent({
+        'Ctrl-S': this.editorOnSaveHandler
+      })
+  }
+
+  editorOnSaveHandler = () => {
+    const {
+      onSave
+    } = this.props
+    onSave()
   }
 
   editorOnChangeHanlder = (value) => {

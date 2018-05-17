@@ -6,8 +6,7 @@ import ContentEditArea from './ContentEditArea'
 import ContentPreviewArea from './ContentPreviewArea'
 import SettingBar from './SettingBar'
 import { Grid, Cell } from '../common/GridLayout'
-import { context } from '../../core'
-import { editor } from '../../core'
+import { editor, request, context } from '../../core'
 
 const { GlobalConsumer } = context
 
@@ -91,6 +90,42 @@ class Board extends Component {
     })
   }
 
+  editOnSaveHandler = async () => {
+    const {
+      editContent
+    } = this.state
+    const {
+      contextData,
+      contextAction
+    } = this.props
+    const {
+      editorSrore,
+      articleId
+    } = contextData
+    const {
+      updateEditorSrore
+    } = contextAction
+    const updatePrefix = 'rest/article/update'
+    const updateParam = [articleId]
+    // 提交
+    const updatedArticle = await request.update(updatePrefix, updateParam, { content: editContent })
+    if (updatedArticle.success) {
+      const _newEditorSrore = editorSrore.map(_archive => _archive.update('articles', (_articles) => {
+        return _articles.map((_article) => {
+          if (_article.get('articleId') === articleId) {
+            return _article.update('content', () => updatedArticle.data.content)
+          } else {
+            return _article
+          }
+        })
+      }))
+      updateEditorSrore(_newEditorSrore)
+    } else {
+      // toast提示
+      console.log(updatedArticle.message)
+    }
+  }
+
   componentDidMount() {
     const {
       contextData,
@@ -158,6 +193,7 @@ class Board extends Component {
           >
             <ContentEditArea
               onChange={this.editContentChangeHanlder}
+              onSave={this.editOnSaveHandler}
             />
           </Cell>
           {/* 设置栏 */}
