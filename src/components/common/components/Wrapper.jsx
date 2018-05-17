@@ -83,8 +83,8 @@ const flexLayoutMap = {
     align-items: flex-end;
   `,
   columnRight: `
-    flex-direction: column;    
-    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: center;
     align-items: flex-start;
   `,
   columnTop: `
@@ -105,7 +105,7 @@ const flexLayoutMap = {
   columnButtomRight: `
     flex-direction: column;  
     justify-content: flex-end;
-    align-items: flex-start;
+    align-items: flex-end;
   `,
   columnTopLeft: `
     flex-direction: column;    
@@ -115,7 +115,7 @@ const flexLayoutMap = {
   columnButtomLeft: `
     flex-direction: column;    
     justify-content: flex-end;
-    align-items: flex-end;
+    align-items: flex-start;
   `
 }
 

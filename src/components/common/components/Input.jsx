@@ -7,6 +7,7 @@ const Input = styled.input`
   border: 0;
   outline: none;
   font-family: 'Microsoft YaHei';
+  box-sizing: border-box;
 `
 
 export default Input
