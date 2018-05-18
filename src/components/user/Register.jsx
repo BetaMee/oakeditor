@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
 
+import Wrapper from '../common/components/Wrapper'
+
 class Register extends Component {
   render() {
     return (
-      <div>Register</div>
+      <Wrapper
+        wWidth='100vw'
+        wHeight='100vh'
+        backgroundColor='#f9f9f9'
+      >
+        <div>Register</div>
+      </Wrapper>
     )
   }
 }

@@ -34,6 +34,11 @@ class Login extends Component {
       username,
       password
     } = this.state
+    const {
+      loginRequest
+    } = this.props
+    // 提交
+    loginRequest(username, password)
   }
   render() {
     const {
@@ -41,25 +46,31 @@ class Login extends Component {
       password
     } = this.state
     return (
-      <LoginWrapper
-        layout='columnTopRight'
+      <Wrapper
+        wWidth='100vw'
+        wHeight='100vh'
+        backgroundColor='#f9f9f9'
       >
-        <Label>用户名</Label>
-        <UserInput
-          type='text'
-          value={username}
-          onChange={this.usernameChangeHandler}
-        />
-        <Label>密码</Label>
-        <UserInput
-          type='password'
-          value={password}
-          onChange={this.passwordChangeHandler}
-        />
-        <UserSubmit
-          onClick={this.loginHandler}
-        >登录</UserSubmit>
-      </LoginWrapper>
+        <LoginWrapper
+          layout='columnTopRight'
+        >
+          <Label>用户名</Label>
+          <UserInput
+            type='text'
+            value={username}
+            onChange={this.usernameChangeHandler}
+          />
+          <Label>密码</Label>
+          <UserInput
+            type='password'
+            value={password}
+            onChange={this.passwordChangeHandler}
+          />
+          <UserSubmit
+            onClick={this.loginHandler}
+          >登录</UserSubmit>
+        </LoginWrapper>
+      </Wrapper>
     )
   }
 }

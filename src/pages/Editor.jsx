@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import {
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom'
 // 引入组件
 import AssetsPanel from '../components/assetspanel'
 import Borad from '../components/board'
@@ -8,9 +12,10 @@ import MenuPanel from '../components/menupanel'
 import StatusBar from '../components/statusbar'
 import ToolBar from '../components/toolbar'
 import Wrapper from '../components/common/components/Wrapper'
+import { request } from '../core'
+import { storage } from '../utils'
 // Grid布局组件
 import { Grid, Cell } from '../components/common/GridLayout'
-
 
 class Editor extends Component {
   state = {
@@ -76,6 +81,22 @@ class Editor extends Component {
     } = this.state
     return `${isToggleUp ? '': '44px'} 1fr ${isToggleDown ? '': '22px'}`
   }
+  async componentDidMount() {
+    const {
+      history
+    } = this.props
+    // 进行登录态有效检查
+    const checkPrefix = 'user/check'
+    try {
+      const status = await request.fetch(checkPrefix)
+      if (!status.data.success) {
+        throw new Error('status check fail')
+      }
+    } catch(e) {
+      storage.clear()
+      history.replace('/login')
+    }
+  }
   render() {
     const gridRowParams = this.getPageToggleLayout()
     const {
@@ -106,18 +127,30 @@ class Editor extends Component {
           </Cell>
           {/* 编辑器主板 */}
           <Cell>
-            <Route
-              path='/:archive/:articleId'
-              render={({ match }) => (
-                <Borad
-                  toggleUp={this.toggleUp}
-                  toggleDown={this.toggleDown}
-                  isToggleUp={isToggleUp}
-                  isToggleDown={isToggleDown}
-                  routeParams={match.params}
-                />
-              )}
-            />
+            <Switch>
+              <Route
+                exact
+                path='/:archive/:articleId'
+                render={({ match }) => (
+                  <Borad
+                    toggleUp={this.toggleUp}
+                    toggleDown={this.toggleDown}
+                    isToggleUp={isToggleUp}
+                    isToggleDown={isToggleDown}
+                    routeParams={match.params}
+                  />
+                )}
+              />
+              <Route
+                render={({ location }) => {
+                  if (!['/', '/login',  '/register'].includes(location.pathname)) {
+                    return <Redirect to='/404' />
+                  } else {
+                    return null
+                  }
+                }}
+              />
+            </Switch>
           </Cell>
           {/* 底部状态栏 */}
           <Cell

@@ -1,16 +1,51 @@
 import axios from 'axios'
-import { Url } from '../utils'
+import { Url, storage } from '../utils'
+
+const getPublicConfig = () => {
+  return {
+    headers: {
+      'Authorization': `Bearer ${storage.getItem('token')}`
+    }
+  }
+}
 
 const request = {
-  // 上传数据
-  post: async (prefix, data) => {
+  // 登录接口
+  login: async (prefix, data) => {
     try {
       const response = await axios.post(Url(prefix), data)
       if (response.statusText === 'OK' && response.data) {
         const postData = response.data
         if (postData.success) {
           return {
-             data: postData.item || postData.items,
+             data: postData.item || postData.items || postData,
+             message: postData.message,
+             success: true
+          }
+        } else {
+          throw(new Error(postData.message))
+        }
+      } else {
+        throw(new Error('bad request'))
+      }
+    } catch (e) {
+      // 容错，可提示toast
+      console.warn(e)
+      return {
+        message: e.message,
+        success: false
+      }
+    }
+  },
+  // 上传数据
+  post: async (prefix, data) => {
+    try {
+      const response = await axios.post(Url(prefix), data, getPublicConfig())
+      if (response.statusText === 'OK' && response.data) {
+        const postData = response.data
+        if (postData.success) {
+          return {
+             data: postData.item || postData.items || postData,
              message: postData.message,
              success: true
           }
@@ -32,12 +67,12 @@ const request = {
   // 加载数据
   fetch: async (prefix, params) => {
     try {
-      const response = await axios.get(Url(prefix, params))
+      const response = await axios.get(Url(prefix, params), getPublicConfig())
       if (response.statusText === 'OK' && response.data) {
         const fetchedData = response.data
         if (fetchedData.success) {
           return {
-             data: fetchedData.item || fetchedData.items,
+             data: fetchedData.item || fetchedData.items || fetchedData,
              message: fetchedData.message,
              success: true
           }
@@ -59,12 +94,12 @@ const request = {
   // 更新数据
   update: async (prefix, params, data) => {
     try {
-      const response = await axios.put(Url(prefix, params), data)
+      const response = await axios.put(Url(prefix, params), data, getPublicConfig())
       if (response.statusText === 'OK' && response.data) {
         const updatedData = response.data
         if (updatedData.success) {
           return {
-             data: updatedData.item || updatedData.items,
+             data: updatedData.item || updatedData.items || updatedData,
              message: updatedData.message,
              success: true
           }
@@ -86,7 +121,7 @@ const request = {
   // 删除数据
   delete: async (prefix, params) => {
     try {
-      const response = await axios.delete(Url(prefix, params))
+      const response = await axios.delete(Url(prefix, params), getPublicConfig())
       if (response.statusText === 'OK' && response.data) {
         const deletedData = response.data
         if (deletedData.success) {
@@ -114,7 +149,8 @@ const request = {
     // 配置
     const config = {
       headers: {
-        'content-type': 'multipart/form-data'
+        'content-type': 'multipart/form-data',
+        ...getPublicConfig()
       },
       onUploadProgress: (progressEvent) => {
         // 已完成的比例
@@ -128,7 +164,7 @@ const request = {
         const uploadedData = response.data
         if (uploadedData.success) {
           return {
-             data: uploadedData.item || uploadedData.items,
+             data: uploadedData.item || uploadedData.items || uploadedData,
              message: uploadedData.message,
              success: true
           }

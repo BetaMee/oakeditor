@@ -126,26 +126,7 @@ class Board extends Component {
     }
   }
 
-  componentDidMount() {
-    const {
-      contextData,
-      contextAction,
-      routeParams
-    } = this.props
-    const {
-      updateArticleId
-    } = contextAction
-    const {
-      articleId
-    } = routeParams
-    // 判断全家store是否为空
-    if (contextData.articleId === '') {
-      updateArticleId(articleId)
-      this.currentId = articleId
-    }
-  }
-
-  componentDidUpdate() {
+  renderCurrentContent = () => {
     const {
       contextData
     } = this.props
@@ -163,6 +144,31 @@ class Board extends Component {
       this.isContentLoked = true
       this.currentId = articleId
     }
+  }
+  componentDidMount() {
+    const {
+      contextData,
+      contextAction,
+      routeParams
+    } = this.props
+    const {
+      updateArticleId
+    } = contextAction
+    const {
+      articleId
+    } = routeParams
+    // 判断全家store是否为空
+    if (contextData.articleId === '') {
+      updateArticleId(articleId)
+      this.currentId = articleId
+    } else {
+      this.currentId = contextData.articleId
+      this.renderCurrentContent()
+    }
+  }
+
+  componentDidUpdate() {
+    this.renderCurrentContent()
   }
 
   render() {

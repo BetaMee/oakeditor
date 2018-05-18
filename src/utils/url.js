@@ -1,7 +1,7 @@
 
-const baseServerUrl = 'http://oakserver-dev.ap-northeast-1.elasticbeanstalk.com'
+// const baseServerUrl = 'http://oakserver-dev.ap-northeast-1.elasticbeanstalk.com'
 
-// const baseServerUrl = 'http://localhost:8080'
+const baseServerUrl = 'http://localhost:8080'
 
 export default (prefix, params) => {
   let paramUrl = ''
