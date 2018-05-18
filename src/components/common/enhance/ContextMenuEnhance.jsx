@@ -15,7 +15,6 @@ const ContextMenuEnhance = (WrappedComponent) => {
     menuRef = React.createRef()
 
     changeDefaultContextMenuEvt = (e, evtCallback) => {
-      console.log(evtCallback)
       // 停止冒泡&终止默认事件
       e.preventDefault()
       e.stopPropagation()
@@ -50,7 +49,7 @@ const ContextMenuEnhance = (WrappedComponent) => {
         positionY: positionY
       }))
       // 回调函数
-      evtCallback && evtCallback()
+      evtCallback && evtCallback(true)
     }
     cancelContextMenuEvt = (e) => {
       this.setState((preState) => ({

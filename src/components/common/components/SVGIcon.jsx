@@ -37,7 +37,11 @@ import {
   Spinner,
   Done,
   Success,
-  Failure
+  Failure,
+  ToggleUp,
+  ToggleDown,
+  RenderMode,
+  WriteMode
 } from '../icons'
 
 const SVGIconGroupMap = {
@@ -76,7 +80,11 @@ const SVGIconGroupMap = {
   Spinner,
   Done,
   Success,
-  Failure
+  Failure,
+  ToggleUp,
+  ToggleDown,
+  RenderMode,
+  WriteMode
 }
 
 const SVGIcon = ({ name, className}) => {

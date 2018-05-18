@@ -11,17 +11,22 @@ const MenuWrapper = Wrapper.extend`
   top: 0;
   left: 0;
   z-index: 999;
-  background-color: rgba(0,0,0,0.3);  
+  background-color: rgba(0,0,0,0.3);
+  ${({ isDisplay }) => !isDisplay && `display: none`}
 `
 
 class MenuPanel extends Component {
   render() {
-    const { hideMenuPanel } = this.props
+    const {
+      hideMenuPanel,
+      isDisplay
+    } = this.props
     return (
       <Modal>
         <MenuWrapper
           onClick={hideMenuPanel}
           isUserSelect={false}
+          isDisplay={isDisplay}
         >
           {/* menu panel */}
           <Panel />

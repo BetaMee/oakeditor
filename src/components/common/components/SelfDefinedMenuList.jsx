@@ -72,7 +72,11 @@ const List = styled.li`
 
 const SelfDefinedMenuList = ({ positionX, positionY, menuConfig, menuRef, isVisible, cancelContextMenuEvt }) =>
   <MenuWrapper
-    onClick={cancelContextMenuEvt}
+    onClick={(e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      cancelContextMenuEvt(e)
+    }}
     onContextMenu={(e) => {
       e.preventDefault()
       e.stopPropagation()
@@ -86,17 +90,23 @@ const SelfDefinedMenuList = ({ positionX, positionY, menuConfig, menuRef, isVisi
     >
       <ListContainer>
         {menuLists.map((item, index) => {
-          if (menuConfig.displayTags.indexOf(item.tag) !== -1) {
-            const isActive = menuConfig.activeTag === item.tag 
+          const activeMenu = menuConfig.find((menu) => menu.tag === item.tag)
+          if (activeMenu) {
             return (
               <List
                 key={item.tag}
-                active={isActive}
-                onClick={isActive ? menuConfig.activeHandler : null}
+                active={true}
+                onClick={activeMenu.handler}
               >{item.name}</List>
             )
           } else {
-            return null
+            return (
+              <List
+                key={item.tag}
+                active={false}
+                onClick={null}
+              >{item.name}</List>
+            ) 
           }
         })}
       </ListContainer>
@@ -111,7 +121,7 @@ SelfDefinedMenuList.defaultProps = {
 }
 
 SelfDefinedMenuList.propTypes = {
-  menuConfig: PropTypes.object.isRequired,
+  menuConfig: PropTypes.array.isRequired,
   positionX: PropTypes.number.isRequired,
   positionY: PropTypes.number.isRequired,
   isVisible: PropTypes.bool.isRequired,
