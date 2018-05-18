@@ -60,8 +60,17 @@ class Board extends Component {
       })
     }
   }
-
+  // 监听codemirror数据变化
   editContentChangeHanlder = (editContent) => {
+    this.setState({
+      editContent: editContent
+    })
+  }
+  // 只在停止敲击的时候更新context中的状态
+  editContentUpdateHandler = () => {
+    const {
+      editContent
+    } = this.state
     const {
       contextData,
       contextAction
@@ -83,11 +92,7 @@ class Board extends Component {
         }
       })
     }))
-    // updateEditorSrore(newEditorSrore) // 变卡
-
-    this.setState({
-      editContent: editContent
-    })
+    updateEditorSrore(newEditorSrore)
   }
 
   editOnSaveHandler = async () => {
@@ -200,6 +205,7 @@ class Board extends Component {
             <ContentEditArea
               onChange={this.editContentChangeHanlder}
               onSave={this.editOnSaveHandler}
+              onUpdate={this.editContentUpdateHandler}
             />
           </Cell>
           {/* 设置栏 */}
