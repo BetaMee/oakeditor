@@ -14,8 +14,12 @@ const { GlobalConsumer } = context
 class User extends Component {
   loginRequest = async (username, password) => {
     const {
-      history
+      history,
+      contextAction
     } = this.props
+    const {
+      updateUserId
+    } = contextAction
     const loginPrefix = 'user/login'
     const loginData = {
       username,
@@ -30,6 +34,8 @@ class User extends Component {
         token: userData.token,
         isLogin: true
       })
+      // 更新globalcontext
+      updateUserId(userData.userId)
       // 跳转
       history.replace('/')
     } else {
@@ -44,9 +50,17 @@ class User extends Component {
   componentDidMount() {
     const {
       history,
-      location
+      location,
+      contextAction
     } = this.props
+    const {
+      updateUserId
+    } = contextAction
     const isLogin = storage.getItem('isLogin')
+    // 状态存在时则更新context
+    if (isLogin) {
+      updateUserId(storage.getItem('userId'))
+    }
     if (isLogin &&  [ '/login', '/register'].includes(location.pathname)) {
       history.replace('/')
     }

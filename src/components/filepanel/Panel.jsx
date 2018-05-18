@@ -20,6 +20,8 @@ const PanelWrapper = Wrapper.extend`
 `
 
 class Panel extends Component {
+  // didUpdate中请求锁定
+  isRequestLocked = false
   stopHideFilePanelEvt = (e) => {
     // 禁止传播点击事件至父元素，避免关闭Modal
     e.preventDefault();
@@ -209,8 +211,7 @@ class Panel extends Component {
        console.log(deletedFile.message)
     }
   }
-
-  async componentDidMount() {
+  initFilesRequest = async () => {
     const {
       contextData,
       contextAction
@@ -257,6 +258,23 @@ class Panel extends Component {
     } else {
        // toast提示
        console.log(fetchedArchives.message)
+    }
+  }
+  componentDidUpdate() {
+    if (!this.isRequestLocked) {
+      this.isRequestLocked = true
+      this.initFilesRequest()
+    }
+  }
+
+  componentDidMount() {
+    const {
+      contextData
+    } = this.props
+    // 登录后存在userID
+    if (contextData.userId !== '' && !this.isRequestLocked) {
+      this.isRequestLocked = true
+      this.initFilesRequest()
     }
   }
   render() {

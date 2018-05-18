@@ -5,7 +5,7 @@ import { List } from 'immutable'
 class GlobalProvider extends Component {
   state = { // 全局state
     articleId: '',
-    userId: 'd5da709f-dc12-413f-a7d6-073357799fb5',
+    userId: '',
     editorSrore: List()
   }
   // 操作
