@@ -6,7 +6,7 @@ import ContentEditArea from './ContentEditArea'
 import ContentPreviewArea from './ContentPreviewArea'
 import SettingBar from './SettingBar'
 import { Grid, Cell } from '../common/GridLayout'
-import { editor, request, context, database } from '../../core'
+import { editor, request, context } from '../../core'
 
 const { GlobalConsumer } = context
 
