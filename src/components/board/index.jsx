@@ -110,7 +110,7 @@ class Board extends Component {
     const {
       updateEditorSrore
     } = contextAction
-    const updatePrefix = 'rest/article/update'
+    const updatePrefix = 'rest/article/update/content'
     const updateParam = [articleId]
     // 提交
     const updatedArticle = await request.update(updatePrefix, updateParam, { content: editContent })
@@ -118,7 +118,7 @@ class Board extends Component {
       const _newEditorSrore = editorSrore.map(_archive => _archive.update('articles', (_articles) => {
         return _articles.map((_article) => {
           if (_article.get('articleId') === articleId) {
-            return _article.update('content', () => updatedArticle.data.content)
+            return _article.update('content', () => editContent)
           } else {
             return _article
           }

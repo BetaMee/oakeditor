@@ -66,11 +66,11 @@ class Editor {
     this.mdEditor.on('scroll', (editor) => {
       // editorOnHandler(editor.getValue())
       // console.log(editor)
-      const editotScrollTop = editor.doc.scrollTop
-      const editorHeight = editor.doc.height
-      const wrapperHeight = editor.display.lastWrapHeight
-      // console.log(`${editotScrollTop} ${editorHeight} ${wrapperHeight}`)
-      const scrollPercent = editotScrollTop / (editorHeight - wrapperHeight)
+      // const editotScrollTop = editor.doc.scrollTop
+      // const editorHeight = editor.doc.height
+      // const wrapperHeight = editor.display.lastWrapHeight
+      // // console.log(`${editotScrollTop} ${editorHeight} ${wrapperHeight}`)
+      // const scrollPercent = editotScrollTop / (editorHeight - wrapperHeight)
       // console.log(scrollPercent)
     })
     return this

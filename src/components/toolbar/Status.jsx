@@ -67,7 +67,7 @@ class Status extends Component {
     } = contextData
     // 按下enter键
     if (e.keyCode === 13) {
-      const updatePrefix = 'rest/article/update'
+      const updatePrefix = 'rest/article/update/title'
       const updateParam = [articleId]
       // 提交
       const updatedArticle = await request.update(updatePrefix, updateParam, { title })
@@ -75,7 +75,7 @@ class Status extends Component {
         const _newEditorSrore = editorSrore.map(_archive => _archive.update('articles', (_articles) => {
           return _articles.map((_article) => {
             if (_article.get('articleId') === articleId) {
-              return _article.update('title', () => updatedArticle.data.title)
+              return _article.update('title', () => title)
             } else {
               return _article
             }

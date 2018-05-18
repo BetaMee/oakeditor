@@ -4,4 +4,10 @@ export default () => {
     // 取消右键菜单事件
     e.preventDefault()
   })
+  $body.addEventListener('keydown', (e) => {
+    // ctrl-s 保存事件 
+    if (e.keyCode == 83 && e.ctrlKey) {
+      e.preventDefault();
+    }
+  })
 }
