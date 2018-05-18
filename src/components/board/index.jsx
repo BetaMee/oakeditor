@@ -6,7 +6,7 @@ import ContentEditArea from './ContentEditArea'
 import ContentPreviewArea from './ContentPreviewArea'
 import SettingBar from './SettingBar'
 import { Grid, Cell } from '../common/GridLayout'
-import { editor, request, context } from '../../core'
+import { editor, request, context, database } from '../../core'
 
 const { GlobalConsumer } = context
 
@@ -47,19 +47,6 @@ class Board extends Component {
     }
   }
 
-  getCurrentArticle = (id, store) => {
-    const currentArticle = store.map(archive => archive.get('articles'))
-      .flatten(1)
-      .find((article) => article.get('articleId') === id)
-    if (currentArticle) {
-      return currentArticle.set('isLoading', false)
-    } else {
-      return Map({
-        content: 'Loading...',
-        isLoading: true
-      })
-    }
-  }
   // 监听codemirror数据变化
   editContentChangeHanlder = (editContent) => {
     this.setState({
@@ -131,7 +118,58 @@ class Board extends Component {
     }
   }
 
-  renderCurrentContent = () => {
+  getCurrentArticle = (id, store) => {
+    const {
+      contextAction,
+    } = this.props
+    const {
+      updateEditorSrore
+    } = contextAction
+    return new Promise(async (resovle, reject) => {
+      const currentArticle = store.map(archive => archive.get('articles'))
+        .flatten(1)
+        .find((article) => article.get('articleId') === id)
+      if (currentArticle) {
+        // 如果存在content，则直接取值
+        if (currentArticle.has('content')) {
+          resovle(currentArticle.set('isLoading', false))
+        } else {
+          // 获取服务端数据
+          // 先判断本地是否存在
+          const fetchPrefix = 'rest/article'
+          const fetchParam = [id]
+          const fetchedArticle = await request.fetch(fetchPrefix, fetchParam)
+          if (fetchedArticle.success) {
+            // 更新context
+            const _newStore = store.map(_archive => _archive.update('articles', (_articles) => {
+              return _articles.map((_article) => {
+                if (_article.get('articleId') === id) {
+                  return _article.set('content', fetchedArticle.data.content)
+                } else {
+                  return _article
+                }
+              })
+            }))
+            updateEditorSrore(_newStore)
+            resovle(Map({
+              content: fetchedArticle.data.content,
+              isLoading: false
+            }))
+          } else {
+            // toast提示
+            console.log(fetchedArticle.message)
+            reject(fetchedArticle.message)
+          }
+        }
+      } else {
+        resovle(Map({
+          isLoading: true
+        }))
+      }
+    })
+  }
+
+  renderCurrentContent = async () => {
     const {
       contextData
     } = this.props
@@ -139,7 +177,7 @@ class Board extends Component {
       editorSrore,
       articleId
     } = contextData
-    const currentArticle = this.getCurrentArticle(articleId, editorSrore)
+    const currentArticle = await this.getCurrentArticle(articleId, editorSrore)
     // 解决codemirror onchange和react自身的数据流冲突死循环的解法
     if (!currentArticle.get('isLoading') && !this.isContentLoked && this.currentId === articleId) {
       editor.updateMDEditorValue(currentArticle.get('content'))
@@ -173,6 +211,7 @@ class Board extends Component {
   }
 
   componentDidUpdate() {
+    console.log('componentDidUpdate')    
     this.renderCurrentContent()
   }
 

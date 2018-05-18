@@ -236,8 +236,6 @@ class Panel extends Component {
           const articles = fetchedArticles.data.map((article) => ({
             articleId: article.articleId,
             title: article.title,
-            content: article.content,
-            isPublished: article.isPublished,
           }))
           return {
             archiveId: archive.archiveId,
