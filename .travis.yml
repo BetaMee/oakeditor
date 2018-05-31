@@ -1,6 +1,9 @@
 # 声明构建语言环境
 language: node_js
 
+notifications:
+    on_success: never
+
 # nodejs语言版本
 node_js:
   - "8"
