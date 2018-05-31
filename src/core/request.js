@@ -150,7 +150,7 @@ const request = {
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
-        ...getPublicConfig()
+        ...getPublicConfig().headers
       },
       onUploadProgress: (progressEvent) => {
         // 已完成的比例
