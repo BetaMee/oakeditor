@@ -24,8 +24,8 @@ const StyledLink = styled(Link)`
 
 class Explorer extends Component {
   // 转换数据
-  static convertDataToExplorerList = (data, explorerData, currentArticleId) => data.map((_item, index) => {
-    let isExpand = explorerData.size !== 0 ? explorerData.get(index).get('isExpand') : false
+  static convertDataToExplorerList = (data, currentArticleId) => data.map((_item, index) => {
+    let isExpand = false
     // 判断是否folder展示有冲突
     const currentArticle = _item.get('articles').find(_article => _article.get('articleId') === currentArticleId)
     const isCurrentFlag = Map.isMap(currentArticle) && !isExpand
@@ -50,13 +50,22 @@ class Explorer extends Component {
     })
   })
   static getDerivedStateFromProps(props, state) {
-    console.log('getDerivedStateFromProps')
+    const {
+      explorerLists,
+      prevState
+    } = state
+    // 通过props生成的数据
+    const initPropValue = Explorer.convertDataToExplorerList(props.data, props.articleId)
+    // 判断是否要使用state中的数据
+    const newExplorerLists = explorerLists.equals(prevState) ? initPropValue : state.explorerLists
     return {
-      explorerLists: Explorer.convertDataToExplorerList(props.data, state.explorerLists, props.articleId)
+      explorerLists: newExplorerLists,
+      prevState: initPropValue
     }
   }
   state = {
-    explorerLists: Explorer.convertDataToExplorerList(this.props.data, List(), this.props.articleId),
+    explorerLists: List(),
+    prevState: List()
   }
 
   getExplorerContextMenuDefine = () => {
