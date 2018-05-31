@@ -38,6 +38,7 @@ import ToggleUp from './ToggleUp'
 import ToggleDown from './ToggleDown'
 import RenderMode from './RenderMode'
 import WriteMode from './WriteMode'
+import Logout from './Logout.jsx' 
 
 
 export {
@@ -80,5 +81,6 @@ export {
   ToggleUp,
   ToggleDown,
   RenderMode,
-  WriteMode
+  WriteMode,
+  Logout
 }
