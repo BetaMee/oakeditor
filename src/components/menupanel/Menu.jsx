@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import Wrapper from '../common/components/Wrapper'
 import SVGIcon from '../common/components/SVGIcon'
 
@@ -10,10 +9,6 @@ const MenuWrapper = Wrapper.extend`
   &:hover {
     background-color: rgba(0,0,0,.05);
   }
-`
-
-const MenuName = styled.p`
-  
 `
 
 const Menu = ({ onClick ,name, iconName }) =>
@@ -30,7 +25,7 @@ const Menu = ({ onClick ,name, iconName }) =>
     <Wrapper
        wWidth='90%'
     >
-      <MenuName>{name}</MenuName>
+      <p>{name}</p>
     </Wrapper>
   </MenuWrapper>
 

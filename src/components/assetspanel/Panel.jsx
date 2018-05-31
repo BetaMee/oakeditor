@@ -12,10 +12,12 @@ import PanelTitle from './PanelTitle'
 import PanelTab from './PanelTab'
 import Explorer from './Explorer'
 import ProcessBar from '../common/components/ProcessBar'
-import { request } from '../../core'
+import { request, context } from '../../core'
 import { date } from '../../utils'
 import { CircleToast } from '../common/components/Toast'
 import { PlaceholderFakeData } from './components/Placeholder'
+
+const { GlobalConsumer } = context
 
 const PanelWrapper = Wrapper.extend`
   width: 450px;
@@ -62,6 +64,12 @@ class Panel extends Component {
     e.stopPropagation()
   }
   uploadAsset = async (type, asset) => {
+    const {
+      contextData
+    } = this.props
+    const {
+      userId
+    } = contextData
     // 添加加载占位符
     this.setState(({ assetsMap }) => {
       // 伪数据
@@ -75,7 +83,7 @@ class Panel extends Component {
     CircleToast.loading($panelContainer)
     // 生成表单数据
     const formData = new FormData()
-    formData.append('userId', 'd5da709f-dc12-413f-a7d6-073357799fb5')
+    formData.append('userId', userId)
     formData.append(type, asset)
     // 生辰纲url前缀
     const prefix = `assets/upload/${type}`
@@ -119,8 +127,11 @@ class Panel extends Component {
     this.setState({
       isShowDataLoading: true
     })
+    const {
+      contextData
+    } = this.props
     // 可以从本地存储中获取这些数据
-    const userId = 'd5da709f-dc12-413f-a7d6-073357799fb5'
+    const userId = contextData.userId
     // 生成前缀
     const archiveType = `${type}s`
     const params = [archiveType, userId]
@@ -274,4 +285,4 @@ class Panel extends Component {
   }
 }
 
-export default Panel
+export default GlobalConsumer(Panel)

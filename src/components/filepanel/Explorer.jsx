@@ -49,9 +49,10 @@ class Explorer extends Component {
       })
     })
   })
-  static getDerivedStateFromProps (nextProps, prevState) {
+  static getDerivedStateFromProps(props, state) {
+    console.log('getDerivedStateFromProps')
     return {
-      explorerLists: Explorer.convertDataToExplorerList(nextProps.data, prevState.explorerLists, nextProps.articleId)
+      explorerLists: Explorer.convertDataToExplorerList(props.data, state.explorerLists, props.articleId)
     }
   }
   state = {

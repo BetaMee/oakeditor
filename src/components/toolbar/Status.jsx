@@ -45,6 +45,7 @@ class Status extends Component {
     }
   }
   titleChangeHanlder = (e) => {
+    console.log(e.target.value)
     this.setState({
       title: e.target.value
     })
