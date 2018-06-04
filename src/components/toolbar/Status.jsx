@@ -20,28 +20,40 @@ const TitleInput = Input.extend`
 
 class Status extends Component {
   state = {
-    title: ''
+    title: '',
+    prevTitle: ''
   }
-  static getDerivedStateFromProps (nextProps, prevState) {
+  /**
+   * TODO 重新设计数据流，尽量不使用getDerivedStateFromProps，因为不管props还是state更新都会触发重更新
+   * 这里的问题是props和state混合使用了
+   * @param {*} props 
+   * @param {*} state 
+   */
+  static getDerivedStateFromProps(props, state) {
     const {
       contextData
-    } = nextProps
+    } = props
     const {
       editorSrore,
       articleId
     } = contextData
 
+    // 获取当前文章的值
     const currentArticle = editorSrore.map(archive => archive.get('articles'))
       .flatten(1)
       .find((article) => article.get('articleId') === articleId)
+    
+    let propsValue = ''
     if (currentArticle) {
-      return {
-        title: currentArticle.get('title')
-      }
-    } else {
-      return {
-        title: ''
-      }
+      propsValue = currentArticle.get('title')
+    }
+    
+    // 判断controlValue是否一致
+    const controlledValue = state.prevTitle === state.title ? propsValue : state.title
+
+    return {
+      title: controlledValue,
+      prevTitle: propsValue
     }
   }
   titleChangeHanlder = (e) => {

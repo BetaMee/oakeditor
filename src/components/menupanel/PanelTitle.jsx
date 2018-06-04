@@ -7,7 +7,7 @@ const PanelTitle = () =>
     backgroundColor='rgba(0,0,0,.1)'
     wHeight='44px'
   >
-    <span>MENU</span>
+    <span>菜单</span>
   </Wrapper>
 
 export default PanelTitle

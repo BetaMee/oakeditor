@@ -41,7 +41,8 @@ import {
   ToggleUp,
   ToggleDown,
   RenderMode,
-  WriteMode
+  WriteMode,
+  Logout
 } from '../icons'
 
 const SVGIconGroupMap = {
@@ -84,7 +85,8 @@ const SVGIconGroupMap = {
   ToggleUp,
   ToggleDown,
   RenderMode,
-  WriteMode
+  WriteMode,
+  Logout
 }
 
 const SVGIcon = ({ name, className}) => {

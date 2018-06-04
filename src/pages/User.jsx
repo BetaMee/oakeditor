@@ -44,8 +44,37 @@ class User extends Component {
     }
   }
 
-  registerRequest = () => {
-
+  registerRequest = async (username, password) => {
+    const {
+      history,
+      contextAction
+    } = this.props
+    const {
+      updateUserId
+    } = contextAction
+    const registerPrefix = 'user/register'
+    const registerData = {
+      username,
+      password
+    }
+    const registeredUser = await request.register(registerPrefix, registerData)
+    if (registeredUser.success) {
+      const userData = registeredUser.data
+      const { userInfo } = userData
+      // 写入localstorage
+      storage.setGroupItems({
+        userId: userInfo.userId,
+        token: userData.token,
+        isLogin: true
+      })
+      // 更新globalcontext
+      updateUserId(userInfo.userId)
+      // 跳转
+      history.replace('/')
+    } else {
+     // toast提示
+     console.log(registeredUser.message)
+    }
   }
   componentDidMount() {
     const {

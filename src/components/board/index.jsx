@@ -211,7 +211,6 @@ class Board extends Component {
   }
 
   componentDidUpdate() {
-    console.log('componentDidUpdate')    
     this.renderCurrentContent()
   }
 

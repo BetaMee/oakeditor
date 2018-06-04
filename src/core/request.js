@@ -10,6 +10,33 @@ const getPublicConfig = () => {
 }
 
 const request = {
+    // 注册接口
+    register: async (prefix, data) => {
+      try {
+        const response = await axios.post(Url(prefix), data)
+        if (response.statusText === 'OK' && response.data) {
+          const postData = response.data
+          if (postData.success) {
+            return {
+               data: postData.item || postData.items || postData,
+               message: postData.message,
+               success: true
+            }
+          } else {
+            throw(new Error(postData.message))
+          }
+        } else {
+          throw(new Error('bad request'))
+        }
+      } catch (e) {
+        // 容错，可提示toast
+        console.warn(e)
+        return {
+          message: e.message,
+          success: false
+        }
+      }
+    },
   // 登录接口
   login: async (prefix, data) => {
     try {
@@ -150,7 +177,7 @@ const request = {
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
-        ...getPublicConfig()
+        ...getPublicConfig().headers
       },
       onUploadProgress: (progressEvent) => {
         // 已完成的比例

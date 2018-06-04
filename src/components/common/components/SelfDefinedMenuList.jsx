@@ -6,19 +6,19 @@ import Wrapper from './Wrapper'
 
 const menuLists = [
   {
-    name: 'New folder',
+    name: '新建文件夹',
     tag: 0,
   },
   {
-    name: 'New file',
+    name: '新建文件',
     tag: 1,
   },
   {
-    name: 'Rename',
+    name: '重命名',
     tag: 2,
   },
   {
-    name: 'Delete',
+    name: '删除',
     tag: 3,
   }
 ]

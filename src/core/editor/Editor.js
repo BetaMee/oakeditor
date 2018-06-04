@@ -75,6 +75,10 @@ class Editor {
     })
     return this
   }
+  /**
+   * 绑定快捷键
+   * @param {*} extraKeysMap 
+   */
   bindExtralKeyEvent(extraKeysMap) {
     this.mdEditor.addKeyMap(extraKeysMap)
   }
@@ -86,7 +90,148 @@ class Editor {
     this.mdEditor.setValue(value)
     return this
   }
-
+  /**
+   * 执行命令
+   * @param {*} commandName 
+   */
+  execCommand(commandName) {
+    this.mdEditor.execCommand(commandName)
+    return this
+  }
+  /**
+   *
+   * 加粗文本
+   * @returns
+   * @memberof Editor
+   */
+  boldingText() {
+    const selection = this.mdEditor.getSelection()
+    if (selection) { // 选中selection
+      this.mdEditor.replaceSelection(`**${selection}**`)
+    } else {
+      this.mdEditor.replaceSelection('**bold text**')
+    }
+    return this
+  }
+  /**
+   *
+   * 文本斜体
+   * @memberof Editor
+   */
+  italicText() {
+    const selection = this.mdEditor.getSelection()
+    if (selection) { // 选中selection
+      this.mdEditor.replaceSelection(`*${selection}*`)
+    } else {
+      this.mdEditor.replaceSelection('**italic text**')
+    }
+    return this
+  }
+  /**
+   *
+   * 文本删除线
+   * @memberof Editor
+   */
+  strikethroughText() {
+    const selection = this.mdEditor.getSelection()
+    if (selection) { // 选中selection
+      this.mdEditor.replaceSelection(`~~${selection}~~`)
+    } else {
+      this.mdEditor.replaceSelection('~~strikethrough text~~')
+    }
+    return this
+  }
+  /**
+   *
+   * 标题
+   * @memberof Editor
+   */
+  getHeading() {
+    const selection = this.mdEditor.getSelection()
+    if (selection) { // 选中selection
+      this.mdEditor.replaceSelection(`## ${selection}`)
+    } else {
+      this.mdEditor.replaceSelection('## Heading')
+    }
+    return this
+  }
+  /**
+   *
+   * 无序列表
+   * @returns
+   * @memberof Editor
+   */
+  getUnorderedList() {
+    const selection = this.mdEditor.getSelection()
+    if (selection) { // 选中selection
+      this.mdEditor.replaceSelection(`- ${selection}`)
+    } else {
+      this.mdEditor.replaceSelection('- unordered list')
+    }
+    return this
+  }
+  /**
+   *
+   * 有序列表
+   * @returns
+   * @memberof Editor
+   */
+  getOrderedList() {
+    const selection = this.mdEditor.getSelection()
+    if (selection) { // 选中selection
+      this.mdEditor.replaceSelection(`1. ${selection}`)
+    } else {
+      this.mdEditor.replaceSelection('1. ordered list')
+    }
+    return this
+  }
+  /**
+   *
+   * 生成table
+   * @memberof Editor
+   */
+  getTable() {
+    this.mdEditor.replaceSelection(`|标题|标题|标题|
+|---|---|---|
+|   |   |   | `)
+    return this
+  }
+  /**
+   *
+   *
+   * @memberof Editor
+   */
+  insertQuoteText() {
+    const selection = this.mdEditor.getSelection()
+    if (selection) { // 选中selection
+      this.mdEditor.replaceSelection(`> ${selection}`)
+    } else {
+      this.mdEditor.replaceSelection('> block quote')
+    }
+    return this
+  }
+  insertCodeText() {
+    const selection = this.mdEditor.getSelection()
+    if (selection) { // 选中selection
+      this.mdEditor.replaceSelection(`    ${selection}`)
+    } else {
+      this.mdEditor.replaceSelection('    code here')
+    }
+    return this
+  }
+  insertLinkText() {
+    const selection = this.mdEditor.getSelection()
+    if (!selection) { // 选中selection
+      this.mdEditor.replaceSelection('[]()')
+    }
+    return this
+  }
+  /**
+   * 渲染成HTML
+   * @param {*} rawString
+   * @returns
+   * @memberof Editor
+   */
   renderToHTML(rawString) {
     return this.mdRender.render(rawString)
   }

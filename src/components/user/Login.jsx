@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import Wrapper from '../common/components/Wrapper'
 import UserInput from './UserInput'
@@ -12,6 +13,11 @@ const LoginWrapper = Wrapper.extend`
   box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 1px 4px 0px rgba(0,0,0,0.2);
   border-radius: 4px;
   padding: 20px;
+`
+
+const LinkWrapper = Wrapper.extend`
+  height: 34px;
+  margin-top: 10px;
 `
 
 class Login extends Component {
@@ -69,6 +75,9 @@ class Login extends Component {
           <UserSubmit
             onClick={this.loginHandler}
           >登录</UserSubmit>
+          <LinkWrapper>
+            <Link to='/register'>注册</Link>
+          </LinkWrapper>
         </LoginWrapper>
       </Wrapper>
     )

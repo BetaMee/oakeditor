@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import Wrapper from '../common/components/Wrapper'
 import PanelTitle from './PanelTitle'
@@ -14,30 +14,19 @@ const PanelWrapper = Wrapper.extend`
   z-index: 9999;
 `
 
-class Panel extends Component {
-  state = {
-
-  }
-
-  handlePanelClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-
-  render() {
-    return (
-      <PanelWrapper
-        layout='columnTop'
-        onClick={this.handlePanelClick}
-        wOverFlow='auto'
-      >
-        {/* title */}
-        <PanelTitle />
-        {/* explorer */}
-        <Explorer />
-      </PanelWrapper>
-    )
-  }
-}
+const Panel = () =>
+  <PanelWrapper
+    layout='columnTop'
+    onClick={(e) => {
+      e.preventDefault()
+      e.stopPropagation()
+    }}
+    wOverFlow='auto'
+  >
+      {/* title */}
+      <PanelTitle />
+      {/* explorer */}
+      <Explorer />
+  </PanelWrapper>
 
 export default Panel
