@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import {
   Route,
-  withRouter
+  withRouter,
+  Switch
 } from 'react-router-dom'
 
 import Login from '../components/user/Login'
@@ -32,7 +33,7 @@ class User extends Component {
       storage.setGroupItems({
         userId: userData.userId,
         token: userData.token,
-        isLogin: true
+        isPrevLogined: true
       })
       // 更新globalcontext
       updateUserId(userData.userId)
@@ -65,7 +66,7 @@ class User extends Component {
       storage.setGroupItems({
         userId: userInfo.userId,
         token: userData.token,
-        isLogin: true
+        isPrevLogined: true
       })
       // 更新globalcontext
       updateUserId(userInfo.userId)
@@ -85,7 +86,7 @@ class User extends Component {
     const {
       updateUserId
     } = contextAction
-    const isLogin = storage.getItem('isLogin')
+    const isLogin = storage.getItem('isPrevLogined')
     // 状态存在时则更新context
     if (isLogin) {
       updateUserId(storage.getItem('userId'))
@@ -96,18 +97,19 @@ class User extends Component {
   }
   render() {
     return (
-      <React.Fragment>
+      <Switch>
         <Route
           exact
-          path='/login'
+          path='/user/login'
           render={() => <Login loginRequest={this.loginRequest} />}
         />
         <Route
           exact
-          path='/register'
+          path='/user/register'
           render={() => <Register registerRequest={this.registerRequest} />}          
         />
-      </React.Fragment>
+        <Redirect to='/user/login' />
+      </Switch>
     )
   }
 }
