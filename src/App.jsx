@@ -9,6 +9,7 @@ import {
 import Editor from './pages/Editor'
 import User from './pages/User'
 import NoMatch from './pages/NoMatch'
+import PageLoading from './pages/PageLoading'
 import { context } from './core'
 import { storage } from './utils'
 import './App.css'
@@ -43,7 +44,7 @@ class AuthorizedRoute extends React.Component {
       <Route
         {...rest}
         render={props => {
-          if (pending) return <div>Loading...</div>;
+          if (pending) return <PageLoading />;
           return logged ? (
             <Component {...props} />
           ) : (

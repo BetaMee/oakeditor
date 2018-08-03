@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
   Route,
   withRouter,
-  Switch
+  Switch,
+  Redirect
 } from 'react-router-dom'
 
 import Login from '../components/user/Login'
